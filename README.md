@@ -1,5 +1,4 @@
 <h1>Projeto FactoryTrack/ SPRINT 01</h1>
-<br></br>
 A empresa fictícia MetalTech Indústria atua na fabricação de peças metálicas sob demanda. Atualmente, os pedidos são realizados presencialmente pelo setor comercial ou administrativo.
 <br></br>
 <h1> Sistema back-end </h1>
