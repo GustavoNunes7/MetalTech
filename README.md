@@ -6,4 +6,6 @@ envolvendo o armazenamento de dados e trocado alguns nome que tinham a mesma fun
   <ul> Mesa -> Entrega </ul>
   <ul> Garçom -> Funcionario </ul>
   <ul> Pizza -> Metal </ul>
+  <ul> </ul>
+  <ul></ul>
 </p>
