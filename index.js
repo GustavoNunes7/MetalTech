@@ -22,7 +22,7 @@ ready.then(() => {
   app.use('/api', routes) // Local que juntas as rotas da API
   //
   app.get('/teste', (req, res) => {
-    res.json({ mensagem: 'API da Pizzaria funcionando!', status: 'online', porta: PORT }) // Rota teste que vai testa se o sistema está funcionado ou ligado
+    res.json({ mensagem: 'API do sistema funcionando!', status: 'online', porta: PORT }) // Rota teste que vai testa se o sistema está funcionado ou ligado
   })
   //
   app.get('*', (req, res) => {

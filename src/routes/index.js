@@ -6,7 +6,7 @@ const auth     = require('../middlewares/auth');
 
 // Caminho para os Models JS
 const Usuario  = require('../models/Usuario');
-const Pizza    = require('../models/Pizza');
+const Metal    = require('../models/Metal');
 const Cliente  = require('../models/Cliente');
 const Pedido   = require('../models/Pedido');
 
@@ -19,61 +19,61 @@ router.post('/auth/login', async (req, res) => {
     const { email, senha } = req.body;
     if (!email || !senha) return res.status(400).json({ erro: 'E-mail e senha são obrigatórios' });
 
-    const usuario = await Usuario.findByEmail(email);
+    const usuario  = await Usuario .findByEmail(email);
     if (!usuario) return res.status(401).json({ erro: 'Credenciais inválidas' });
 
-    const ok = await Usuario.verificarSenha(senha, usuario.senha);
+    const ok = await usuario.verificarSenha(senha, usuario.senha);
     if (!ok) return res.status(401).json({ erro: 'Credenciais inválidas' });
 
     const token = jwt.sign(
-      { id: usuario.id, nome: usuario.nome, email: usuario.email, perfil: usuario.perfil },
+      { id:usuario.id, nome: usuario.nome, email: usuario.email, perfil: usuario.perfil },
       process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
 
 
     // Envia uma resposta do Json  para o Front-end
-    res.json({ token, usuario: { id: usuario.id, nome: usuario.nome, email: usuario.email, perfil: usuario.perfil } });
+    res.json({ token, usuario: { id: usuario.id, nome: usuario.nome, email:usuario.email, perfil: usuario.perfil } });
   } catch (e) { res.status(500).json({ erro: e.message }); } 
 
 });
 
 
-//  Requisição da Json no Caminho das pizzas no banco de dados caso dê erro
-router.get('/pizzas', auth, async (req, res) => {
-  try { res.json(await Pizza.findAll()); }
+//  Requisição da Json no Caminho das mentais no banco de dados caso dê erro
+router.get('/metais', auth, async (req, res) => {
+  try { res.json(await Metal.findAll()); }
   catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
 
-// Requisição da Json no caminho das pizzas consultando pelo id da Pizza caso dê erro
-router.get('/pizzas/:id', auth, async (req, res) => {
+// Requisição da Json no caminho das metais consultando pelo id do Metal caso dê erro
+router.get('/metais/:id', auth, async (req, res) => {
   try {
-    const p = await Pizza.findById(req.params.id);
-    if (!p) return res.status(404).json({ erro: 'Pizza não encontrada' });
+    const p = await Metal.findById(req.params.id);
+    if (!p) return res.status(404).json({ erro: 'Metal não encontrado' });
     res.json(p);
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
 
 
-// Requisição da Json no caminho das pizzas verificando se foi digitado o Nome e os ingredientes da pizza
-router.post('/pizzas', auth, async (req, res) => {
+// Requisição da Json no caminho das pizzas verificando se foi digitado o Nome e os produtos do Metal
+router.post('/metais', auth, async (req, res) => {
   try {
     if (!req.body.nome || !req.body.ingredientes)
-      return res.status(400).json({ erro: 'Nome e ingredientes são obrigatórios' });
-    res.status(201).json(await Pizza.create(req.body));
+      return res.status(400).json({ erro: 'Nome e produtro são obrigatórios' });
+    res.status(201).json(await Metal.create(req.body));
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
 
 
 
-// Requisição da Json no caminho das pizzas consultando pelo id da Pizza caso dê erro, e tentando atualizar
-router.put('/pizzas/:id', auth, async (req, res) => {
+// Requisição da Json no caminho das pizzas consultando pelo id do Metal caso dê erro, e tentando atualizar
+router.put('/metais/:id', auth, async (req, res) => {
   try {
-    const p = await Pizza.update(req.params.id, req.body);
-    if (!p) return res.status(404).json({ erro: 'Pizza não encontrada' });
+    const p = await Metal.update(req.params.id, req.body);
+    if (!p) return res.status(404).json({ erro: 'Metal não encontrado' });
     res.json(p);
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
@@ -82,12 +82,12 @@ router.put('/pizzas/:id', auth, async (req, res) => {
 
 
 
-// Requisição da Json no caminho das pizzas consultando pelo id da Pizza caso dê erro, e depois deletando a pizza como opção
-router.delete('/pizzas/:id', auth, async (req, res) => {
+// Requisição da Json no caminho das pizzas consultando pelo id do Metal caso dê erro, e depois deletando a pizza como opção
+router.delete('/metais/:id', auth, async (req, res) => {
   try {
-    const ok = await Pizza.delete(req.params.id);
-    if (!ok) return res.status(404).json({ erro: 'Pizza não encontrada' });
-    res.json({ mensagem: 'Pizza deletada' });
+    const ok = await Metal.delete(req.params.id);
+    if (!ok) return res.status(404).json({ erro: 'Metal não encontrado' });
+    res.json({ mensagem: 'Metal deletada' });
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
@@ -151,7 +151,7 @@ router.delete('/clientes/:id', auth, async (req, res) => {
 router.get('/pedidos', auth, async (req, res) => {
   try {
     const filtros = {};
-    if (req.query.garcom) filtros.garcomId = req.query.garcom;
+    if (req.query.entregador) filtros.entregadorId = req.query.entregador;
     res.json(await Pedido.findAll(filtros));
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
@@ -186,9 +186,9 @@ router.post('/pedidos', auth, async (req, res) => {
       formaPagamento,
       troco:          req.body.troco,
       observacoes:    req.body.observacoes,
-      mesa:           req.body.mesa,
+      endereço:           req.body.endereço,
       origem:         req.body.origem,
-      garcomId:       req.body.garcom || req.usuario?.id,
+      entregadorId:       req.body.entregador|| req.usuario?.id,
     });
     res.status(201).json(novo);
   } catch (e) { res.status(400).json({ erro: e.message }); }
@@ -269,7 +269,7 @@ router.put('/usuarios/:id', auth, async (req, res) => {
 
 router.delete('/usuarios/:id', auth, async (req, res) => {
   try {
-    if (req.usuario.perfil !== 'Administrador')
+    if (req.usuarios.perfil !== 'Administrador')
       return res.status(403).json({ erro: 'Acesso restrito a Administradores' });
     const ok = await Usuario.delete(req.params.id);
     if (!ok) return res.status(404).json({ erro: 'Usuário não encontrado' });

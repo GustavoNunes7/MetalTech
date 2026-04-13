@@ -9,7 +9,7 @@ const fs        = require('fs');
 const path      = require('path');
 
 const DB_PATH = process.env.DB_PATH
-  || path.join(__dirname, '..', '..', 'pizzaria.db');
+  || path.join(__dirname, '..', '..', 'metalDados.db');
 
 // Módulo singleton — exporta { db, ready }
 // "ready" é uma Promise que resolve quando o banco estiver pronto.
@@ -61,11 +61,11 @@ const ready = (async () => {
   `);
 
   db.run(`
-    CREATE TABLE IF NOT EXISTS pizzas (
+    CREATE TABLE IF NOT EXISTS metais (
       id           INTEGER PRIMARY KEY AUTOINCREMENT,
       nome         TEXT    NOT NULL,
       descricao    TEXT    NOT NULL DEFAULT '',
-      ingredientes TEXT    NOT NULL,
+      produtos     TEXT    NOT NULL,
       precos       TEXT    NOT NULL DEFAULT '{"P":0,"M":0,"G":0}',
       disponivel   INTEGER NOT NULL DEFAULT 1,
       categoria    TEXT    NOT NULL DEFAULT 'tradicional',
@@ -86,9 +86,9 @@ const ready = (async () => {
       troco           REAL    NOT NULL DEFAULT 0,
       status          TEXT    NOT NULL DEFAULT 'recebido',
       observacoes     TEXT    NOT NULL DEFAULT '',
-      mesa            INTEGER,
+      endereço            INTEGER,
       origem          TEXT    NOT NULL DEFAULT 'balcao',
-      garcom_id       INTEGER REFERENCES usuarios(id),
+      usuario_id       INTEGER REFERENCES usuarios(id),
       created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
       updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
     )
@@ -98,8 +98,8 @@ const ready = (async () => {
     CREATE TABLE IF NOT EXISTS itens_pedido (
       id             INTEGER PRIMARY KEY AUTOINCREMENT,
       pedido_id      INTEGER NOT NULL REFERENCES pedidos(id),
-      pizza_id       INTEGER NOT NULL REFERENCES pizzas(id),
-      nome_pizza     TEXT    NOT NULL,
+      metal_id       INTEGER NOT NULL REFERENCES metais(id),
+      nome_metais     TEXT    NOT NULL,
       tamanho        TEXT    NOT NULL,
       quantidade     INTEGER NOT NULL DEFAULT 1,
       preco_unitario REAL    NOT NULL DEFAULT 0,

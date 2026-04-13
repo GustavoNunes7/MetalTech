@@ -28,8 +28,8 @@ function formatarPedido(row, itens = []) {
     },
     itens: itens.map(it => ({
       _id:           it.id,
-      pizza:         it.pizza_id,
-      nomePizza:     it.nome_pizza,
+      metal:         it.metal_id,
+      nomeMetal:     it.nome_metal,
       tamanho:       it.tamanho,
       quantidade:    it.quantidade,
       precoUnitario: it.preco_unitario,
@@ -42,9 +42,9 @@ function formatarPedido(row, itens = []) {
     troco:          row.troco,
     status:         row.status,
     observacoes:    row.observacoes,
-    mesa:           row.mesa,
+    endereço:       row.endereço,
     origem:         row.origem,
-    garcom:         row.garcom_id,
+    entregador:     row.entregador_id,
     createdAt:      row.created_at,
     updatedAt:      row.updated_at,
   };
@@ -53,11 +53,11 @@ function formatarPedido(row, itens = []) {
 const Pedido = {
   //seleciona pedidos
 
-  async findAll({ garcomId } = {}) {
+  async findAll({ entregadorId } = {}) {
     await ready;
     let rows;
-    if (garcomId) {
-      rows = query(`${SELECT_PEDIDO} WHERE p.garcom_id = ? ORDER BY p.created_at DESC`, [garcomId]);
+    if (entregadorId) {
+      rows = query(`${SELECT_PEDIDO} WHERE p.entregador_id = ? ORDER BY p.created_at DESC`, [entregadorId]);
     } else {
       rows = query(`${SELECT_PEDIDO} ORDER BY p.created_at DESC`);
     }
@@ -76,25 +76,25 @@ const Pedido = {
     return formatarPedido(row, itens);
   },
 
-  async create({ clienteId, itens, taxaEntrega = 0, formaPagamento, troco = 0, observacoes = '', mesa = null, origem = 'balcao', garcomId = null }) {
+  async create({ clienteId, itens, taxaEntrega = 0, formaPagamento, troco = 0, observacoes = '', endereço = null, origem = 'balcao', entregadorId = null }) {
     await ready;
-    //cria pedidos de pizzas
+    //cria pedidos de metais
 
-    const Pizza = require('./Pizza');
+    const Metal = require('./Metal');
     let subtotal = 0;
     const itensProcessados = [];
 
     for (const item of itens) {
-      const pizza = await Pizza.findById(item.pizza);
-      if (!pizza) throw new Error(`Pizza ID ${item.pizza} não encontrada`);
+      const Metal = await Metal.findById(item.Metal);
+      if (!metal) throw new Error(`Metal ID ${item.metal} não encontrada`);
 
-      const preco   = pizza.precos[item.tamanho] || 0;
+      const preco   = metal.precos[item.tamanho] || 0;
       const subItem = preco * item.quantidade;
       subtotal     += subItem;
 
       itensProcessados.push({
-        pizzaId:       pizza.id,
-        nomePizza:     pizza.nome,
+        metalId:       metal.id,
+        nomeMetal:     metal.nome,
         tamanho:       item.tamanho,
         quantidade:    item.quantidade,
         precoUnitario: preco,
@@ -109,19 +109,19 @@ const Pedido = {
     const infoPedido = run(`
       INSERT INTO pedidos
         (numero_pedido, cliente_id, subtotal, taxa_entrega, total,
-         forma_pagamento, troco, observacoes, mesa, origem, garcom_id)
+         forma_pagamento, troco, observacoes, endereco, origem, entregador_id)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [numeroPedido, clienteId, subtotal, taxaEntrega || 0, total,
-        formaPagamento, troco || 0, observacoes, mesa, origem, garcomId]);
+        formaPagamento, troco || 0, observacoes, endereco, origem, entregadorId]);
 
     const pedidoId = infoPedido.lastInsertRowid;
 
     for (const it of itensProcessados) {
       run(`
         INSERT INTO itens_pedido
-          (pedido_id, pizza_id, nome_pizza, tamanho, quantidade, preco_unitario, subtotal)
+          (pedido_id, metal_id, nome_metal, tamanho, quantidade, preco_unitario, subtotal)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-      `, [pedidoId, it.pizzaId, it.nomePizza, it.tamanho, it.quantidade, it.precoUnitario, it.subtotal]);
+      `, [pedidoId, it.metalId, it.nomeMetal, it.tamanho, it.quantidade, it.precoUnitario, it.subtotal]);
     }
 
     return this.findById(pedidoId);

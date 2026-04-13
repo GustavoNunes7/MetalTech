@@ -1,7 +1,7 @@
 {
-  "name": "sistema_pizzaria",
+  "name": "sistema_Metal_Tech",
   "version": "2.0.0",
-  "description": "Sistema de pizzaria com SQLite (sql.js)",
+  "description": "Sistema de metal com SQLite (sql.js)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

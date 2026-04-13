@@ -1,11 +1,11 @@
 const API = '/api';
 
-let cPizzas   = [];
+let cMetais   = [];
 let cClientes = [];
 
 let TOKEN          = localStorage.getItem('pz_token') || '';
 let USUARIO_LOGADO = JSON.parse(localStorage.getItem('pz_usuario') || 'null');
-let mesaEmFechamento = null;
+let EndereçoEmFechamento = null;
 //essas linhas a cima criam boa parte das variaveis
 
 
@@ -97,7 +97,7 @@ function R$(v) {
 function badge(s) {
   const r = {
     recebido:     '📥 Recebido',
-    em_preparo:   '👨‍🍳 Em Preparo',
+    em_preparo:   '⛓️ Em Preparo',
     saiu_entrega: '🛵 Saiu p/ Entrega',
     entregue:     '✅ Entregue',
     cancelado:    '❌ Cancelado',
@@ -132,7 +132,7 @@ function aplicarPerfil(usuario) {
 
   const perfil  = usuario.perfil;
   const isAdmin = perfil === 'Administrador';
-  const isGar   = perfil === 'Garcom';
+  const isEnt   = perfil === 'Entregador';
 
   function show(id, visible, type = 'flex') {
     const el = document.getElementById(id);
@@ -145,45 +145,45 @@ function aplicarPerfil(usuario) {
 
   show('menu-usuarios',   isAdmin, 'block');
   show('btn-usuarios',    isAdmin, 'flex');
-  show('sb-group-garcom', isGar,   'block');
-  show('btn-nav-mesas',   isGar,   'flex');
+  show('sb-group-entregador', isEnt,   'block');
+  show('btn-nav-enderecos',   isEnt,   'flex');
 
-  showEl(document.querySelector('[onclick*="clientes"]'),  !isGar);
-  showEl(document.querySelector('[onclick*="pedidos"]'),   !isGar);
-  showEl(document.querySelector('[onclick*="dashboard"]'), !isGar);
-  showEl(document.querySelector('.sb-group'), !isGar, 'block');
+  showEl(document.querySelector('[onclick*="clientes"]'),  !isEnt);
+  showEl(document.querySelector('[onclick*="pedidos"]'),   !isEnt);
+  showEl(document.querySelector('[onclick*="dashboard"]'), !isEnt);
+  showEl(document.querySelector('.sb-group'), !isEnt, 'block');
 
-  const labelPizzas = document.getElementById('nav-pizzas-label');
-  if (labelPizzas) labelPizzas.textContent = isGar ? 'Cardápio' : 'Pizzas';
+  const labelMetais = document.getElementById('nav-metais-label');
+  if (labelMetais) labelMetais.textContent = isEnt ? 'Cardápio' : 'Metais';
 
-  const tituloPizzas = document.getElementById('pg-pizzas-titulo');
-  const subPizzas    = document.getElementById('pg-pizzas-sub');
-  if (tituloPizzas) tituloPizzas.textContent = isGar ? 'Cardápio' : 'Pizzas';
-  if (subPizzas)    subPizzas.textContent    = isGar ? 'Pizzas disponíveis hoje' : 'Gerencie o cardápio';
-  show('btn-nova-pizza', !isGar, 'inline-flex');
+  const tituloMetais = document.getElementById('pg-metais-titulo');
+  const subMetais   = document.getElementById('pg-metais-sub');
+  if (tituloMetais) tituloMetais.textContent = isEnt ? 'Cardápio' : 'Metais';
+  if (subMetais)    subMetais.textContent    = isEnt ? 'Metais disponíveis hoje' : 'Gerencie o cardápio';
+  show('btn-nova-metais', !isEnt, 'inline-flex');
 
-  show('stat-fat', !isGar, 'block');
-  show('stat-cli', !isGar, 'block');
+  show('stat-fat', !isEnt, 'block');
+  show('stat-cli', !isEnt, 'block');
 
 
-  //mesas livres ou não
-  if (isGar) {
-    ir('mesas', document.getElementById('btn-nav-mesas'));
+  //enderecos livres ou não
+  if (isEnt) {
+    ir('enderecos', document.getElementById('btn-nav-enderecos'));
   } else {
     ir('dashboard', document.querySelector('[onclick*="dashboard"]'));
   }
 }
 
 //exibe os pedidos em uma interface mais "bonita" para o usuario
-async function carregarMesas(mesaFiltro = null) {
-  const grid = document.getElementById('grid-mesas');
+async function carregarEnderecos(endereco = null) {
+  const grid = document.getElementById('grid-enderecos');
   grid.innerHTML = '<div class="spin-wrap"><div class="spin"></div> Carregando...</div>';
 
-  document.getElementById('mesas-sub').textContent =
+  document.getElementById('enderecos-sub').textContent =
     `Olá, ${USUARIO_LOGADO?.nome}! Seus pedidos ativos.`;
 
   try {
-    const url = `/pedidos?garcom=${USUARIO_LOGADO.id}`;
+    const url = `/pedidos?entregadi=${USUARIO_LOGADO.id}`;
     const pedidos = await api('GET', url);
 
     const ativos = pedidos.filter(p => !['entregue','cancelado'].includes(p.status));
@@ -191,26 +191,26 @@ async function carregarMesas(mesaFiltro = null) {
     document.getElementById('g-ped').textContent     = pedidos.length;
     document.getElementById('g-ped-sub').textContent = `${ativos.length} ativo(s)`;
 
-    const mesasAtivas = new Set(ativos.map(p => p.mesa).filter(Boolean));
-    document.getElementById('g-mesas').textContent   = mesasAtivas.size;
+    const enderecosAtivas = new Set(ativos.map(p => p.endereco).filter(Boolean));
+    document.getElementById('g-endereco').textContent   = enderecosAtivas.size;
     document.getElementById('g-preparo').textContent = ativos.filter(p => p.status === 'em_preparo').length;
     document.getElementById('g-prontos').textContent = ativos.filter(p => p.status === 'saiu_entrega').length;
 
-    const botoes = document.getElementById('mesa-botoes');
+    const botoes = document.getElementById('endereco-botoes');
     botoes.innerHTML = Array.from({length: 10}, (_, i) => {
       const n      = i + 1;
-      const temPed = mesasAtivas.has(n);
-      const ativo  = mesaFiltro === n;
+      const temPed = enderecosAtivas.has(n);
+      const ativo  = enderecosFiltro === n;
       return `
         <button class="btn btn-sm ${ativo ? 'btn-red' : temPed ? 'btn-green' : 'btn-ghost'}"
-          onclick="carregarMesas(${n})"
-          title="${temPed ? 'Mesa com pedido ativo' : 'Mesa livre'}">
+          onclick="carregarEnderecos(${n})"
+          title="${temPed ? 'Endereco com pedido ativo' : 'Endereco livre'}">
           ${n}${temPed ? ' 🔴' : ''}
         </button>`;
     }).join('');
 //fitra os pedidos
-    const pedidosFiltrados = mesaFiltro
-      ? ativos.filter(p => p.mesa === mesaFiltro)
+    const pedidosFiltrados = enderecoFiltro
+      ? ativos.filter(p => p.endereco === enderecoFiltro)
       : ativos;
 
       
@@ -219,56 +219,56 @@ async function carregarMesas(mesaFiltro = null) {
         <div class="empty" style="grid-column:1/-1">
           <span class="ei">🪑</span>
           Nenhum pedido ativo no momento.<br>
-          <button class="btn btn-red" style="margin-top:12px" onclick="abrirPedidoMesa()">
+          <button class="btn btn-red" style="margin-top:12px" onclick="abrirPedidoEndereco()">
             + Abrir primeiro pedido
           </button>
         </div>`;
       return;
     }
   
-    //junta os pedidos os agrupando para cada mesa
+    //junta os pedidos os agrupando para cada endereco
 
-    const porMesa = {};
+    const porEndereco = {};
     pedidosFiltrados.forEach(p => {
-      const key = p.mesa || 'balcão';
-      if (!porMesa[key]) porMesa[key] = [];
-      porMesa[key].push(p);
+      const key = p.endereco || 'balcão';
+      if (!porEndereco[key]) porEndereco[key] = [];
+      porEndereco[key].push(p);
     });
      //CRIA UM PAINEL DE PEDIDOS 
-    grid.innerHTML = Object.entries(porMesa).map(([mesa, peds]) => {
-      const totalMesa  = peds.reduce((s, p) => s + (p.total || 0), 0);
+    grid.innerHTML = Object.entries(porEndereco).map(([endereco, peds]) => {
+      const totalEndereco  = peds.reduce((s, p) => s + (p.total || 0), 0);
       const todosItens = peds.flatMap(p => p.itens);
       const itensAgrup = {};
       todosItens.forEach(it => {
-        const k = `${it.nomePizza} (${it.tamanho})`;
+        const k = `${it.nomeMetal} (${it.tamanho})`;
         itensAgrup[k] = (itensAgrup[k] || 0) + it.quantidade;
       });
       const statusAtual = peds[peds.length - 1]?.status;
 
       return `
-        <div class="mesa-card">
-          <div class="mesa-card-head">
+        <div class="endereco-card">
+          <div class="endereco-card-head">
             <div>
-              <div class="mesa-num">Mesa ${mesa}</div>
+              <div class="endereco-num">Endereco ${endereco}</div>
               <div style="font-size:.72rem;color:var(--muted);margin-top:2px">
                 ${peds.length} pedido(s) · ${peds[0]?.cliente?.nome || 'Sem cadastro'}
               </div>
             </div>
             ${badge(statusAtual)}
           </div>
-          <div class="mesa-card-body">
+          <div class="endereco-card-body">
             ${Object.entries(itensAgrup).map(([nome, qtd]) => `
-              <div class="mesa-item">
+              <div class="endereco-item">
                 <strong>${qtd}x ${nome}</strong>
               </div>`).join('')}
-            <div class="mesa-total">
-              <span style="color:var(--muted)">Total da mesa</span>
-              <span style="color:var(--gold)">${R$(totalMesa)}</span>
+            <div class="endereco-total">
+              <span style="color:var(--muted)">Total da endereco</span>
+              <span style="color:var(--gold)">${R$(totalEndereco)}</span>
             </div>
           </div>
-          <div class="mesa-card-foot">
+          <div class="endereco-card-foot">
             <button class="btn btn-ghost btn-sm" style="flex:1"
-              onclick="abrirPedidoMesa(${mesa})">
+              onclick="abrirPedidoEndereco(${endereco})">
               + Item
             </button>
             <button class="btn btn-blue btn-sm"
@@ -276,7 +276,7 @@ async function carregarMesas(mesaFiltro = null) {
               📝 Status
             </button>
             <button class="btn btn-green btn-sm"
-              onclick="abrirFecharMesa(${mesa}, ${totalMesa}, '${peds.map(p=>p._id).join(',')}')">
+              onclick="abrirFechaEndereco(${endereco}, ${totalEndereco}, '${peds.map(p=>p._id).join(',')}')">
               ✅ Fechar
             </button>
           </div>
@@ -288,10 +288,10 @@ async function carregarMesas(mesaFiltro = null) {
   }
 }
 
-//cria o pedido da mesa
-async function abrirPedidoMesa(mesaNum = null) {
+//cria o pedido da endereco
+async function abrirPedidoEndereco(enderecoNum = null) {
   try {
-    if (!cPizzas.length)   cPizzas   = await api('GET', '/pizzas');
+    if (!cMetal.length)   cMetais   = await api('GET', '/metais');
     if (!cClientes.length) cClientes = await api('GET', '/clientes');
   } catch (e) { toast('Erro ao carregar dados', 'err'); return; }
 
@@ -299,39 +299,39 @@ async function abrirPedidoMesa(mesaNum = null) {
     '<option value="">— Sem cadastro —</option>' +
     cClientes.map(c => `<option value="${c._id}">${c.nome} · ${c.telefone}</option>`).join('');
 
-  document.getElementById('pm-mesa').value = mesaNum || '';
-  document.getElementById('itens-mesa-lista').innerHTML = '';
+  document.getElementById('pm-endereo').value = enderecoNum || '';
+  document.getElementById('itens-endereco-lista').innerHTML = '';
   document.getElementById('pm-obs').value  = '';
   document.getElementById('pm-sub').textContent = 'R$ 0,00';
   document.getElementById('pm-tot').textContent = 'R$ 0,00';
 
-  addItemMesa();
-  abrir('m-pedido-mesa');
+  addItemEndereco();
+  abrir('m-pedido-endereco');
 }
 
 //organiza os pedidos em uma tabela
-function addItemMesa() {
+function addItemEndereco() {
   const d = document.createElement('div');
   d.className = 'item-row';
-  const opts = cPizzas.filter(p => p.disponivel)
+  const opts = cMetais.filter(p => p.disponivel)
     .map(p => `<option value="${p._id}"
       data-p="${p.precos?.P||0}" data-m="${p.precos?.M||0}" data-g="${p.precos?.G||0}">
       ${p.nome}</option>`).join('');
   d.innerHTML = `
-    <select class="ip" onchange="recalcMesa()"><option value="">Selecione...</option>${opts}</select>
-    <select class="it" onchange="recalcMesa()">
+    <select class="ip" onchange="recalcEndereco()"><option value="">Selecione...</option>${opts}</select>
+    <select class="it" onchange="recalcEndereco()">
       <option value="P">P</option><option value="M">M</option><option value="G" selected>G</option>
     </select>
-    <input class="iq" type="number" value="1" min="1" oninput="recalcMesa()">
+    <input class="iq" type="number" value="1" min="1" oninput="recalcEndereco()">
     <div class="is" style="font-size:.8rem;text-align:right;color:var(--muted)">R$ 0,00</div>
-    <button class="btn-rm" onclick="this.parentElement.remove();recalcMesa()">×</button>`;
-  document.getElementById('itens-mesa-lista').appendChild(d);
+    <button class="btn-rm" onclick="this.parentElement.remove();recalcEndereco()">×</button>`;
+  document.getElementById('itens-endereco-lista').appendChild(d);
 }
 
-//calcula a conta de cada mesa, conforme a pessoa que está na mesa vai pedindo vai sendo adicionado na conta da mesa, e no final se torna possivel cobrar o valor sem tanta demora no caixa para calcular tudo pois será feito automaticamente pelo nosso sistema.
-function recalcMesa() {
+//calcula a conta de cada endereco, conforme a pessoa que está na endereco vai pedindo vai sendo adicionado na conta da endereco, e no final se torna possivel cobrar o valor sem tanta demora no caixa para calcular tudo pois será feito automaticamente pelo nosso sistema.
+function recalcEndereco() {
   let sub = 0;
-  document.querySelectorAll('#itens-mesa-lista .item-row').forEach(row => {
+  document.querySelectorAll('#itens-endereco-lista .item-row').forEach(row => {
     const sel = row.querySelector('.ip');
     const tam = row.querySelector('.it').value.toLowerCase();
     const qtd = parseInt(row.querySelector('.iq').value) || 0;
@@ -343,18 +343,18 @@ function recalcMesa() {
   document.getElementById('pm-tot').textContent = R$(sub);
 }
 
-//verifica se está livre a mesa para fazer o pedido
-async function salvarPedidoMesa() {
-  const mesa = parseInt(document.getElementById('pm-mesa').value) || 0;
-  if (!mesa || mesa < 1) { toast('Selecione a mesa', 'err'); return; }
+//verifica se está livre a endereco para fazer o pedido
+async function salvarPedidoEndereco() {
+  const endereco = parseInt(document.getElementById('pm-endereco').value) || 0;
+  if (!endereco || endereco < 1) { toast('Selecione a endereco', 'err'); return; }
 
   const cliId = document.getElementById('pm-cli').value || null;
   const itens = []; let valido = true;
-  document.querySelectorAll('#itens-mesa-lista .item-row').forEach(row => {
+  document.querySelectorAll('#itens-endereco-lista .item-row').forEach(row => {
     const pid = row.querySelector('.ip').value;
     if (!pid) { valido = false; return; }
     itens.push({
-      pizza:      pid,
+      metal:      pid,
       tamanho:    row.querySelector('.it').value,
       quantidade: parseInt(row.querySelector('.iq').value) || 1,
     });
@@ -367,16 +367,16 @@ async function salvarPedidoMesa() {
   let clienteId = cliId;
   if (!clienteId) {
     try {
-      const todos = await api('GET', `/clientes?busca=Mesa ${mesa}`);
-      const existe = todos.find(c => c.nome === `Mesa ${mesa}`);
+      const todos = await api('GET', `/clientes?busca=Endereco ${endereco}`);
+      const existe = todos.find(c => c.nome === `Endereco ${endereco}`);
       if (existe) {
         clienteId = existe._id;
       } else {
-        const novo = await api('POST', '/clientes', { nome: `Mesa ${mesa}`, telefone: 'Mesa' });
+        const novo = await api('POST', '/clientes', { nome: `Endereco ${endereco}`, telefone: 'Endereco' });
         clienteId = novo._id;
         cClientes = [];
       }
-    } catch (e) { toast('Erro ao registrar mesa', 'err'); return; }
+    } catch (e) { toast('Erro ao registrar endereco', 'err'); return; }
   }
 
   //fala essa parte sobre o cliente fazer o pedido e seu status
@@ -387,41 +387,41 @@ async function salvarPedidoMesa() {
       taxaEntrega:    0,
       formaPagamento: 'pix',
       observacoes:    document.getElementById('pm-obs').value,
-      mesa,
-      origem:         'mesa',
-      garcom:         USUARIO_LOGADO?.id,
+      endereco,
+      origem:         'endereco',
+      entregador:         USUARIO_LOGADO?.id,
     });
-    toast(`Pedido lançado na Mesa ${mesa}! 🍕`);
-    fechar('m-pedido-mesa');
-    carregarMesas();
+    toast(`Pedido lançado na Endereco ${endereco}! 🍕`);
+    fechar('m-pedido-endereco');
+    carregarEnderecos();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-function abrirFecharMesa(mesa, total, ids) {
-  mesaEmFechamento = { mesa, total, ids: ids.split(',') };
-  document.getElementById('fm-titulo').textContent = `Fechar Mesa ${mesa}`;
+function abrirFecharEndereco(endereco, total, ids) {
+  endereco = { endereco, total, ids: ids.split(',') };
+  document.getElementById('fm-titulo').textContent = `Fechar Endereco ${endereco}`;
   document.getElementById('fm-total').textContent  = R$(total);
   document.getElementById('fm-resumo').innerHTML   =
     `<p style="font-size:.82rem;color:var(--muted)">
-      ${mesaEmFechamento.ids.length} pedido(s) serão marcados como <strong style="color:var(--green)">Entregue</strong>.
+      ${endereco.ids.length} pedido(s) serão marcados como <strong style="color:var(--green)">Entregue</strong>.
     </p>`;
-  abrir('m-fechar-mesa');
+  abrir('m-fechar-endereco');
 }
  
-//verifica a disponiblidade da mesa
+//verifica a disponiblidade da endereco
 async function confirmarFechamento() {
-  if (!mesaEmFechamento) return;
+  if (!enderecoEmFechamento) return;
 
   try {
     await Promise.all( 
-      mesaEmFechamento.ids.map(id =>
+      enderecoEmFechamento.ids.map(id =>
         api('PATCH', `/pedidos/${id}/status`, { status: 'entregue' })
       )
     );
-    toast(`Mesa ${mesaEmFechamento.mesa} fechada! ✅`); //status da mesa
-    fechar('m-fechar-mesa');
-    mesaEmFechamento = null;
-    carregarMesas();
+    toast(`Endereco ${enderecoEmFechamento.endereco} fechada! ✅`); //status da endereco
+    fechar('m-fechar-endereco');
+    enderecoEmFechamento = null;
+    carregarEnderecos();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 //envolve essa fuction a verificação de o usuario é administrador ou não , alem de dar permições e tirar dependendo do cargo
@@ -430,11 +430,11 @@ function ir(pg, btn) {
   if (pg === 'usuarios' && perfil !== 'Administrador') {
     toast('Acesso restrito a Administradores', 'err'); return;
   }
-  if (pg === 'mesas' && perfil !== 'Garcom') {
-    toast('Área exclusiva para Garçom', 'err'); return;
+  if (pg === 'enderecos' && perfil !== 'Entregador') {
+    toast('Área exclusiva para Entregador', 'err'); return;
   }
-  if (perfil === 'Garcom' && !['mesas','pizzas'].includes(pg)) {
-    toast('Acesso não permitido para Garçom', 'err'); return;
+  if (perfil === 'Entregador' && !['enderecos','metais'].includes(pg)) {
+    toast('Acesso não permitido para Entregador', 'err'); return;
   }
   document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('ativo'));
@@ -443,10 +443,10 @@ function ir(pg, btn) {
   const loaders = {
     dashboard: carregarDashboard,
     pedidos:   carregarPedidos,
-    pizzas:    carregarPizzas,
+    metais:    carregarMetais,
     clientes:  carregarClientes,
     usuarios:  carregarUsuarios,
-    mesas:     carregarMesas,
+    enderecos:     carregarEnderecos,
   };
   if (loaders[pg]) loaders[pg]();
 }
@@ -459,16 +459,16 @@ async function carregarDashboard() {
   document.getElementById('dash-sub').textContent = `${s}! Aqui está o resumo.`;
 
   try {
-    const [pizzas, clientes, pedidos] = await Promise.all([
-      api('GET', '/pizzas'),
+    const [metais, clientes, pedidos] = await Promise.all([
+      api('GET', '/metai'),
       api('GET', '/clientes'),
       api('GET', '/pedidos'),
     ]);
 
-    cPizzas   = pizzas;
+    cMetais   = M;
     cClientes = clientes;
 
-    document.getElementById('s-piz').textContent = pizzas.length;
+    document.getElementById('s-piz').textContent = metais.length;
     document.getElementById('s-cli').textContent = clientes.length;
     document.getElementById('s-ped').textContent = pedidos.length;
     document.getElementById('s-ent').textContent =
@@ -494,46 +494,46 @@ async function carregarDashboard() {
       '<div class="empty"><span class="ei">📋</span>Nenhum pedido ainda</div>';
 
     const elC = document.getElementById('dash-cardapio');
-    elC.innerHTML = pizzas.filter(p => p.disponivel).slice(0, 8).map(p => `
+    elC.innerHTML = metais.filter(p => p.disponivel).slice(0, 8).map(p => `
       <div class="mini-row">
         <span>🍕 ${p.nome}</span>
         <small style="color:var(--muted)">${R$(p.precos?.G)}</small>
       </div>`).join('') ||
-      '<div class="empty"><span class="ei">🍕</span>Nenhuma pizza</div>';
+      '<div class="empty"><span class="ei">🍕</span>Nenhuma metal</div>';
 
   } catch (e) { toast('Erro dashboard: ' + e.message, 'err'); }
 }
 
 
 //--------------------------------------------------------------------------------
-//é responsável por buscar uma lista de pizzas de uma API e exibi-las dinamicamente em uma tabela HTML
-async function carregarPizzas() {
-  const el = document.getElementById('tbl-pizzas');
+//é responsável por buscar uma lista de metais de uma API e exibi-las dinamicamente em uma tabela HTML
+async function carregarMetais() {
+  const el = document.getElementById('tbl-metais');
   el.innerHTML = '<div class="spin-wrap"><div class="spin"></div> Carregando...</div>';
   try {
-    cPizzas = await api('GET', '/pizzas');
-    if (!cPizzas.length) {
-      el.innerHTML = '<div class="empty"><span class="ei">🍕</span>Nenhuma pizza</div>';
+    cMetais = await api('GET', '/metais');
+    if (!cMetais.length) {
+      el.innerHTML = '<div class="empty"><span class="ei">🍕</span>Nenhuma metal</div>';
       return;
     }
     //innerHTML = essa propriedade permite ler ou alterar o conteudo de um elemento DOM
     el.innerHTML = ` 
       <table>
         <thead>
-          <tr><th>Nome</th><th>Categoria</th><th>Ingredientes</th><th>P</th><th>M</th><th>G</th><th>Status</th><th>Ações</th>
+          <tr><th>Nome</th><th>Categoria</th><th>Pedidos</th><th>P</th><th>M</th><th>G</th><th>Status</th><th>Ações</th>
         </thead>
         <tbody>
-          ${cPizzas.map(p => `
+          ${cMetais.map(p => `
             <tr>
             
               <td><strong>${p.nome}</strong><br><small style="color:var(--muted)">${p.descricao || ''}</small></td>
               <td><span class="badge b-cat">${p.categoria || 'tradicional'}</span></td>
-              <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.ingredientes}</td>
+              <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.pedidos}</td>
               <td>${R$(p.precos?.P)}</td>
               <td>${R$(p.precos?.M)}</td>
               <td><strong style="color:var(--gold)">${R$(p.precos?.G)}</strong></td>
               <td><span class="badge ${p.disponivel ? 'b-on' : 'b-off'}">${p.disponivel ? '✅ Disponível' : '❌ Off'}</span></td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarPizza('${p._id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarPizza('${p._id}','${p.nome}')">🗑️</button></div></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarMetal('${p._id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarMetal"('${p._id}','${p.nome}')">🗑️</button></div></td>
              </tr>`).join('')}
         </tbody>
       </table>`;
@@ -546,46 +546,46 @@ async function carregarPizzas() {
 
 
 //_____________________________________________________________________________
-// essa fuction é responsavel por limpar os cadastros de pedidos de pizzas, quando já entregue a pizza para liberar espaço
-function abrirPizza() {
-  document.getElementById('m-pizza-t').textContent = 'Nova Pizza';
-  ['p-id','p-nome','p-ing','p-desc','p-pp','p-pm','p-pg']
+// essa fuction é responsavel por limpar os cadastros de pedidos de metais, quando já entregue a metal para liberar espaço
+function abrirMetal() {
+  document.getElementById('m-metal-t').textContent = 'Novo Pedido de Metal';
+  ['p-id','p-nome','p-pdt','p-desc','p-pp','p-pm','p-pg']
     .forEach(id => document.getElementById(id).value = '');
   document.getElementById('p-cat').value  = 'tradicional';
   document.getElementById('p-disp').value = 'true';
-  abrir('m-pizza');
+  abrir('m-metal');
 }
 
 //_____________________________________________________________________________
 
-//edita valores e coisas da pizza
+//edita valores e coisas da metal
 
-function editarPizza(id) {
-  const p = cPizzas.find(x => x._id === id);
+function editarMetais(id) {
+  const p = cMetais.find(x => x._id === id);
   if (!p) return;
-  document.getElementById('m-pizza-t').textContent = 'Editar Pizza';
+  document.getElementById('m-metais-t').textContent = 'Editar Metais';
   document.getElementById('p-id').value   = p._id;
   document.getElementById('p-nome').value = p.nome;
-  document.getElementById('p-ing').value  = p.ingredientes;
+  document.getElementById('p-pdt').value  = p.produtos;
   document.getElementById('p-desc').value = p.descricao || '';
   document.getElementById('p-pp').value   = p.precos?.P || '';
   document.getElementById('p-pm').value   = p.precos?.M || '';
   document.getElementById('p-pg').value   = p.precos?.G || '';
   document.getElementById('p-cat').value  = p.categoria || 'tradicional';
   document.getElementById('p-disp').value = String(p.disponivel);
-  abrir('m-pizza');
+  abrir('m-metal');
 }
 
-//adiciona uma nova pizza para o menu essa função aqui
-async function salvarPizza() {
+//adiciona uma nova metal para o menu essa função aqui
+async function salvarMetais() {
   const id   = document.getElementById('p-id').value;
   const nome = document.getElementById('p-nome').value.trim();
-  const ing  = document.getElementById('p-ing').value.trim();
-  if (!nome || !ing) { toast('Nome e ingredientes são obrigatórios', 'err'); return; }
+  const pdt  = document.getElementById('p-pdt').value.trim();
+  if (!nome || !pdt) { toast('Nome e pedidos são obrigatórios', 'err'); return; }
 
   const d = {
     nome,
-    ingredientes: ing,
+    produtos: pdt,
     descricao:    document.getElementById('p-desc').value.trim(),
     precos: {
       P: parseFloat(document.getElementById('p-pp').value) || 0,
@@ -597,20 +597,20 @@ async function salvarPizza() {
   };
 
   try {
-    id ? await api('PUT', '/pizzas/' + id, d) : await api('POST', '/pizzas', d);
-    toast(id ? 'Pizza atualizada!' : 'Pizza criada!');
-    fechar('m-pizza');
-    carregarPizzas();
+    id ? await api('PUT', '/metais/' + id, d) : await api('POST', '/metais', d);
+    toast(id ? 'Metal atualizada!' : 'Metal criada!');
+    fechar('m-metal');
+    carregarMetais();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-//deleta uma pizza essa função
-async function deletarPizza(id, nome) {
+//deleta um metal essa função
+async function deletarMetal(id, nome) {
   if (!confirm(`Deletar "${nome}"?`)) return;
   try {
-    await api('DELETE', '/pizzas/' + id);
-    toast('Pizza deletada!');
-    carregarPizzas();
+    await api('DELETE', '/metais/' + id);
+    toast('Metal deletada!');
+    carregarMetais();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 
@@ -743,7 +743,7 @@ async function carregarPedidos() {
             <tr>
               <td><strong style="color:var(--red)">#${String(p.numeroPedido||'?').padStart(3,'0')}</strong></td>
               <td><strong>${p.cliente?.nome || '—'}</strong><br><small style="color:var(--muted)">${p.cliente?.telefone || ''}</small></td>
-              <td style="font-size:.76rem">${p.itens.map(it => `${it.quantidade}x ${it.nomePizza || '?'} (${it.tamanho})`).join('<br>')}</td>
+              <td style="font-size:.76rem">${p.itens.map(it => `${it.quantidade}x ${it.nomeMetal || '?'} (${it.tamanho})`).join('<br>')}</td>
               <td>${R$(p.subtotal)}</td><td>${R$(p.taxaEntrega)}</td>
               <td><strong style="color:var(--gold)">${R$(p.total)}</strong></td>
               <td style="font-size:.76rem">${(p.formaPagamento || '—').replace('_', ' ')}</td>
@@ -761,7 +761,7 @@ async function carregarPedidos() {
 //abre o pedido para fazer a compra
 async function abrirPedido() {
   try {
-    if (!cPizzas.length)   cPizzas   = await api('GET', '/pizzas');
+    if (!cMetais.length)   cMetais   = await api('GET', '/metais');
     if (!cClientes.length) cClientes = await api('GET', '/clientes');
   } catch (e) { toast('Erro ao carregar dados', 'err'); return; }
 
@@ -785,7 +785,7 @@ async function abrirPedido() {
 function addItem() {
   const d = document.createElement('div');
   d.className = 'item-row';
-  const opts = cPizzas
+  const opts = cMetais
     .filter(p => p.disponivel)
     .map(p => `<option value="${p._id}" data-p="${p.precos?.P || 0}" data-m="${p.precos?.M || 0}" data-g="${p.precos?.G || 0}">${p.nome}</option>`).join('');
 
@@ -839,7 +839,7 @@ async function salvarPedido() {
     const pid = row.querySelector('.ip').value;
     if (!pid) { valido = false; return; }
     itens.push({
-      pizza:      pid,
+      metal:      pid,
       tamanho:    row.querySelector('.it').value,
       quantidade: parseInt(row.querySelector('.iq').value) || 1,
     });
@@ -972,6 +972,6 @@ async function deletarUsuario(id, nome) {
 //os Models gerenciam a estrutura, persistência e regras de negócio dos dados
 //routes definem caminhos, organiza aplicações e recebe parâmetros capturando URL para realizar certas operções
 //.env guarda variaveis globais
-//pizza.bd é o banco de dados do programa da nossa pizzaria.
+//metalDados.db é o banco de dados do programa da nosso sistema.
 //package.json e package-lock.json nós importamos para nosso é um arquivo fundamental em projetos JavaScript/Node.js que funciona como a "certidão de nascimento" e painel de configuração do projeto
 
