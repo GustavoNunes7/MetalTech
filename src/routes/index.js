@@ -19,10 +19,10 @@ router.post('/auth/login', async (req, res) => {
     const { email, senha } = req.body;
     if (!email || !senha) return res.status(400).json({ erro: 'E-mail e senha são obrigatórios' });
 
-    const usuario  = await Usuario .findByEmail(email);
+    const usuario  = await Usuario.findByEmail(email);
     if (!usuario) return res.status(401).json({ erro: 'Credenciais inválidas' });
 
-    const ok = await usuario.verificarSenha(senha, usuario.senha);
+    const ok = await Usuario.verificarSenha(senha, usuario.senha);
     if (!ok) return res.status(401).json({ erro: 'Credenciais inválidas' });
 
     const token = jwt.sign(

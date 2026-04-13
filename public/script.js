@@ -5,7 +5,7 @@ let cClientes = [];
 
 let TOKEN          = localStorage.getItem('pz_token') || '';
 let USUARIO_LOGADO = JSON.parse(localStorage.getItem('pz_usuario') || 'null');
-let EndereçoEmFechamento = null;
+let EntregaEmFechamento = null;
 //essas linhas a cima criam boa parte das variaveis
 
 
@@ -146,7 +146,7 @@ function aplicarPerfil(usuario) {
   show('menu-usuarios',   isAdmin, 'block');
   show('btn-usuarios',    isAdmin, 'flex');
   show('sb-group-entregador', isEnt,   'block');
-  show('btn-nav-enderecos',   isEnt,   'flex');
+  show('btn-nav-entregas',   isEnt,   'flex');
 
   showEl(document.querySelector('[onclick*="clientes"]'),  !isEnt);
   showEl(document.querySelector('[onclick*="pedidos"]'),   !isEnt);
@@ -166,20 +166,20 @@ function aplicarPerfil(usuario) {
   show('stat-cli', !isEnt, 'block');
 
 
-  //enderecos livres ou não
+  //entregas livres ou não
   if (isEnt) {
-    ir('enderecos', document.getElementById('btn-nav-enderecos'));
+    ir('entregas', document.getElementById('btn-nav-entregas'));
   } else {
     ir('dashboard', document.querySelector('[onclick*="dashboard"]'));
   }
 }
 
 //exibe os pedidos em uma interface mais "bonita" para o usuario
-async function carregarEnderecos(endereco = null) {
-  const grid = document.getElementById('grid-enderecos');
+async function carregarEntregas(entregas = null) {
+  const grid = document.getElementById('grid-entregas');
   grid.innerHTML = '<div class="spin-wrap"><div class="spin"></div> Carregando...</div>';
 
-  document.getElementById('enderecos-sub').textContent =
+  document.getElementById('entregas-sub').textContent =
     `Olá, ${USUARIO_LOGADO?.nome}! Seus pedidos ativos.`;
 
   try {
@@ -191,26 +191,26 @@ async function carregarEnderecos(endereco = null) {
     document.getElementById('g-ped').textContent     = pedidos.length;
     document.getElementById('g-ped-sub').textContent = `${ativos.length} ativo(s)`;
 
-    const enderecosAtivas = new Set(ativos.map(p => p.endereco).filter(Boolean));
-    document.getElementById('g-endereco').textContent   = enderecosAtivas.size;
+    const entregasAtivas = new Set(ativos.map(p => p.entregas).filter(Boolean));
+    document.getElementById('g-entrega').textContent   = entregasAtivas.size;
     document.getElementById('g-preparo').textContent = ativos.filter(p => p.status === 'em_preparo').length;
     document.getElementById('g-prontos').textContent = ativos.filter(p => p.status === 'saiu_entrega').length;
 
-    const botoes = document.getElementById('endereco-botoes');
+    const botoes = document.getElementById('entr-botoes');
     botoes.innerHTML = Array.from({length: 10}, (_, i) => {
       const n      = i + 1;
-      const temPed = enderecosAtivas.has(n);
-      const ativo  = enderecosFiltro === n;
+      const temPed = entregaAtivas.has(n);
+      const ativo  = entregaFiltro === n;
       return `
         <button class="btn btn-sm ${ativo ? 'btn-red' : temPed ? 'btn-green' : 'btn-ghost'}"
-          onclick="carregarEnderecos(${n})"
-          title="${temPed ? 'Endereco com pedido ativo' : 'Endereco livre'}">
+          onclick="carregarEntrega(${n})"
+          title="${temPed ? 'Entrega com pedido ativo' : 'Entrega livre'}">
           ${n}${temPed ? ' 🔴' : ''}
         </button>`;
     }).join('');
 //fitra os pedidos
-    const pedidosFiltrados = enderecoFiltro
-      ? ativos.filter(p => p.endereco === enderecoFiltro)
+    const pedidosFiltrados = entregaFiltro
+      ? ativos.filter(p => p.entrega === entregaFiltro)
       : ativos;
 
       
@@ -219,24 +219,24 @@ async function carregarEnderecos(endereco = null) {
         <div class="empty" style="grid-column:1/-1">
           <span class="ei">🪑</span>
           Nenhum pedido ativo no momento.<br>
-          <button class="btn btn-red" style="margin-top:12px" onclick="abrirPedidoEndereco()">
+          <button class="btn btn-red" style="margin-top:12px" onclick="abrirPedidoEntrega()">
             + Abrir primeiro pedido
           </button>
         </div>`;
       return;
     }
   
-    //junta os pedidos os agrupando para cada endereco
+    //junta os pedidos os agrupando para cada entrega
 
-    const porEndereco = {};
+    const porEntrega = {};
     pedidosFiltrados.forEach(p => {
-      const key = p.endereco || 'balcão';
-      if (!porEndereco[key]) porEndereco[key] = [];
-      porEndereco[key].push(p);
+      const key = p.entrega || 'balcão';
+      if (!porEntrega[key]) porEntrega[key] = [];
+      porEntrega[key].push(p);
     });
      //CRIA UM PAINEL DE PEDIDOS 
-    grid.innerHTML = Object.entries(porEndereco).map(([endereco, peds]) => {
-      const totalEndereco  = peds.reduce((s, p) => s + (p.total || 0), 0);
+    grid.innerHTML = Object.entries(porEntrega).map(([entrega, peds]) => {
+      const totalEntrega  = peds.reduce((s, p) => s + (p.total || 0), 0);
       const todosItens = peds.flatMap(p => p.itens);
       const itensAgrup = {};
       todosItens.forEach(it => {
@@ -246,29 +246,29 @@ async function carregarEnderecos(endereco = null) {
       const statusAtual = peds[peds.length - 1]?.status;
 
       return `
-        <div class="endereco-card">
-          <div class="endereco-card-head">
+        <div class="entrega-card">
+          <div class="entrega-card-head">
             <div>
-              <div class="endereco-num">Endereco ${endereco}</div>
+              <div class="entrega-num">Entrega ${entrega}</div>
               <div style="font-size:.72rem;color:var(--muted);margin-top:2px">
                 ${peds.length} pedido(s) · ${peds[0]?.cliente?.nome || 'Sem cadastro'}
               </div>
             </div>
             ${badge(statusAtual)}
           </div>
-          <div class="endereco-card-body">
+          <div class="entrega-card-body">
             ${Object.entries(itensAgrup).map(([nome, qtd]) => `
-              <div class="endereco-item">
+              <div class="entrega-item">
                 <strong>${qtd}x ${nome}</strong>
               </div>`).join('')}
-            <div class="endereco-total">
-              <span style="color:var(--muted)">Total da endereco</span>
-              <span style="color:var(--gold)">${R$(totalEndereco)}</span>
+            <div class="entrega-total">
+              <span style="color:var(--muted)">Total da entrega</span>
+              <span style="color:var(--gold)">${R$(totalEntrega)}</span>
             </div>
           </div>
-          <div class="endereco-card-foot">
+          <div class="entrega-card-foot">
             <button class="btn btn-ghost btn-sm" style="flex:1"
-              onclick="abrirPedidoEndereco(${endereco})">
+              onclick="abrirPedidoEntrega(${entrega})">
               + Item
             </button>
             <button class="btn btn-blue btn-sm"
@@ -276,7 +276,7 @@ async function carregarEnderecos(endereco = null) {
               📝 Status
             </button>
             <button class="btn btn-green btn-sm"
-              onclick="abrirFechaEndereco(${endereco}, ${totalEndereco}, '${peds.map(p=>p._id).join(',')}')">
+              onclick="abrirFechaEntrega(${entrega}, ${totalEntrega}, '${peds.map(p=>p._id).join(',')}')">
               ✅ Fechar
             </button>
           </div>
@@ -288,8 +288,8 @@ async function carregarEnderecos(endereco = null) {
   }
 }
 
-//cria o pedido da endereco
-async function abrirPedidoEndereco(enderecoNum = null) {
+//cria o pedido da entrega
+async function abrirPedidoEntrega(entregaNum = null) {
   try {
     if (!cMetal.length)   cMetais   = await api('GET', '/metais');
     if (!cClientes.length) cClientes = await api('GET', '/clientes');
@@ -299,18 +299,18 @@ async function abrirPedidoEndereco(enderecoNum = null) {
     '<option value="">— Sem cadastro —</option>' +
     cClientes.map(c => `<option value="${c._id}">${c.nome} · ${c.telefone}</option>`).join('');
 
-  document.getElementById('pm-endereo').value = enderecoNum || '';
-  document.getElementById('itens-endereco-lista').innerHTML = '';
+  document.getElementById('pm-entrega').value = entregaNum || '';
+  document.getElementById('itens-entrega-lista').innerHTML = '';
   document.getElementById('pm-obs').value  = '';
   document.getElementById('pm-sub').textContent = 'R$ 0,00';
   document.getElementById('pm-tot').textContent = 'R$ 0,00';
 
-  addItemEndereco();
-  abrir('m-pedido-endereco');
+  addItemEntrega();
+  abrir('m-pedido-entrega');
 }
 
 //organiza os pedidos em uma tabela
-function addItemEndereco() {
+function addItemEntrega() {
   const d = document.createElement('div');
   d.className = 'item-row';
   const opts = cMetais.filter(p => p.disponivel)
@@ -318,20 +318,20 @@ function addItemEndereco() {
       data-p="${p.precos?.P||0}" data-m="${p.precos?.M||0}" data-g="${p.precos?.G||0}">
       ${p.nome}</option>`).join('');
   d.innerHTML = `
-    <select class="ip" onchange="recalcEndereco()"><option value="">Selecione...</option>${opts}</select>
-    <select class="it" onchange="recalcEndereco()">
+    <select class="ip" onchange="recalcEntrega()"><option value="">Selecione...</option>${opts}</select>
+    <select class="it" onchange="recalcEntrega()">
       <option value="P">P</option><option value="M">M</option><option value="G" selected>G</option>
     </select>
-    <input class="iq" type="number" value="1" min="1" oninput="recalcEndereco()">
+    <input class="iq" type="number" value="1" min="1" oninput="recalcEntrega()">
     <div class="is" style="font-size:.8rem;text-align:right;color:var(--muted)">R$ 0,00</div>
-    <button class="btn-rm" onclick="this.parentElement.remove();recalcEndereco()">×</button>`;
-  document.getElementById('itens-endereco-lista').appendChild(d);
+    <button class="btn-rm" onclick="this.parentElement.remove();recalcEntrega()">×</button>`;
+  document.getElementById('itens-entrega-lista').appendChild(d);
 }
 
-//calcula a conta de cada endereco, conforme a pessoa que está na endereco vai pedindo vai sendo adicionado na conta da endereco, e no final se torna possivel cobrar o valor sem tanta demora no caixa para calcular tudo pois será feito automaticamente pelo nosso sistema.
-function recalcEndereco() {
+//calcula a conta de cada entrega, conforme a pessoa que está na entrega vai pedindo vai sendo adicionado na conta da entrega, e no final se torna possivel cobrar o valor sem tanta demora no caixa para calcular tudo pois será feito automaticamente pelo nosso sistema.
+function recalcEntrega() {
   let sub = 0;
-  document.querySelectorAll('#itens-endereco-lista .item-row').forEach(row => {
+  document.querySelectorAll('#itens-entrega-lista .item-row').forEach(row => {
     const sel = row.querySelector('.ip');
     const tam = row.querySelector('.it').value.toLowerCase();
     const qtd = parseInt(row.querySelector('.iq').value) || 0;
@@ -343,14 +343,14 @@ function recalcEndereco() {
   document.getElementById('pm-tot').textContent = R$(sub);
 }
 
-//verifica se está livre a endereco para fazer o pedido
-async function salvarPedidoEndereco() {
-  const endereco = parseInt(document.getElementById('pm-endereco').value) || 0;
-  if (!endereco || endereco < 1) { toast('Selecione a endereco', 'err'); return; }
+//verifica se está livre a entrega para fazer o pedido
+async function salvarPedidoEntrega() {
+  const entrega = parseInt(document.getElementById('pm-entrega').value) || 0;
+  if (!entrega || entrega < 1) { toast('Selecione a entrega', 'err'); return; }
 
   const cliId = document.getElementById('pm-cli').value || null;
   const itens = []; let valido = true;
-  document.querySelectorAll('#itens-endereco-lista .item-row').forEach(row => {
+  document.querySelectorAll('#itens-entrega-lista .item-row').forEach(row => {
     const pid = row.querySelector('.ip').value;
     if (!pid) { valido = false; return; }
     itens.push({
@@ -367,16 +367,16 @@ async function salvarPedidoEndereco() {
   let clienteId = cliId;
   if (!clienteId) {
     try {
-      const todos = await api('GET', `/clientes?busca=Endereco ${endereco}`);
-      const existe = todos.find(c => c.nome === `Endereco ${endereco}`);
+      const todos = await api('GET', `/clientes?busca=Entrega ${entrega}`);
+      const existe = todos.find(c => c.nome === `Entrega ${entrega}`);
       if (existe) {
         clienteId = existe._id;
       } else {
-        const novo = await api('POST', '/clientes', { nome: `Endereco ${endereco}`, telefone: 'Endereco' });
+        const novo = await api('POST', '/clientes', { nome: `Entrega ${entrega}`, telefone: 'Entrega' });
         clienteId = novo._id;
         cClientes = [];
       }
-    } catch (e) { toast('Erro ao registrar endereco', 'err'); return; }
+    } catch (e) { toast('Erro ao registrar entrega', 'err'); return; }
   }
 
   //fala essa parte sobre o cliente fazer o pedido e seu status
@@ -387,41 +387,41 @@ async function salvarPedidoEndereco() {
       taxaEntrega:    0,
       formaPagamento: 'pix',
       observacoes:    document.getElementById('pm-obs').value,
-      endereco,
-      origem:         'endereco',
+      entrega,
+      origem:         'entrega',
       entregador:         USUARIO_LOGADO?.id,
     });
-    toast(`Pedido lançado na Endereco ${endereco}! 🍕`);
-    fechar('m-pedido-endereco');
-    carregarEnderecos();
+    toast(`Pedido lançado na Entrega ${entrega}! 🍕`);
+    fechar('m-pedido-entrega');
+    carregarEntregas();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 
-function abrirFecharEndereco(endereco, total, ids) {
-  endereco = { endereco, total, ids: ids.split(',') };
-  document.getElementById('fm-titulo').textContent = `Fechar Endereco ${endereco}`;
+function abrirFecharEntrega(entrega, total, ids) {
+  entrega = { entrega, total, ids: ids.split(',') };
+  document.getElementById('fm-titulo').textContent = `Fechar Entrega ${entrega}`;
   document.getElementById('fm-total').textContent  = R$(total);
   document.getElementById('fm-resumo').innerHTML   =
     `<p style="font-size:.82rem;color:var(--muted)">
-      ${endereco.ids.length} pedido(s) serão marcados como <strong style="color:var(--green)">Entregue</strong>.
+      ${entrega.ids.length} pedido(s) serão marcados como <strong style="color:var(--green)">Entregue</strong>.
     </p>`;
-  abrir('m-fechar-endereco');
+  abrir('m-fechar-entrega');
 }
  
-//verifica a disponiblidade da endereco
+//verifica a disponiblidade da entrega
 async function confirmarFechamento() {
-  if (!enderecoEmFechamento) return;
+  if (!entregaEmFechamento) return;
 
   try {
     await Promise.all( 
-      enderecoEmFechamento.ids.map(id =>
+      entregaEmFechamento.ids.map(id =>
         api('PATCH', `/pedidos/${id}/status`, { status: 'entregue' })
       )
     );
-    toast(`Endereco ${enderecoEmFechamento.endereco} fechada! ✅`); //status da endereco
-    fechar('m-fechar-endereco');
-    enderecoEmFechamento = null;
-    carregarEnderecos();
+    toast(`Enttrega ${entregaEmFechamento.entrega} fechada! ✅`); //status da entrega
+    fechar('m-fechar-entrega');
+    entregaEmFechamento = null;
+    carregarEntregas();
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 //envolve essa fuction a verificação de o usuario é administrador ou não , alem de dar permições e tirar dependendo do cargo
@@ -430,10 +430,10 @@ function ir(pg, btn) {
   if (pg === 'usuarios' && perfil !== 'Administrador') {
     toast('Acesso restrito a Administradores', 'err'); return;
   }
-  if (pg === 'enderecos' && perfil !== 'Entregador') {
+  if (pg === 'entrega' && perfil !== 'Entregador') {
     toast('Área exclusiva para Entregador', 'err'); return;
   }
-  if (perfil === 'Entregador' && !['enderecos','metais'].includes(pg)) {
+  if (perfil === 'Entregador' && !['ender','metais'].includes(pg)) {
     toast('Acesso não permitido para Entregador', 'err'); return;
   }
   document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
@@ -446,7 +446,7 @@ function ir(pg, btn) {
     metais:    carregarMetais,
     clientes:  carregarClientes,
     usuarios:  carregarUsuarios,
-    enderecos:     carregarEnderecos,
+    entregas:     carregarEntregas,
   };
   if (loaders[pg]) loaders[pg]();
 }

@@ -477,7 +477,7 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   margin-bottom: 5px;
 }
 
-.total-box .row.tot { /*Total da mesa */
+.total-box .row.tot { /*Total da entrega */
   font-weight: 700;
   font-size: 0.93rem;
   color: var(--text);
@@ -546,7 +546,7 @@ select option { background: var(--surf2); } /*Menus suspensos*/
  /*Selecionar elemento especifico que não possuem nenhum conteúdo filho*/
 .empty .ei { font-size: 2rem; display: block;  margin-bottom: 7px; }
 
-.mesa-card { /*Contêiner da  mesa*/
+.entrega-card { /*Contêiner da  entrega*/
   background: var(--surf);
   border: 1px solid var(--border);
   border-radius: var(--r);
@@ -555,7 +555,7 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   flex-direction: column;
 }
 
-.mesa-card-head { /*Contêiner da  mesa*/
+.entrega-card-head { /*Contêiner da  entrega*/
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
@@ -563,23 +563,23 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   border-bottom: 1px solid var(--border);
 }
 
-.mesa-num { /*Número de mesas*/
+.entrega-num { /*Número de entras*/
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--red);
   letter-spacing: -0.5px;
 }
 
-.mesa-card-body { padding: 12px 16px; flex: 1; } /*Conteúdo da mesa*/
+.entrega-card-body { padding: 12px 16px; flex: 1; } /*Conteúdo da entrega*/
 
-.mesa-card-foot { /*Rodapé da mesa*/
+.entrega-card-foot { /*Rodapé da entrega*/
   padding: 10px 16px;
   border-top: 1px solid var(--border);
   display: flex;
   gap: 7px;
 }
 
-.mesa-item { /*Elemento da mesa*/
+.entrega-item { /*Elemento da entrega*/
   display: flex;
   justify-content: space-between;
   font-size: 0.78rem;
@@ -587,13 +587,13 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   border-bottom: 1px solid var(--border);
   color: var(--muted);
 }
-/*estilizar o último elemento filho do mesa-item*/
-.mesa-item:last-child { border-bottom: none; } 
+/*estilizar o último elemento filho do entrega-item*/
+.entrega-item:last-child { border-bottom: none; } 
 
-/*O texto negrito do item da mesa*/
-.mesa-item strong { color: var(--text); }
+/*O texto negrito do item da entrega*/
+.entrega-item strong { color: var(--text); }
 
-.mesa-total { /*Total da mesa*/
+.entrega-total { /*Total da entrega*/
   display: flex;
   justify-content: space-between;
   font-weight: 700;

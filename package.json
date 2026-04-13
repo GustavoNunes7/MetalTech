@@ -1,5 +1,5 @@
 {
-  "name": "sistema_Metal_Tech",
+  "name": "sistema_metal",
   "version": "2.0.0",
   "description": "Sistema de metal com SQLite (sql.js)",
   "main": "index.js",

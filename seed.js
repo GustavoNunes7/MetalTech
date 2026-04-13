@@ -23,7 +23,7 @@ async function seed() {
 
     console.log('✅ Banco limpo');
 
-    const hash = await bcrypt.hash('123456', 10);
+    const hash = await bcrypt.hash('12345', 10);
     //para inserir informações sobre os usuarios para cirar as contas deles nas tabelas dos bancos de dados
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
       ['Administrador Master', 'admin@metaltech.com', hash, 'Administrador']);
@@ -31,8 +31,7 @@ async function seed() {
       ['Atendente Oficial', 'atendente@metaltech.com', hash, 'Atendente']);
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
       ['Entregador Oficial', 'entregador@metaltech.com', hash, 'Entregador']);
-    run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
-      ['Entregador Oficial', 'manutecao@metaltech.com', hash, 'Entregador']);
+    
 
     console.log('✅ 3 usuários criados');
        //aqui temos os cadastros dos usuarios que já foram criados, aqui temos não só nome mas tambem numero, onde moram e qual as preferencias deles em seus pedidos
@@ -98,7 +97,7 @@ async function seed() {
     console.log('======================================');
     console.log('🔥 SEED EXECUTADO COM SUCESSO!');
     console.log('======================================');
-    console.log('Login: admin@metaltech.com | Senha: 123456');
+    console.log('Login: admin@metaltech.com | Senha: 12345');
     console.log('======================================');
     //avisa se foi executado com sucesso e caso não o que está escrito abaixo avisa de erro
     process.exit(0);
