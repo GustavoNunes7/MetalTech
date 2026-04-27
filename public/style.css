@@ -59,6 +59,24 @@ body {  /* Corpo inteiro do site */
   
 }
 
+.input-icon {
+  padding-left: 35px;
+  background-image: url('/src/images/user-solid-full\ \(1\).svg');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 20px; /* Ajusta o tamanho do ícone */
+  height: 40px;
+  
+}
+
+.senha-icon {
+  padding-left: 35px;
+  background-image: url('/src/images/lock-solid-full.svg');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 20px; /* Ajusta o tamanho do ícone */
+  height: 40px;
+}
 
 .login {
   display: flex;
@@ -436,14 +454,26 @@ td { padding: 10px 12px; vertical-align: middle; }
   background: rgba(23, 66, 255, 0.164)
 }
 
+.btn-entrarLogin{
+  color: #ffffff;
+  border-radius: 50px;
+  display: block;
+  margin: 0 auto;
+  border: transparent;
+  background: rgba(117, 218, 167, 0.3);  
+  font-weight: bold;
+  box-shadow: 0 2px 4px var(--border);
 
-.btn-red {
-   background: rgba(117, 218, 167, 0.397);  
-    color: #fff;
-    border-radius: 50px;
-    
 
- }
+}
+
+.btn-entrarLogin:hover{
+  background: rgba(255, 23, 23, 0.164)
+}
+
+
+
+ 
 .btn-red:hover { background: var(--border); }
 .btn-blue   { background: var(--blue);  color: #fff; }
 .btn-blue:hover { filter: brightness(.9); }
@@ -471,7 +501,10 @@ td { padding: 10px 12px; vertical-align: middle; }
 
 
 /*Elemento utilizado para caixas de entrada*/
-.fg { margin-bottom: 11px; }
+.fg { 
+  margin-bottom: 11px; 
+
+}
 
 .fg label { /*Elemento utilizado na marca*/
   display: block;

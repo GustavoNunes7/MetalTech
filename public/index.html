@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"> <!--Caminho para o CSS-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 <body>
  <!-- // ================================== LOGIN ============================= // -->
@@ -47,27 +48,35 @@
 
       <div class="loginIpt-btn">
 
-        <div class="fg"> <!-- Caixa de entrada para email -->
-          <label>E-mail</label>
-          <input id="l-email" type="email" placeholder="admin@metaltech.com"
-          onkeydown="if(event.key==='Enter') fazerLogin()">
-        </div>
+          <div class="fg">
+           <!-- Caixa de entrada para email -->
+            <div class="input-icon">
+              <input  id="l-email"  type="email" placeholder="USUÁRIO"
+              onkeydown="if(event.key==='Enter') fazerLogin()">
+            </div><br>
+          </div>
 
-      <div class="fg">
-        <label>Senha</label> <!-- Caixa de entrada para senha -->
-        <input id="l-senha" type="password" placeholder="••••••"
-        onkeydown="if(event.key==='Enter') fazerLogin()">
-      </div>
+
+        <div class="fg">
+          <div class="senha-icon">
+              <input  id="l-senha"  type="password" placeholder="••••••"
+              onkeydown="if(event.key==='Enter') fazerLogin()">
+          </div>
+        </div>
+        
+
+      
+     
 
 
 
       <!-- Botão para fazer login -->
-      <button class="btn btn-red" id="btn-login" 
+      <button class="btn btn-entrarLogin" id="btn-login" 
         style="width:100%;padding:10px;margin-top:4px"
         onclick="fazerLogin()">
         Entrar
       </button>
-
+        </div>
     </div>
 
     <div class="redes-sociais">
