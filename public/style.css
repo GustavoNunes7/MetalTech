@@ -32,18 +32,86 @@ body {  /* Corpo inteiro do site */
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: radial-gradient(ellipse at 55% 40%, #1c0b0b 0%, var(--bg) 65%);
+  
+  
+ 
+}
+
+
+.text-novoLogin{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 .login-box { /*Tela de Login*/
-  background: var(--surf);
+   border: 1px solid var(--border);
+  border-radius: 16px;
+  /* Remova o width: 50% e o max-width: 390px */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Divide em 2 colunas iguais */
+  height: 600px; /* Defina uma altura fixa para o card */
+  overflow: hidden; /* Garante que as cores não saiam do arredondamento */
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+  display: flex;
+  
+
+  
+}
+
+
+.login{
+  background: url(/src/images/Imagem\ com\ fosco.png);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 42px 38px;
-  width: 100%;
-  max-width: 390px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+  background-repeat: no-repeat;
+  background-size: cover;
+  align-self: center;
+  height: 600px;
+  width: 700px;
 }
+
+.new-login { /*Tela de Login*/
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 42px 38px;
+  height: 600px;
+  width: 300px;
+  align-items: center;
+  
+}
+
+.redes-sociais{
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: auto; /* Empurra as redes para o fim do painel automaticamente */
+  padding: 20px;    /* Padding pequeno apenas para desgrudar da borda */
+
+}
+
+.redes-sociais img{
+  width: 35px;
+}
+
+.login .new-login{
+/* Remova o width: 500px e o height: 500px fixos */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centraliza o conteúdo verticalmente */
+  align-items: center;     /* Centraliza o conteúdo horizontalmente */
+}
+
+
+.newlogin-logo{
+  display: flex;
+  justify-content: center;
+  padding: 20px 40px;
+}
+
 
 .login-logo { /*Logo*/
   text-align: center;
@@ -61,7 +129,6 @@ body {  /* Corpo inteiro do site */
   font-size: 1.55rem;
   font-weight: 700;
   letter-spacing: -0.3px;
-  color: var(--red);
 }
 
 .login-logo p { /*Paragráfo presente na logo*/
@@ -329,23 +396,30 @@ td { padding: 10px 12px; vertical-align: middle; }
 
 /*============================================================== */
 
-.btn { /*Botões*/
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 14px;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.81rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .15s;
-  font-family: 'Inter', sans-serif;
-  white-space: nowrap;
-}
+
 
 /*=============================== Determinar background dos botões =============================== */
-.btn-red    { background: var(--red);   color: #fff; }
+.btn-newLogin{
+  text-decoration-color: #0f0f0f;
+  border-radius: 20px;
+  width: 162px;
+  display: block;
+  margin: 0 auto;
+  border: transparent;
+  background-color: #d9d9d9  ;
+  color: var(--bg);
+  font-weight: bold;
+  box-shadow: 0 2px 4px var(--border);
+
+}
+
+.btn-newLogin:hover{
+  background: var(--)
+}
+
+
+.btn-red { background: var(--red);   color: #fff;
+ }
 .btn-red:hover { background: var(--red-dk); }
 .btn-blue   { background: var(--blue);  color: #fff; }
 .btn-blue:hover { filter: brightness(.9); }

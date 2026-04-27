@@ -1,6 +1,6 @@
 <!-- Os comentários adicionados em todos os arquivos foram digitados na mão, sem o uso de inteligência artificial, pois a gente não é todo mundo 👍-->
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang.="pt-BR">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -15,26 +15,48 @@
 
   <div class="login-box">
 
-    
-    <div class="login-logo">
-      <span class="em">⚙️</span>
-      <h1>MetalTech</h1>
-      <p>Sistema de Gestão · Faça login para continuar</p>
+
+    <div class="new-login">
+
+        <div class="newlogin-logo">
+          <img src="/src/images/Logo MetalTech 4.svg" alt="Metal Tech" width="275px">
+        </div>
+
+        <div class="text-novoLogin">
+          <h2 style="text-decoration: underline; display: inline;color: black;">Novo</h2>
+          <h2 style="text-decoration: none; display: inline;color: black;">  Login</h2>
+        </div><br>
+
+
+        <button class="btn btn-newLogin" id="btn-login" style="padding:10px;margin-top:4px"onclick="criarConta()">
+      Criar Conta
+    </button>
+
     </div>
 
-    <div class="login-erro" id="login-erro"></div>
 
-    <div class="fg"> <!-- Caixa de entrada para email -->
-      <label>E-mail</label>
-      <input id="l-email" type="email" placeholder="admin@metaltech.com"
-        onkeydown="if(event.key==='Enter') fazerLogin()">
-    </div>
+
+    <div class="login">
+      <div class="login-logo">
+        <h1>FAÇA LOGIN</h1>
+      </div>
+
+      <div class="login-erro" id="login-erro"></div>
+
+      <div class="fg"> <!-- Caixa de entrada para email -->
+        <label>E-mail</label>
+        <input id="l-email" type="email" placeholder="admin@metaltech.com"
+          onkeydown="if(event.key==='Enter') fazerLogin()">
+      </div>
 
     <div class="fg">
       <label>Senha</label> <!-- Caixa de entrada para senha -->
       <input id="l-senha" type="password" placeholder="••••••"
         onkeydown="if(event.key==='Enter') fazerLogin()">
     </div>
+
+
+
     <!-- Botão para fazer login -->
     <button class="btn btn-red" id="btn-login" 
       style="width:100%;padding:10px;margin-top:4px"
@@ -42,10 +64,12 @@
       Entrar
     </button>
 
-    <!-- Criar o Admin Incial -->
-    <p style="text-align:center;font-size:.69rem;color:var(--muted);margin-top:14px">
-      Rode <strong style="color:var(--text)">node seed.js</strong> para criar o admin inicial
-    </p>
+    <div class="redes-sociais">
+      <a href="https://www.facebook.com/" target="_blank"><img src="/src/images/redes-sociais/facebook.svg" alt="Facebook"></a>
+      <a href="https://www.whatsapp.com/" target="_blank"><img src="/src/images/redes-sociais/whatsapp.svg" alt="whatsapp"></a>
+      <a href="https://www.instagram.com/" target="_blank"><img src="/src/images/redes-sociais/instagram.svg" alt="Instagram"></a>
+      <a href="https://x.com/?lang=pt" target="_blank"><img src="/src/images/redes-sociais/twitter.svg" alt="Twitter"></a>
+    </div>
 
   </div>
 
