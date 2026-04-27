@@ -60,19 +60,29 @@ body {  /* Corpo inteiro do site */
 }
 
 
-.login{
+.login {
+  display: flex;
+  flex-direction: column;
+  /* Centraliza o bloco de login no espaço disponível */
+  justify-content: center; 
+  align-items: center;
+  
   background: url(/src/images/Imagem\ com\ fosco.png);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 42px 38px;
+  padding: 48px 38px;
   background-repeat: no-repeat;
   background-size: cover;
-  align-self: center;
   height: 600px;
   width: 700px;
+  position: relative; /* Importante para o alinhamento das redes */
+
+
 }
 
 .new-login { /*Tela de Login*/
+  display: flex;
+  flex-direction: column;
   background: white;
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -83,17 +93,25 @@ body {  /* Corpo inteiro do site */
   
 }
 
-.redes-sociais{
+.redes-sociais {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: auto; /* Empurra as redes para o fim do painel automaticamente */
-  padding: 20px;    /* Padding pequeno apenas para desgrudar da borda */
-
+  gap: 20px;
+  
+  /* Posicionamento absoluto para travar embaixo sem empurrar o login */
+  position: absolute;
+  bottom: 30px; /* Distância do fundo */
+  left: 50%;
+  transform: translateX(-50%); /* Centraliza horizontalmente */
+  
+  /* Limpeza de propriedades antigas */
+  margin-top: 0;
+  padding: 0;
 }
 
 .redes-sociais img{
   width: 35px;
+  transition: transform 0.2s
 }
 
 .login .new-login{
@@ -117,6 +135,7 @@ body {  /* Corpo inteiro do site */
   text-align: center;
   margin-bottom: 30px;
 }
+
 
 .login-logo .em { /*🍕*/
   font-size: 2.8rem;
@@ -414,13 +433,18 @@ td { padding: 10px 12px; vertical-align: middle; }
 }
 
 .btn-newLogin:hover{
-  background: var(--)
+  background: rgba(23, 66, 255, 0.164)
 }
 
 
-.btn-red { background: var(--red);   color: #fff;
+.btn-red {
+   background: rgba(117, 218, 167, 0.397);  
+    color: #fff;
+    border-radius: 50px;
+    
+
  }
-.btn-red:hover { background: var(--red-dk); }
+.btn-red:hover { background: var(--border); }
 .btn-blue   { background: var(--blue);  color: #fff; }
 .btn-blue:hover { filter: brightness(.9); }
 .btn-green  { background: var(--green); color: #fff; }
@@ -464,16 +488,18 @@ input, select, textarea { /*Elemento utilizado para caixas de entrada*/
   padding: 8px 10px;
   background: var(--surf2);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: 20px;
   color: var(--text);
   font-size: 0.83rem;
   font-family: 'Inter', sans-serif;
   transition: border-color .15s;
+
+ 
 }
 
 input:focus, select:focus, textarea:focus { /*Estiliza elementos*/
   outline: none;
-  border-color: var(--red);
+  border-color: var(--blue);
 }
 
 input::placeholder { color: #444; } /*Pseudo-elemento no input*/
