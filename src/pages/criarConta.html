@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/style.css"> <!--Caminho para o CSS-->
+    <link rel="stylesheet" href="https://cloudflare.com">
+
+</head>
+
+<body>
+    <!-- // ================================== LOGIN ============================= // -->
+    <div id="tela-login">
+
+        <div class="login-box">
+
+
+            <div class="new-login">
+
+                <div class="login-logo">
+                    <img src="/src/images/Logo MetalTech 4.svg" alt="Metal Tech" width="275px">
+                </div>
+
+                <div class="text-novoLogin">
+                    <h2 style="text-decoration: underline; display: inline;color: black;" id="TextNovoID">Fazer</h2>
+                    <h2 style="text-decoration: none; display: inline;color: black;" id="TextLoginID"> Login</h2>
+                </div><br>
+
+
+                <a href="/public/index.html"><button class="btn btn-newLogin" id="btn-Criarlogin" style="padding:10px;margin-top:4px"
+                    onclick="fazerLogin()">
+                    Fazer Login
+                </button></a>
+
+            </div>
+
+
+
+
+            <div class="login">
+
+                <section id="pg-Login">
+                    <div class="login-logo">
+                        <h1 id="idLogin-logo">CRIAR CONTA</h1>
+                    </div>
+
+                    <div class="login-erro" id="login-erro"></div>
+
+
+
+                    <div class="loginIpt-btn">
+                        <!-- Informações Pessoais -->
+                        <div class="fg">
+                            <div class="input-icon2">
+                                <p>Nome Completo</p>
+                                <input id="l-name" type="text" placeholder="Ex: Cléber Duarte Ferreira"
+                                    onkeydown="if(event.key==='Enter') fazerLogin()">
+                            </div><br>
+                        </div>
+
+                        <div class="fg">
+                            <div class="input-icon2">
+                                <p>Telefone</p>
+                                <input id="l-telefone" type="text" placeholder="Ex: (11) 4002-8922"
+                                    onkeydown="if(event.key==='Enter') fazerLogin()">
+                            </div><br>
+                        </div>
+
+                        <div class="fg">
+                            <div class="input-icon2">
+                                <p>E-mail</p>
+                                <input id="l-email" type="email" placeholder="Ex: juliadasilva123@email.com"
+                                    onkeydown="if(event.key==='Enter') fazerLogin()">
+                            </div><br>
+                        </div>
+
+                        <div class="fg">
+                            <div class="input-icon2">
+                                <p>Endereço</p>
+                                <input id="l-endereço" type="text"
+                                    placeholder="Ex: Rua Maria Antônio, 2456, Jardim Barbosa, Curitiba - PR"
+                                    onkeydown="if(event.key==='Enter') fazerLogin()">
+                            </div><br>
+                        </div>
+
+
+                        <div class="fg">
+                            <div class="input-icon2" style="position: relative;">
+                                <p>Senha</p>
+                                <input id="l-senha" type="password" placeholder="••••••"
+                                    onkeydown="if(event.key==='Enter') fazerLogin()">
+                                <!-- Botão do Olhinho -->
+                                <button type="button" id="btn-show-pass" onclick="togglePassword()"
+                                    style="position: absolute; right: 10px; bottom: 8px; background: none; border: none; cursor: pointer; font-size: 18px;">
+                                    👁️
+                                </button>
+                            </div><br>
+                        </div>
+
+
+                        <button class="btn btn-entrarLogin" id="btn-login"
+                            style="width:100%;padding:10px;margin-top:4px" onclick="">
+                            Entrar
+                        </button>
+
+
+
+                    </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <!-- Botão para fazer login -->
+
+    </div>
+
+
+
+    </section>
+
+    </div>
+
+
+
+
+
+
+    <div class="redes-sociais">
+        <a href="https://www.facebook.com/" target="_blank"><img src="/src/images/redes-sociais/facebook.svg"
+                alt="Facebook"></a>
+        <a href="https://www.whatsapp.com/" target="_blank"><img src="/src/images/redes-sociais/whatsapp.svg"
+                alt="whatsapp"></a>
+        <a href="https://www.instagram.com/" target="_blank"><img src="/src/images/redes-sociais/instagram.svg"
+                alt="Instagram"></a>
+        <a href="https://x.com/?lang=pt" target="_blank"><img src="/src/images/redes-sociais/twitter.svg"
+                alt="Twitter"></a>
+    </div>
+
+    </div>
+
+    </div>
+
+
+    <script src="/public/script.js"></script>
+</body>
+
+</html>
+
+import sqlite3
+
+conexao = sqlite3.connect('dados.db')
+cursor = conexao.cursor()
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nome TEXT NOT NULL,
+        email TEXT UNIQUE
+    )
+''')
+
+def inserir_usuario(nome, email):
+    cursor.execute("INSERT INTO usuarios (nome, email) VALUES (?, ?)", (nome, email))
+    conexao.commit()
+
+def listar_usuarios():
+    cursor.execute("SELECT * FROM usuarios")
+    return cursor.fetchall()
+
+
+    # Exemplo de uso
+inserir_usuario("Dev", "dev@example.com")
+print(listar_usuarios())

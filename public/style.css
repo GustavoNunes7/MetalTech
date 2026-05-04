@@ -42,6 +42,7 @@ body {  /* Corpo inteiro do site */
   display: flex;
   justify-content: center;
   gap: 15px;
+  font-size: 25px;
 }
 
 .login-box { /*Tela de Login*/
@@ -59,6 +60,14 @@ body {  /* Corpo inteiro do site */
   
 }
 
+.input-icon2{
+  padding-left: 35px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 20px; /* Ajusta o tamanho do ícone */
+  height: 40px;
+}
+
 .input-icon {
   padding-left: 35px;
   background-image: url('/src/images/user-solid-full\ \(1\).svg');
@@ -66,7 +75,6 @@ body {  /* Corpo inteiro do site */
   background-position: 10px center;
   background-size: 20px; /* Ajusta o tamanho do ícone */
   height: 40px;
-  
 }
 
 .senha-icon {
@@ -126,6 +134,7 @@ body {  /* Corpo inteiro do site */
   margin-top: 0;
   padding: 0;
 }
+
 
 .redes-sociais img{
   width: 35px;
@@ -748,3 +757,9 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   .fr2, .fr3 { grid-template-columns: 1fr; }
   .pg-body { padding: 14px; }
 }
+
+
+
+
+
+

@@ -963,6 +963,34 @@ async function deletarUsuario(id, nome) {
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 
+
+
+
+
+
+
+
+
+
+
+function togglePassword() {
+    const input = document.querySelector('#l-senha');
+    const btn = document.querySelector('#btn-show-pass');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈'; // Muda o ícone para "esconder"
+    } else {
+        input.type = 'password';
+        btn.textContent = '👁️'; // Volta para "ver"
+    }
+}
+
+
+
+
+
+
 //os comentarios a cima foram digitados pelas nossas mãos esqueleticas de programador, prof :)
 
 

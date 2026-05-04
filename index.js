@@ -41,3 +41,4 @@ ready.then(() => {
   console.error('Erro ao inicializar banco:', err)
   process.exit(1) //Encerra a programação
 })
+    
