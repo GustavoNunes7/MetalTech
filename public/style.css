@@ -685,6 +685,14 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   font-size: 0.8rem;
 }
 
+
+.COD{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
  /*Selecionar elemento especifico que não possuem nenhum conteúdo filho*/
 .empty .ei { font-size: 2rem; display: block;  margin-bottom: 7px; }
 

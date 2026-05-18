@@ -57,7 +57,7 @@ router.get('/metais/:id', auth, async (req, res) => {
 
 
 
-// Requisição da Json no caminho das pizzas verificando se foi digitado o Nome e os produtos do Metal
+// Requisição da Json no caminho  verificando se foi digitado o Nome e os produtos do Metal
 router.post('/metais', auth, async (req, res) => {
   try {
     if (!req.body.nome || !req.body.ingredientes)
@@ -69,7 +69,7 @@ router.post('/metais', auth, async (req, res) => {
 
 
 
-// Requisição da Json no caminho das pizzas consultando pelo id do Metal caso dê erro, e tentando atualizar
+// Requisição da Json no caminho consultando pelo id do Metal caso dê erro, e tentando atualizar
 router.put('/metais/:id', auth, async (req, res) => {
   try {
     const p = await Metal.update(req.params.id, req.body);
@@ -82,7 +82,7 @@ router.put('/metais/:id', auth, async (req, res) => {
 
 
 
-// Requisição da Json no caminho das pizzas consultando pelo id do Metal caso dê erro, e depois deletando a pizza como opção
+// Requisição da Json no caminho  consultando pelo id do Metal caso dê erro, e depois deletando o metal como opção
 router.delete('/metais/:id', auth, async (req, res) => {
   try {
     const ok = await Metal.delete(req.params.id);
@@ -142,9 +142,6 @@ router.delete('/clientes/:id', auth, async (req, res) => {
     res.json({ mensagem: 'Cliente deletado' });
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
-
-
-
 
 
 // Requisição da Json no caminho dos pedidos no banco de dados caso dê erro

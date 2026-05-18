@@ -1,185 +1,225 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MetalTech - Login</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/public/style.css"> <!--Caminho para o CSS-->
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/style.css" />
+  </head>
 
-</head>
-
-<body>
-    <!-- // ================================== LOGIN ============================= // -->
+  <body>
+    <!-- ================= LOGIN ================= -->
     <div id="tela-login">
+      <div class="login-box">
+        <!-- LADO ESQUERDO -->
+        <div class="new-login">
+          <!-- LOGO -->
+          <div class="login-logo">
+            <img
+              src="/src/images/Logo MetalTech 4.svg"
+              alt="Metal Tech"
+              width="275px"
+            />
+          </div>
 
-        <div class="login-box">
+          <!-- TEXTO -->
+          <div class="text-novoLogin">
+            <h2
+              id="TextNovoID"
+              style="text-decoration: underline; display: inline; color: black"
+            >
+              Fazer
+            </h2>
 
+            <h2 id="TextLoginID" style="display: inline; color: black">
+              Login
+            </h2>
+          </div>
 
-            <div class="new-login">
+          <!-- FRASE -->
+          <p
+            style="
+              margin-top: 15px;
+              color: #444;
+              font-size: 15px;
+              text-align: center;
+              line-height: 22px;
+            "
+          >
+            A tecnologia move o futuro, mas é a inovação que transforma o
+            presente.
+          </p>
 
-                <div class="login-logo">
-                    <img src="/src/images/Logo MetalTech 4.svg" alt="Metal Tech" width="275px">
-                </div>
-
-                <div class="text-novoLogin">
-                    <h2 style="text-decoration: underline; display: inline;color: black;" id="TextNovoID">Fazer</h2>
-                    <h2 style="text-decoration: none; display: inline;color: black;" id="TextLoginID"> Login</h2>
-                </div><br>
-
-
-                <a href="/public/index.html"><button class="btn btn-newLogin" id="btn-Criarlogin" style="padding:10px;margin-top:4px"
-                    onclick="fazerLogin()">
-                    Fazer Login
-                </button></a>
-
-            </div>
-
-
-
-
-            <div class="login">
-
-                <section id="pg-Login">
-                    <div class="login-logo">
-                        <h1 id="idLogin-logo">CRIAR CONTA</h1>
-                    </div>
-
-                    <div class="login-erro" id="login-erro"></div>
-
-
-
-                    <div class="loginIpt-btn">
-                        <!-- Informações Pessoais -->
-                        <div class="fg">
-                            <div class="input-icon2">
-                                <p>Nome Completo</p>
-                                <input id="l-name" type="text" placeholder="Ex: Cléber Duarte Ferreira"
-                                    onkeydown="if(event.key==='Enter') fazerLogin()">
-                            </div><br>
-                        </div>
-
-                        <div class="fg">
-                            <div class="input-icon2">
-                                <p>Telefone</p>
-                                <input id="l-telefone" type="text" placeholder="Ex: (11) 4002-8922"
-                                    onkeydown="if(event.key==='Enter') fazerLogin()">
-                            </div><br>
-                        </div>
-
-                        <div class="fg">
-                            <div class="input-icon2">
-                                <p>E-mail</p>
-                                <input id="l-email" type="email" placeholder="Ex: juliadasilva123@email.com"
-                                    onkeydown="if(event.key==='Enter') fazerLogin()">
-                            </div><br>
-                        </div>
-
-                        <div class="fg">
-                            <div class="input-icon2">
-                                <p>Endereço</p>
-                                <input id="l-endereço" type="text"
-                                    placeholder="Ex: Rua Maria Antônio, 2456, Jardim Barbosa, Curitiba - PR"
-                                    onkeydown="if(event.key==='Enter') fazerLogin()">
-                            </div><br>
-                        </div>
-
-
-                        <div class="fg">
-                            <div class="input-icon2" style="position: relative;">
-                                <p>Senha</p>
-                                <input id="l-senha" type="password" placeholder="••••••"
-                                    onkeydown="if(event.key==='Enter') fazerLogin()">
-                                <!-- Botão do Olhinho -->
-                                <button type="button" id="btn-show-pass" onclick="togglePassword()"
-                                    style="position: absolute; right: 10px; bottom: 8px; background: none; border: none; cursor: pointer; font-size: 18px;">
-                                    👁️
-                                </button>
-                            </div><br>
-                        </div>
-
-
-                        <button class="btn btn-entrarLogin" id="btn-login"
-                            style="width:100%;padding:10px;margin-top:4px" onclick="">
-                            Entrar
-                        </button>
-
-
-
-                    </div>
-            </div>
-
-
+          <!-- BOTÃO VOLTAR -->
+          <a href="/public/index.html">
+            <button
+              class="btn btn-newLogin"
+              id="btn-Criarlogin"
+              style="
+                padding: 10px;
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+              "
+            >
+              ← Voltar para tela inicial
+            </button>
+          </a>
         </div>
 
+        <!-- ================= FORM LOGIN ================= -->
 
+        <div class="login">
+          <section id="pg-login">
+            <!-- TÍTULO -->
+            <div class="login-logo">
+              <h1 id="idLogin-logo">CRIAR CONTA</h1>
+            </div>
 
+            <!-- ERRO -->
+            <div class="login-erro" id="login-erro" style="display: none"></div>
 
+            <!-- INPUTS -->
+            <div class="loginIpt-btn">
+              <!-- NOME -->
+              <div class="fg">
+                <div class="input-icon2">
+                  <input id="l-name" type="text" placeholder="Nome Completo" />
+                </div>
+              </div>
 
+              <!-- TELEFONE -->
+              <div class="fg">
+                <div class="input-icon2">
+                  <!-- Adicionado o maxlength para limitar o tamanho do celular com máscara -->
+                  <input
+                    id="l-telefone"
+                    type="text"
+                    placeholder="Telefone"
+                    maxlength="15"
+                  />
+                </div>
+              </div>
 
+                            <script>
+                                // Captura o input pelo ID que você já estava usando
+                                const inputTelefone = document.getElementById("l-telefone");
 
+                                inputTelefone.addEventListener("input", (e) => {
+                                let valor = e.target.value;
 
+                                // Remove qualquer caractere que não seja número
+                                valor = valor.replace(/\D/g, "");
 
+                                // Formata o DDD com parênteses: (XX)
+                                if (valor.length > 2) {
+                                    valor = `(${valor.substring(0, 2)}) ${valor.substring(2)}`;
+                                } else if (valor.length > 0) {
+                                    valor = `(${valor}`;
+                                }
 
-        <!-- Botão para fazer login -->
+                                // Formata o hífen do número do celular: (XX) XXXXX-XXXX
+                                if (valor.length > 10) {
+                                    valor = `${valor.substring(0, 10)}-${valor.substring(10, 14)}`;
+                                }
 
+                                // Atualiza o valor do input em tempo real
+                                e.target.value = valor;
+                                });
+                            </script>
+
+                            
+
+              <!-- EMAIL -->
+              <div class="fg">
+                <div class="input-icon2">
+                  <input
+                    id="l-email"
+                    type="email"
+                    placeholder="E-mail"
+                    onkeydown="if (event.key === 'Enter') fazerLogin();"
+                  />
+                </div>
+              </div>
+
+              <!-- ENDEREÇO -->
+              <div class="fg">
+                <div class="input-icon2">
+                  <input id="l-endereço" type="text" placeholder="Endereço" />
+                </div>
+              </div>
+
+              <!-- SENHA -->
+              <div class="fg">
+                <div class="input-icon2" style="position: relative">
+                  <input
+                    id="l-senha"
+                    type="password"
+                    placeholder="Senha"
+                    onkeydown="if (event.key === 'Enter') fazerLogin();"
+                  />
+
+                  <!-- OLHO -->
+                  <button
+                    type="button"
+                    id="btn-show-pass"
+                    onclick="togglePassword()"
+                    style="
+                      position: absolute;
+                      right: 10px;
+                      top: 50%;
+                      transform: translateY(-50%);
+                      background: none;
+                      border: none;
+                      cursor: pointer;
+                      font-size: 18px;
+                    "
+                  >
+                    👁️
+                  </button>
+                </div>
+              </div>
+
+              <!-- BOTÃO ENTRAR -->
+              <button
+                class="btn btn-entrarLogin"
+                id="btn-login"
+                style="width: 100%; padding: 10px; margin-top: 10px"
+                onclick="criarLogin()"
+              >
+                Novo Login
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
     </div>
 
-
-
-    </section>
-
-    </div>
-
-
-
-
-
+    <!-- ================= REDES SOCIAIS ================= -->
 
     <div class="redes-sociais">
-        <a href="https://www.facebook.com/" target="_blank"><img src="/src/images/redes-sociais/facebook.svg"
-                alt="Facebook"></a>
-        <a href="https://www.whatsapp.com/" target="_blank"><img src="/src/images/redes-sociais/whatsapp.svg"
-                alt="whatsapp"></a>
-        <a href="https://www.instagram.com/" target="_blank"><img src="/src/images/redes-sociais/instagram.svg"
-                alt="Instagram"></a>
-        <a href="https://x.com/?lang=pt" target="_blank"><img src="/src/images/redes-sociais/twitter.svg"
-                alt="Twitter"></a>
+      <a href="https://www.facebook.com/" target="_blank">
+        <img src="/src/images/redes-sociais/facebook.svg" alt="Facebook" />
+      </a>
+
+      <a href="https://www.whatsapp.com/" target="_blank">
+        <img src="/src/images/redes-sociais/whatsapp.svg" alt="WhatsApp" />
+      </a>
+
+      <a href="https://www.instagram.com/" target="_blank">
+        <img src="/src/images/redes-sociais/instagram.svg" alt="Instagram" />
+      </a>
+
+      <a href="https://x.com/?lang=pt" target="_blank">
+        <img src="/src/images/redes-sociais/twitter.svg" alt="Twitter" />
+      </a>
     </div>
 
-    </div>
-
-    </div>
-
-
+    <!-- SCRIPT -->
     <script src="/public/script.js"></script>
-</body>
-
+  </body>
 </html>
-
-import sqlite3
-
-conexao = sqlite3.connect('dados.db')
-cursor = conexao.cursor()
-
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS usuarios (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        email TEXT UNIQUE
-    )
-''')
-
-def inserir_usuario(nome, email):
-    cursor.execute("INSERT INTO usuarios (nome, email) VALUES (?, ?)", (nome, email))
-    conexao.commit()
-
-def listar_usuarios():
-    cursor.execute("SELECT * FROM usuarios")
-    return cursor.fetchall()
-
-
-    # Exemplo de uso
-inserir_usuario("Dev", "dev@example.com")
-print(listar_usuarios())

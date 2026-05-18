@@ -65,26 +65,24 @@ async function seed() {
     }
     console.log('✅ 20 clientes criados');
 
-    const metais = [
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-      ['Nome do Produto','Descrição','peça','tamanho EX:{P:35,M:45,G:55}','categoria'],
-
-     
-    ]
+   const metais = [
+  ['Ferro em Barra','Metal resistente usado na construção civil','peça','tamanho EX:{P:35,M:45,G:55}','ferrosos'],
+  ['Aço Carbono','Metal muito usado em estruturas e ferramentas','peça','tamanho EX:{P:35,M:45,G:55}','ferrosos'],
+  ['Alumínio Puro','Leve e resistente à corrosão','peça','tamanho EX:{P:35,M:45,G:55}','não ferrosos'],
+  ['Cobre','Excelente condutor elétrico e térmico','peça','tamanho EX:{P:35,M:45,G:55}','não ferrosos'],
+  ['Bronze','Liga de cobre e estanho, muito resistente','peça','tamanho EX:{P:35,M:45,G:55}','ligas'],
+  ['Latão','Liga de cobre e zinco, usado em peças decorativas','peça','tamanho EX:{P:35,M:45,G:55}','ligas'],
+  ['Zinco','Usado em galvanização para proteção contra ferrugem','peça','tamanho EX:{P:35,M:45,G:55}','não ferrosos'],
+  ['Estanho','Metal usado em soldas e ligas metálicas','peça','tamanho EX:{P:35,M:45,G:55}','ligas'],
+  ['Chumbo','Metal pesado usado em aplicações industriais','peça','tamanho EX:{P:35,M:45,G:55}','pesados'],
+  ['Níquel','Usado em ligas resistentes à corrosão','peça','tamanho EX:{P:35,M:45,G:55}','ligas'],
+  ['Titânio','Extremamente leve e muito resistente','peça','tamanho EX:{P:35,M:45,G:55}','alta resistência'],
+  ['Prata','Metal precioso com alta condutividade','peça','tamanho EX:{P:35,M:45,G:55}','preciosos'],
+  ['Ouro','Metal precioso usado em joias e eletrônicos','peça','tamanho EX:{P:35,M:45,G:55}','preciosos'],
+  ['Inox (Aço Inoxidável)','Resistente à ferrugem e muito durável','peça','tamanho EX:{P:35,M:45,G:55}','ferrosos'],
+  ['Magnésio','Metal leve usado na indústria automotiva e aeroespacial','peça','tamanho EX:{P:35,M:45,G:55}','leves'],
+  ['Cromo','Usado para dar brilho e resistência ao aço','peça','tamanho EX:{P:35,M:45,G:55}','tratamento']
+];
 
     for (const [nome, desc,pdt, precos, cat] of metais) {
       run('INSERT INTO metais (nome, descricao, produtos, precos, categoria) VALUES (?, ?, ?, ?, ?)',
