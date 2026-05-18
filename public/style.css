@@ -70,7 +70,7 @@ body {  /* Corpo inteiro do site */
 
 .input-icon {
   padding-left: 35px;
-  background-image: url('/src/images/user-solid-full\ \(1\).svg');
+  background-image: url('./images/user-solid-full\ \(1\).svg');
   background-repeat: no-repeat;
   background-position: 10px center;
   background-size: 20px; /* Ajusta o tamanho do ícone */
@@ -79,7 +79,7 @@ body {  /* Corpo inteiro do site */
 
 .senha-icon {
   padding-left: 35px;
-  background-image: url('/src/images/lock-solid-full.svg');
+  background-image: url('./images/lock-solid-full.svg');
   background-repeat: no-repeat;
   background-position: 10px center;
   background-size: 20px; /* Ajusta o tamanho do ícone */
@@ -93,7 +93,7 @@ body {  /* Corpo inteiro do site */
   justify-content: center; 
   align-items: center;
   
-  background: url(/src/images/Imagem\ com\ fosco.png);
+  background: url(./images/Imagem\ com\ fosco.png);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 48px 38px;
