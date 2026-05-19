@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MetalTech - Login</title>
 
-    <!-- CSS -->
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <!-- ================= LOGIN ================= -->
+
     <div id="tela-login">
       <div class="login-box">
+
         <!-- LADO ESQUERDO -->
         <div class="new-login">
-          <!-- LOGO -->
+
           <div class="login-logo">
             <img
               src="./images/Logo MetalTech 4.svg"
@@ -24,7 +24,6 @@
             />
           </div>
 
-          <!-- TEXTO -->
           <div class="text-novoLogin">
             <h2
               id="TextNovoID"
@@ -38,7 +37,6 @@
             </h2>
           </div>
 
-          <!-- FRASE -->
           <p
             style="
               margin-top: 15px;
@@ -52,7 +50,6 @@
             presente.
           </p>
 
-          <!-- BOTÃO VOLTAR -->
           <a href="index.html">
             <button
               class="btn btn-newLogin"
@@ -69,101 +66,168 @@
               ← Voltar para tela inicial
             </button>
           </a>
+
         </div>
 
-        <!-- ================= FORM LOGIN ================= -->
-
+        <!-- FORM -->
         <div class="login">
+
           <section id="pg-login">
-            <!-- TÍTULO -->
+
             <div class="login-logo">
               <h1 id="idLogin-logo">CRIAR CONTA</h1>
             </div>
 
-            <!-- ERRO -->
-            <div class="login-erro" id="login-erro" style="display: none"></div>
+            <div
+              class="login-erro"
+              id="login-erro"
+              style="display: none"
+            ></div>
 
-            <!-- INPUTS -->
             <div class="loginIpt-btn">
+
               <!-- NOME -->
-              <div class="fg">
-                <div class="input-icon2">
-                  <input id="l-name" type="text" placeholder="Nome Completo" />
+              <div class="fr2">
+
+                <div class="fg">
+                  <label>Nome *</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="l-name"
+                      type="text"
+                      placeholder="Nome Completo"
+                    />
+                  </div>
                 </div>
+
+                <!-- TELEFONE -->
+                <div class="fg">
+                  <label>Telefone *</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="l-telefone"
+                      type="text"
+                      placeholder="(11) 99999-9999"
+                      maxlength="15"
+                    />
+                  </div>
+                </div>
+
               </div>
 
-              <!-- TELEFONE -->
+              <!-- RUA -->
+              <div class="fr2">
+
+                <div class="fg">
+                  <label>Rua</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="c-rua"
+                      type="text"
+                      placeholder="Rua das Flores"
+                    />
+                  </div>
+                </div>
+
+                <div class="fg">
+                  <label>Número</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="c-num"
+                      type="text"
+                      placeholder="123"
+                    />
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- BAIRRO / CIDADE / CEP -->
+              <div class="fr3">
+
+                <div class="fg">
+                  <label>Bairro</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="c-bairro"
+                      type="text"
+                      placeholder="Centro"
+                    />
+                  </div>
+                </div>
+
+                <div class="fg">
+                  <label>Cidade</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="c-cidade"
+                      type="text"
+                      placeholder="São Paulo"
+                    />
+                  </div>
+                </div>
+
+                <div class="fg">
+                  <label>CEP</label>
+
+                  <div class="input-icon2">
+                    <input
+                      id="c-cep"
+                      type="text"
+                      placeholder="00000-000"
+                    />
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- COMPLEMENTO -->
               <div class="fg">
+                <label>Complemento</label>
+
                 <div class="input-icon2">
-                  <!-- Adicionado o maxlength para limitar o tamanho do celular com máscara -->
                   <input
-                    id="l-telefone"
+                    id="c-comp"
                     type="text"
-                    placeholder="Telefone"
-                    maxlength="15"
+                    placeholder="Apto 12, Bloco B"
                   />
                 </div>
               </div>
 
-                            <script>
-                                // Captura o input pelo ID que você já estava usando
-                                const inputTelefone = document.getElementById("l-telefone");
-
-                                inputTelefone.addEventListener("input", (e) => {
-                                let valor = e.target.value;
-
-                                // Remove qualquer caractere que não seja número
-                                valor = valor.replace(/\D/g, "");
-
-                                // Formata o DDD com parênteses: (XX)
-                                if (valor.length > 2) {
-                                    valor = `(${valor.substring(0, 2)}) ${valor.substring(2)}`;
-                                } else if (valor.length > 0) {
-                                    valor = `(${valor}`;
-                                }
-
-                                // Formata o hífen do número do celular: (XX) XXXXX-XXXX
-                                if (valor.length > 10) {
-                                    valor = `${valor.substring(0, 10)}-${valor.substring(10, 14)}`;
-                                }
-
-                                // Atualiza o valor do input em tempo real
-                                e.target.value = valor;
-                                });
-                            </script>
-
-                            
-
               <!-- EMAIL -->
               <div class="fg">
+                <label>E-mail *</label>
+
                 <div class="input-icon2">
                   <input
                     id="l-email"
                     type="email"
                     placeholder="E-mail"
-                    onkeydown="if (event.key === 'Enter') fazerLogin();"
                   />
-                </div>
-              </div>
-
-              <!-- ENDEREÇO -->
-              <div class="fg">
-                <div class="input-icon2">
-                  <input id="l-endereço" type="text" placeholder="Endereço" />
                 </div>
               </div>
 
               <!-- SENHA -->
               <div class="fg">
-                <div class="input-icon2" style="position: relative">
+                <label>Senha *</label>
+
+                <div
+                  class="input-icon2"
+                  style="position: relative"
+                >
+
                   <input
                     id="l-senha"
                     type="password"
                     placeholder="Senha"
-                    onkeydown="if (event.key === 'Enter') fazerLogin();"
                   />
 
-                  <!-- OLHO -->
                   <button
                     type="button"
                     id="btn-show-pass"
@@ -181,45 +245,67 @@
                   >
                     👁️
                   </button>
+
                 </div>
               </div>
 
-              <!-- BOTÃO ENTRAR -->
+              <!-- BOTÃO -->
               <button
                 class="btn btn-entrarLogin"
                 id="btn-login"
-                style="width: 100%; padding: 10px; margin-top: 10px"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  margin-top: 10px;
+                "
                 onclick="criarLogin()"
               >
                 Novo Login
               </button>
+
             </div>
+
           </section>
+
         </div>
+
       </div>
     </div>
 
-    <!-- ================= REDES SOCIAIS ================= -->
-
+    <!-- REDES -->
     <div class="redes-sociais">
+
       <a href="https://www.facebook.com/" target="_blank">
-        <img src="./images/redes-sociais/facebook.svg" alt="Facebook" />
+        <img
+          src="./images/redes-sociais/facebook.svg"
+          alt="Facebook"
+        />
       </a>
 
       <a href="https://www.whatsapp.com/" target="_blank">
-        <img src="./images/redes-sociais/whatsapp.svg" alt="WhatsApp" />
+        <img
+          src="./images/redes-sociais/whatsapp.svg"
+          alt="WhatsApp"
+        />
       </a>
 
       <a href="https://www.instagram.com/" target="_blank">
-        <img src="./images/redes-sociais/instagram.svg" alt="Instagram" />
+        <img
+          src="./images/redes-sociais/instagram.svg"
+          alt="Instagram"
+        />
       </a>
 
       <a href="https://x.com/?lang=pt" target="_blank">
-        <img src="./images/redes-sociais/twitter.svg" alt="Twitter" />
+        <img
+          src="./images/redes-sociais/twitter.svg"
+          alt="Twitter"
+        />
       </a>
+
     </div>
 
-    <!-- SCRIPT -->
     <script src="script.js"></script>
+
   </body>
 </html>
