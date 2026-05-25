@@ -15,6 +15,9 @@
   --text:    #f0f0f0;
   --muted:   #777;
   --r:       10px;
+  --linear: linear-gradient(to bottom, #19193C 48%, #5555AD 100%);
+  --stat: #19193C;
+  --whiteBackground: #E8E8E8;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } /* Selecionar tudo*/
@@ -37,6 +40,10 @@ body {  /* Corpo inteiro do site */
  
 }
 
+
+h2{
+  color: var(--stat);
+}
 
 .text-novoLogin{
   display: flex;
@@ -202,7 +209,7 @@ body.logado #app        { display: flex; }
 #sidebar { /*Tela Inicial*/
   width: 220px;
   min-height: 100vh;
-  background: var(--surf);
+  background: var(--linear);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -277,7 +284,7 @@ body.logado #app        { display: flex; }
 }
 
 .nav-btn:hover { background: var(--surf2); color: var(--text); } /*Ao passar o mouse*/
-.nav-btn.ativo { background: rgba(232,55,42,.11); color: var(--red); } /*Estilo de botão ativo*/
+.nav-btn.ativo { background: rgba(232,55,42,.11); color: var(--blue); } /*Estilo de botão ativo*/
 .nav-btn .ic   { font-size: 0.95rem; width: 17px; text-align: center; } /*Estilo do emoji*/
 
 .sb-footer { /*Rodapé do site*/
@@ -293,8 +300,8 @@ body.logado #app        { display: flex; }
 
 .btn-logout { /*Botão do rodapé*/
   background: none;
-  border: 1px solid var(--border);
-  color: var(--muted);
+  border: 1px solid var(--stat);
+  color: var(--stat);
   padding: 3px 9px;
   border-radius: 6px;
   font-size: 0.7rem;
@@ -303,7 +310,7 @@ body.logado #app        { display: flex; }
   transition: all .15s;
 }
 
-.btn-logout:hover { border-color: var(--red); color: var(--red); } /*Botão do rodapé com estilo de passar o mouse*/
+.btn-logout:hover { border-color: var(--blue); color: var(--blue); } /*Botão do rodapé com estilo de passar o mouse*/
 
 #conteudo { /* Conteúdo do Dashboard*/
   margin-left: 220px;
@@ -311,6 +318,7 @@ body.logado #app        { display: flex; }
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--whiteBackground);
 }
 
 .pg-header { /*Área do botão "atualizar" e textos do Dashboard*/
@@ -345,7 +353,7 @@ body.logado #app        { display: flex; }
 
 /*=======================================================================*/
 .stat {
-  background: var(--surf);
+  background: var(--stat);
   border: 1px solid var(--border);
   border-radius: var(--r);
   padding: 15px;
@@ -353,25 +361,21 @@ body.logado #app        { display: flex; }
   overflow: hidden;
 }
 
-.stat::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-}
 
-.stat.cr::before { background: var(--red); }
-.stat.co::before { background: var(--orange); }
-.stat.cg::before { background: var(--green); }
-.stat.cb::before { background: var(--blue); }
-.stat.cp::before { background: var(--purple); }
+
 
 .stat .lbl { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; }
 .stat .val { font-size: 1.75rem; font-weight: 700; margin: 4px 0 1px; line-height: 1; letter-spacing: -0.5px; }
 .stat .sub { font-size: 0.68rem; color: var(--muted); }
-.stat .ico { position: absolute; top: 12px; right: 12px; font-size: 1.4rem; opacity: .1; }
+
+
+.ico {
+  display: flex;
+  justify-content: flex-end;
+}
 
 /*=======================================================================*/
+
 
 
 .dash-grid { /*Área com  Pedidos Recentes e o Cardápio Ativo*/
@@ -381,7 +385,7 @@ body.logado #app        { display: flex; }
 }
 
 .card { /*Contêiner padrão*/
-  background: var(--surf);
+  background: var(--stat);
   border: 1px solid var(--border);
   border-radius: var(--r);
   overflow: hidden;
@@ -564,7 +568,7 @@ select option { background: var(--surf2); } /*Menus suspensos*/
 .modal-bg.open { display: flex; } /*Elemento especifico para atribuir certas linguagens aberto*/
 
 .modal { /*Janela pop-up sobreposta ao conteúdo principal*/
-  background: var(--surf);
+  background: var(--stat);
   border: 1px solid var(--border);
   border-radius: 14px;
   width: 100%;
@@ -673,7 +677,7 @@ select option { background: var(--surf2); } /*Menus suspensos*/
 .spin { /*Circulo girando ao carregar*/
   width: 14px; height: 14px;
   border: 2px solid var(--border);
-  border-top-color: var(--red);
+  border-top-color: var(--blue);
   border-radius: 50%;
   animation: spin .6s linear infinite;
 }
@@ -716,7 +720,7 @@ select option { background: var(--surf2); } /*Menus suspensos*/
 .entrega-num { /*Número de entras*/
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--red);
+  color: var(--blue);
   letter-spacing: -0.5px;
 }
 
