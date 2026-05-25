@@ -23,39 +23,38 @@ async function seed() {
 
     console.log('✅ Banco limpo');
 
-    const hash = await bcrypt.hash('12345', 10);
+    const hash = await bcrypt.hash('123456', 10);
     //para inserir informações sobre os usuarios para cirar as contas deles nas tabelas dos bancos de dados
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
       ['Administrador Master', 'admin@metaltech.com', hash, 'Administrador']);
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
       ['Atendente Oficial', 'atendente@metaltech.com', hash, 'Atendente']);
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
-      ['Entregador Oficial', 'entregador@metaltech.com', hash, 'Entregador']);
-    
+      ['Entregador Oficial', 'entregador@metaltech.com', hash, 'MetalTech']);
 
     console.log('✅ 3 usuários criados');
        //aqui temos os cadastros dos usuarios que já foram criados, aqui temos não só nome mas tambem numero, onde moram e qual as preferencias deles em seus pedidos
     const clientes = [
-      ['Lucas Ferreira Santos',   '11991234501', {rua:'Rua das Acácias',numero:'142',bairro:'Vila Madalena',cidade:'São Paulo',cep:'05435-000'}, 'Alérgico a glúten'],
+      ['Lucas Ferreira Santos',   '11991234501', {rua:'Rua das Acácias',numero:'142',bairro:'Vila Madalena',cidade:'São Paulo',cep:'05435-000'}, 'Apartamento'],
       ['Camila Rodrigues Lima',   '11991234502', {rua:'Av. Paulista',numero:'900',bairro:'Bela Vista',cidade:'São Paulo',cep:'01310-100'}, ''],
-      ['Rafael Oliveira Costa',   '11991234503', {rua:'Rua Oscar Freire',numero:'55',bairro:'Jardins',cidade:'São Paulo',cep:'01426-001'}, 'Prefere entrega após 19h'],
-      ['Isabela Martins Souza',   '11991234504', {rua:'Rua Consolação',numero:'310',bairro:'Consolação',cidade:'São Paulo',cep:'01302-000'}, ''],
-      ['Bruno Almeida Pereira',   '11991234505', {rua:'Rua Augusta',numero:'780',bairro:'Cerqueira César',cidade:'São Paulo',cep:'01304-001'}, 'Intolerante a lactose'],
+      ['Rafael Oliveira Costa',   '11991234503', {rua:'Rua Oscar Freire',numero:'55',bairro:'Jardins',cidade:'São Paulo',cep:'01426-001'}, ''],
+      ['Isabela Martins Souza',   '11991234504', {rua:'Rua Consolação',numero:'310',bairro:'Consolação',cidade:'São Paulo',cep:'01302-000'}, 'Casa em viela'],
+      ['Bruno Almeida Pereira',   '11991234505', {rua:'Rua Augusta',numero:'780',bairro:'Cerqueira César',cidade:'São Paulo',cep:'01304-001'}, 'Condóminio'],
       ['Juliana Nascimento Dias', '11991234506', {rua:'Rua Haddock Lobo',numero:'220',bairro:'Jardim América',cidade:'São Paulo',cep:'01414-000'}, ''],
-      ['Thiago Carvalho Mendes',  '11991234507', {rua:'Alameda Santos',numero:'415',bairro:'Cerqueira César',cidade:'São Paulo',cep:'01419-000'}, 'Cliente VIP'],
+      ['Thiago Carvalho Mendes',  '11991234507', {rua:'Alameda Santos',numero:'415',bairro:'Cerqueira César',cidade:'São Paulo',cep:'01419-000'}, 'Casa de Esquina'],
       ['Fernanda Gomes Ribeiro',  '11991234508', {rua:'Rua Fradique Coutinho',numero:'88',bairro:'Pinheiros',cidade:'São Paulo',cep:'05416-010'}, ''],
-      ['Diego Barbosa Freitas',   '11991234509', {rua:'Rua Wisard',numero:'305',bairro:'Vila Madalena',cidade:'São Paulo',cep:'05434-080'}, 'Sem cebola nos pedidos'],
+      ['Diego Barbosa Freitas',   '11991234509', {rua:'Rua Wisard',numero:'305',bairro:'Vila Madalena',cidade:'São Paulo',cep:'05434-080'}, 'Não tocar campanhinha'],
       ['Larissa Teixeira Moura',  '11991234510', {rua:'Rua Amauri',numero:'60',bairro:'Itaim Bibi',cidade:'São Paulo',cep:'01448-000'}, ''],
       ['Matheus Cardoso Nunes',   '11991234511', {rua:'Rua Pamplona',numero:'1200',bairro:'Jardim Paulista',cidade:'São Paulo',cep:'01405-002'}, ''],
       ['Patrícia Rocha Vieira',   '11991234512', {rua:'Av. Brigadeiro Faria Lima',numero:'2000',bairro:'Pinheiros',cidade:'São Paulo',cep:'01452-000'}, 'Prefere pagamento em dinheiro'],
       ['Anderson Silva Campos',   '11991234513', {rua:'Rua Estados Unidos',numero:'175',bairro:'Jardim América',cidade:'São Paulo',cep:'01427-000'}, ''],
-      ['Natália Araújo Castro',   '11991234514', {rua:'Rua José Maria Lisboa',numero:'530',bairro:'Jardim Paulista',cidade:'São Paulo',cep:'01423-000'}, 'Vegetariana'],
+      ['Natália Araújo Castro',   '11991234514', {rua:'Rua José Maria Lisboa',numero:'530',bairro:'Jardim Paulista',cidade:'São Paulo',cep:'01423-000'}, 'Alégico a cobre'],
       ['Felipe Cunha Rezende',    '11991234515', {rua:'Rua Ministro Rocha Azevedo',numero:'72',bairro:'Cerqueira César',cidade:'São Paulo',cep:'01410-001'}, ''],
-      ['Vanessa Lopes Guimarães', '11991234516', {rua:'Rua Bela Cintra',numero:'450',bairro:'Consolação',cidade:'São Paulo',cep:'01415-000'}, 'Sem pimenta'],
+      ['Vanessa Lopes Guimarães', '11991234516', {rua:'Rua Bela Cintra',numero:'450',bairro:'Consolação',cidade:'São Paulo',cep:'01415-000'}, ''],
       ['Gustavo Pires Andrade',   '11991234517', {rua:'Rua da Consolação',numero:'1800',bairro:'Higienópolis',cidade:'São Paulo',cep:'01301-100'}, ''],
       ['Aline Moreira Fonseca',   '11991234518', {rua:'Av. Higienópolis',numero:'618',bairro:'Higienópolis',cidade:'São Paulo',cep:'01238-001'}, 'Cliente frequente'],
       ['Rodrigo Tavares Monteiro','11991234519', {rua:'Rua Itapeva',numero:'286',bairro:'Bela Vista',cidade:'São Paulo',cep:'01332-000'}, ''],
-      ['Carolina Batista Pinto',  '11991234520', {rua:'Rua Peixoto Gomide',numero:'1100',bairro:'Jardim Paulista',cidade:'São Paulo',cep:'01409-001'}, 'Prefere bordas recheadas'],
+      ['Carolina Batista Pinto',  '11991234520', {rua:'Rua Peixoto Gomide',numero:'1100',bairro:'Jardim Paulista',cidade:'São Paulo',cep:'01409-001'}, ''],
     ];
 
     for (const [nome, tel, end, obs] of clientes) {
@@ -65,29 +64,35 @@ async function seed() {
     }
     console.log('✅ 20 clientes criados');
 
-   const metais = [
-  ['Ferro em Barra','Metal resistente usado na construção civil','peça',{P:35,M:45,G:55},'ferrosos'],
-  ['Aço Carbono','Metal muito usado em estruturas e ferramentas','peça',{P:35,M:45,G:55},'ferrosos'],
-  ['Alumínio Puro','Leve e resistente à corrosão','peça',{P:35,M:45,G:55},'não ferrosos'],
-  ['Cobre','Excelente condutor elétrico e térmico','peça',{P:35,M:45,G:55},'não ferrosos'],
-  ['Bronze','Liga de cobre e estanho, muito resistente','peça',{P:35,M:45,G:55},'ligas'],
-  ['Latão','Liga de cobre e zinco, usado em peças decorativas','peça',{P:35,M:45,G:55},'ligas'],
-  ['Zinco','Usado em galvanização para proteção contra ferrugem','peça',{P:35,M:45,G:55},'não ferrosos'],
-  ['Estanho','Metal usado em soldas e ligas metálicas','peça',{P:35,M:45,G:55},'ligas'],
-  ['Chumbo','Metal pesado usado em aplicações industriais','peça',{P:35,M:45,G:55},'pesados'],
-  ['Níquel','Usado em ligas resistentes à corrosão','peça',{P:35,M:45,G:55},'ligas'],
-  ['Titânio','Extremamente leve e muito resistente','peça',{P:35,M:45,G:55},'alta resistência'],
-  ['Prata','Metal precioso com alta condutividade','peça',{P:35,M:45,G:55},'preciosos'],
-  ['Ouro','Metal precioso usado em joias e eletrônicos','peça',{P:35,M:45,G:55},'preciosos'],
-  ['Inox (Aço Inoxidável)','Resistente à ferrugem e muito durável','peça',{P:35,M:45,G:55},'ferrosos'],
-  ['Magnésio','Metal leve usado na indústria automotiva e aeroespacial','peça',{P:35,M:45,G:55},'leves'],
-  ['Cromo','Usado para dar brilho e resistência ao aço','peça',{P:35,M:45,G:55},'tratamento']
+    //aqui guarda todos os sabores, igredientes e tipos/tamanhos das metais
+  const metais = [
+      ['Aço Carbono', 'Metal versátil de alta resistência mecânica para estruturas.', 'Ferro e Carbono (até 2%)', {P:35, M:45, G:55}, 'aco'],
+      ['Cobre Comercial', 'Excelente condutor térmico e elétrico com alta maleabilidade.', 'Cobre Puro (mínimo 99,9%)', {P:34, M:44, G:54}, 'cobre'],
+      ['Alumínio Naval', 'Material leve e com alta resistência à corrosão marítima.', 'Alumínio, Magnésio e Cromo', {P:38, M:48, G:58}, 'aluminio'],
+      ['Latão Amarelo', 'Liga metálica brilhante com excelente usinabilidade e brilho.', 'Cobre (65%) e Zinco (35%)', {P:33, M:43, G:53}, 'cobre'],
+      ['Bronze Estrutural', 'Alta resistência ao desgaste, antifricção e ótima usinabilidade.', 'Cobre (88%) e Estanho (12%)', {P:40, M:50, G:60}, 'cobre'],
+      ['Zinco Galvanizado', 'Usado para revestir o ferro e evitar a oxidação precoce.', 'Ferro fundido revestido de Zinco', {P:38, M:48, G:58}, 'ferro'],
+      ['Aço Galvanizado', 'Chapa de aço revestida com camada protetora de zinco.', 'Aço Carbono com revestimento de Zinco', {P:37, M:47, G:57}, 'aco'],
+      ['Aço Inox 304', 'Alta resistência à oxidação e excelente para fins sanitários.', 'Ferro, Cromo (18%) e Níquel (8%)', {P:45, M:55, G:65}, 'aco'],
+      ['Aço Inox 316', 'Resistência superior a cloretos e ambientes químicos agressivos.', 'Ferro, Cromo, Níquel e Molibdênio (2%)', {P:52, M:62, G:72}, 'aco'],
+      ['Ferro Fundido Cinzento', 'Excelente amortecimento de vibrações e facilidade de usinagem.', 'Ferro, Carbono (3%) e Silício', {P:45, M:55, G:65}, 'ferro'],
+      ['Ferro Nodular', 'Alta tenacidade e ductilidade próxima às propriedades do aço.', 'Ferro, Carbono, Silício e Magnésio', {P:50, M:65, G:80}, 'ferro'],
+      ['Alumínio Anodizado', 'Alumínio com camada de óxido protetora e acabamento fosco.', 'Alumínio com tratamento de anodização', {P:48, M:58, G:68}, 'aluminio'],
+      ['Ferro Gusa', 'Produto imediato da redução do minério de ferro em alto-forno.', 'Ferro com alto teor de carbono (4%)', {P:28, M:38, G:48}, 'ferro'],
+      ['Cobre Berílio', 'Liga de cobre de altíssima dureza e resistência mecânica.', 'Cobre (98%) e Berílio (2%)', {P:85, M:110, G:135}, 'cobre'],
+      ['Alumínio Composto (ACM)', 'Painel formado por duas chapas de alumínio e núcleo de polietileno.', 'Alumínio e Polietileno', {P:55, M:70, G:85}, 'aluminio'],
+      ['Aço Ferramenta H13', 'Alta tenacidade e resistência à fadiga térmica em trabalho a quente.', 'Ferro, Cromo, Molibdênio e Vanádio', {P:68, M:85, G:102}, 'aco'],
+      ['Aço Mola', 'Alta capacidade de sofrer deformação elástica sem perder a forma.', 'Aço Carbono com Silício e Manganês', {P:42, M:52, G:62}, 'aco'],
+      ['Ferro Forjado', 'Ferro purificado maleável que pode ser trabalhado em bigornas.', 'Ferro puro com baixo teor de carbono', {P:36, M:46, G:56}, 'ferro'],
+      ['Alumínio Duradural', 'Liga de alta resistência mecânica utilizada na aviação.', 'Alumínio (95%) e Cobre (4%)', {P:60, M:75, G:90}, 'aluminio'],
+      ['Cobre Eletrolítico', 'Fios e cabos de cobre de pureza máxima para redes elétricas.', 'Cobre Puro (99,99%)', {P:52, M:62, G:72}, 'cobre']
 ];
 
-    for (const [nome, desc,pdt, precos, cat] of metais) {
-      run('INSERT INTO metais (nome, descricao, produtos, precos, categoria) VALUES (?, ?, ?, ?, ?)',
-        [nome, desc, pdt, JSON.stringify(precos), cat]);
-        //para criar novos sabores de metais
+
+    for (const [nome, desc, com, precos, cat] of metais) {
+      run('INSERT INTO metais (nome, descricao, composicao, precos, categoria) VALUES (?, ?, ?, ?, ?)',
+        [nome, desc, com, JSON.stringify(precos), cat]);
+        //para criar novos metais
 
     }
     console.log('✅ 20 metais criadas');
@@ -95,7 +100,7 @@ async function seed() {
     console.log('======================================');
     console.log('🔥 SEED EXECUTADO COM SUCESSO!');
     console.log('======================================');
-    console.log('Login: admin@metaltech.com | Senha: 12345');
+    console.log('Login: admin@metaltech.com | Senha: 123456');
     console.log('======================================');
     //avisa se foi executado com sucesso e caso não o que está escrito abaixo avisa de erro
     process.exit(0);
