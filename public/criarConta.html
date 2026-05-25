@@ -219,15 +219,18 @@
 
                 <div
                   class="input-icon2"
-                  style="position: relative"
+                  style="position: relative; display: flex; align-items: center;"
                 >
 
+                  <!-- Adicionado padding-right para a senha não esconder sob o olho -->
                   <input
                     id="l-senha"
                     type="password"
                     placeholder="Senha"
+                    style="padding-right: 40px; width: 100%;"
                   />
 
+                  <!-- Adicionado z-index para garantir o clique por cima do input -->
                   <button
                     type="button"
                     id="btn-show-pass"
@@ -241,6 +244,7 @@
                       border: none;
                       cursor: pointer;
                       font-size: 18px;
+                      z-index: 999;
                     "
                   >
                     👁️
@@ -305,7 +309,26 @@
 
     </div>
 
+    <!-- Script externo do seu projeto -->
     <script src="script.js"></script>
+
+    <!-- Função de alternar senha baseada nos IDs do seu HTML -->
+    <script>
+      function togglePassword() {
+        const inputSenha = document.getElementById('l-senha');
+        const botaoOlho = document.getElementById('btn-show-pass');
+        
+        if (inputSenha) {
+          if (inputSenha.type === 'password') {
+            inputSenha.type = 'text';
+            botaoOlho.textContent = '🙈';
+          } else {
+            inputSenha.type = 'password';
+            botaoOlho.textContent = '👁️';
+          }
+        }
+      }
+    </script>
 
   </body>
 </html>

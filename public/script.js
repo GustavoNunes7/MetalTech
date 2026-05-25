@@ -452,6 +452,8 @@ function ir(pg, btn) {
 }
 
 
+
+
 // Essa função é responsável por utilizada para navegar entre seções com base no tipo de perfil 
 async function carregarDashboard() {
   const h = new Date().getHours();
