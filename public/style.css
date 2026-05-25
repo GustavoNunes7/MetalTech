@@ -755,6 +755,36 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   margin-top: 8px;
   padding-top: 6px;
 }
+
+
+
+
+/* =======================================================================
+   ALINHAMENTO DOS GRÁFICOS LADO A LADO COM FLEXBOX
+   ======================================================================= */
+
+.imgDados {
+  display: flex;
+  flex-direction: row;       /* Garante que fiquem estritamente um ao lado do outro */
+  justify-content: space-between; /* Distribui o espaço restante igualmente entre eles */
+  align-items: flex-start;   /* Alinha todos pelo topo da imagem */
+  gap: 16px;                 /* Espaçamento fixo entre os gráficos */
+  width: 100%;
+  margin-top: 20px;          /* Afasta os gráficos do bloco de pedidos recentes acima */
+}
+
+.imgDados img {
+  flex: 1;                   /* Faz as 3 imagens terem exatamente a mesma largura útil */
+  min-width: 0;              /* Impede que imagens grandes estoure a tela para o lado */
+  width: 100%;
+  height: auto;              /* Ajusta a altura automaticamente mantendo a proporção */
+  object-fit: contain;       /* Evita que o gráfico fique esticado ou amassado */
+}
+
+
+
+
+
 /*Grid do Site*/
 @media (max-width: 860px) {
   #sidebar { width: 52px; }
@@ -768,6 +798,13 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   .dash-grid { grid-template-columns: 1fr; }
   .fr2, .fr3 { grid-template-columns: 1fr; }
   .pg-body { padding: 14px; }
+}
+
+.tela-login{
+  display: grid;
+  grid-template-columns: repeat(auto-flit, minmax(500px,2fr));
+  gap: 16px
+;
 }
 
 
