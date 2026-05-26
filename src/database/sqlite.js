@@ -153,3 +153,5 @@ function get(sql, params = []) {
 }
 
 module.exports = { ready, query, run, get, salvar };
+
+

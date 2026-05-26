@@ -506,6 +506,7 @@ async function carregarDashboard() {
         <small style="color:var(--muted)">${R$(p.precos?.G)}</small>
       </div>`).join('') ||
       '<div class="empty"><span class="ei">⚙️</span>Nenhum metal</div>';
+      
 
   } catch (e) { toast('Erro dashboard: ' + e.message, 'err'); }
 }
