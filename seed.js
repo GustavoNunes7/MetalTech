@@ -30,7 +30,7 @@ async function seed() {
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
       ['Atendente Oficial', 'atendente@metaltech.com', hash, 'Atendente']);
     run('INSERT INTO usuarios (nome, email, senha, perfil) VALUES (?, ?, ?, ?)',
-      ['Entregador Oficial', 'entregador@metaltech.com', hash, 'MetalTech']);
+      ['Entregador Oficial', 'entregador@metaltech.com', hash, 'Entregador']);
 
     console.log('✅ 3 usuários criados');
        //aqui temos os cadastros dos usuarios que já foram criados, aqui temos não só nome mas tambem numero, onde moram e qual as preferencias deles em seus pedidos

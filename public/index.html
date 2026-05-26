@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
   <!--Caminho para o CSS-->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link rel="stylesheet "href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
 </head>
 
 <body>
@@ -131,7 +131,7 @@
         </button>
 
         <!-- Visualizar Entregas -->
-        <div class="sb-group" id="sb-group-garcom" style="display:none">M
+        <div class="sb-group" id="sb-group-entregado" style="display:none">
 
         </div>
         <button class="nav-btn" id="btn-nav-entregas" onclick="ir('entregas',this)" style="display:none">
@@ -145,7 +145,7 @@
         <span>v2.0</span>
         <button class="btn-logout" onclick="sair()">Sair</button>
       </div>
-    </aside>~
+    </aside>
 
     <!-- // ==================================  FIM TELA INICIAL ============================= // -->
 
@@ -162,7 +162,7 @@
             <h2>Dashboard</h2>
             <p id="dash-sub">Resumo do sistema</p>
           </div>
-          <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻ Atualizar</button>
+        <button class="btn btn-ghost btn-sm" onclick="window.location.reload()">↻ Atualizar</button>
         </div>
 
         <div class="pg-body">
@@ -304,7 +304,7 @@
             <p id="pg-metais-sub">Gerencie o cátalogo</p>
           </div>
 
-          <button class="btn btn-red" id="btn-nova-metal" onclick="abrirMetal()">+ Nova Metal</button>
+          <button class="btn btn-red" id="btn-novo-metal" onclick="abrirMetal()">+ Novo Metal</button>
           <!-- Botão para  adicionar mais metal -->
         </div>
 
@@ -407,7 +407,7 @@
           </div>
 
           <button class="btn btn-red" onclick="abrirPedidoEntrega()">+ Novo Pedido</button>
-          <!--Botão para fazer um novo pedido-->
+          <!--Botão para fazer um novo pedido -->
         </div>
 
         <div class="pg-body">
@@ -473,13 +473,13 @@
   <!-- // ================================== FIM Entregas ============================= // -->
 
 
-  <!-- // ==================================  NOVA Metal ============================= // -->
+  <!-- // ==================================  NOVO Metal ============================= // -->
 
   <div id="m-Metal" class="modal-bg">
 
     <div class="modal">
 
-      <h3 id="m-metal-t">Nova Metal</h3>
+      <h3 id="m-metal-t">Novo Metal</h3>
       <input type="hidden" id="p-id">
 
       <div class="fr2">
@@ -528,7 +528,7 @@
     </div>
 
   </div>
-  <!-- // ==================================  FIM NOVA METAL ============================= // -->
+  <!-- // ==================================  FIM NOVO METAL ============================= // -->
 
   <!-- // ==================================  NOVO CLIENTE ============================= // -->
 
@@ -633,7 +633,7 @@
       <div class="modal-foot">
         <button class="btn btn-ghost" onclick="fechar('m-pedido')">Cancelar</button>
         <!-- Botão para cancelar o pedido-->
-        <button class="btn btn-red" onclick="salvarPedido()">Confirmar Pedido</button> <!-- Botão para Confirmar o pedido->
+        <button class="btn btn-red" onclick="salvarPedido()">Confirmar Pedido</button> <!-- Botão para Confirmar o pedido-->
     </div>
 
   </div>
@@ -688,7 +688,7 @@
               <!--Caixa de entrada para inserir o perfil do novo usuário -->
               <div class="fg"><label>Perfil</label><select id="u-perfil">
                   <option value="Atendente">Atendente</option>
-                  <option value="Garcom">Garçom</option>
+                  <option value="Entregador">Entregador</option>
                   <option value="Administrador">Administrador</option>
                 </select></div>
             </div>
@@ -701,7 +701,7 @@
             <div class="modal-foot">
               <button class="btn btn-ghost" onclick="fechar('m-usuario')">Cancelar</button>
               <!--Botão para cancelar o cadastro-->
-              <button class="btn btn-ghost" onclick="salvarUsuario()">Criar</button> <!--Botão para criar o cadastro-->
+              <button class="btn btn-red" onclick="salvarUsuario()">Criar</button>
             </div>
 
           </div>
@@ -723,7 +723,7 @@
                   <option value="">— Selecione a entrega —</option>
                   <option value="1">Entrega 1</option>
                   <option value="2">Entrega 2</option>
-                  <option value="3"></option>Entrega 3</option>
+                  <option value="3">Entrega 3</option>
                   <option value="4">Entrega 4</option>
                   <option value="5">Mesa 5</option>
                   <option value="6">Mesa 6</option>

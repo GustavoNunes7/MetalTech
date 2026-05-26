@@ -154,13 +154,14 @@ function aplicarPerfil(usuario) {
   showEl(document.querySelector('.sb-group'), !isGar, 'block');
 
   const labelMetais = document.getElementById('nav-metais-label');
+  
   if (labelMetais) labelMetais.textContent = isGar ? 'Cátalogo' : 'Metais';
 
   const tituloMetais = document.getElementById('pg-metais-titulo');
   const subMetais    = document.getElementById('pg-metais-sub');
   if (tituloMetais) tituloMetais.textContent = isGar ? 'Cátalogo' : 'Metais';
   if (subMetais)    subMetais.textContent    = isGar ? 'Metais disponíveis hoje' : 'Gerencie o cátalago';
-  show('btn-nova-metais', !isGar, 'inline-flex');
+  show('btn-novo-metais', !isGar, 'inline-flex');
 
   show('stat-fat', !isGar, 'block');
   show('stat-cli', !isGar, 'block');
@@ -217,7 +218,7 @@ async function carregarEntregas(entregaFiltro = null) {
     if (!pedidosFiltrados.length) {
       grid.innerHTML = `
         <div class="empty" style="grid-column:1/-1">
-          <span class="ei">🪑</span>
+          <span class="ei">📦</span>
           Nenhum pedido ativo no momento.<br>
           <button class="btn btn-red" style="margin-top:12px" onclick="abrirPedidoEntrega()">
             + Abrir primeiro pedido
@@ -228,7 +229,7 @@ async function carregarEntregas(entregaFiltro = null) {
   
     //junta os pedidos os agrupando para cada entrega
 
-    const porentrega = {};
+    const porEntrega = {};
     pedidosFiltrados.forEach(p => {
       const key = p.entrega || 'balcão';
       if (!porEntrega[key]) porEntrega[key] = [];
@@ -276,7 +277,7 @@ async function carregarEntregas(entregaFiltro = null) {
               📝 Status
             </button>
             <button class="btn btn-green btn-sm"
-              onclick="abrirFecharEntrega(${entrega}, ${totalEntrega}, '${peds.map(p=>p._id).join(',')}')">
+              onclick="abrirFecharEntrega(${entrega}, ${totalEntrega}, '${peds.map(p=>p.id).join(',')}')">
               ✅ Fechar
             </button>
           </div>
@@ -293,7 +294,7 @@ async function abrirPedidoEntrega(entregaNum = null) {
   try {
     if (!cMetais.length)   cMetais   = await api('GET', '/metais');
     if (!cClientes.length) cClientes = await api('GET', '/clientes');
-  } catch (e) { toast('Erro ao carregar dados', 'err'); return; }
+  } catch (e) { toast('Erro ao carregar dados', 'err'); return []; }
 
   document.getElementById('pm-cli').innerHTML =
     '<option value="">— Sem cadastro —</option>' +
@@ -309,12 +310,14 @@ async function abrirPedidoEntrega(entregaNum = null) {
   abrir('m-pedido-entrega');
 }
 
+
+
 //organiza os pedidos em uma tabela
 function addItemEntrega() {
   const d = document.createElement('div');
   d.className = 'item-row';
   const opts = cMetais.filter(p => p.disponivel)
-    .map(p => `<option value="${p._id}"
+    .map(p => `<option value="${p.id}"
       data-p="${p.precos?.P||0}" data-m="${p.precos?.M||0}" data-g="${p.precos?.G||0}">
       ${p.nome}</option>`).join('');
   d.innerHTML = `
@@ -354,7 +357,7 @@ async function salvarPedidoEntrega() {
     const pid = row.querySelector('.ip').value;
     if (!pid) { valido = false; return; }
     itens.push({
-      metais:      pid,
+      metaL:      pid,
       tamanho:    row.querySelector('.it').value,
       quantidade: parseInt(row.querySelector('.iq').value) || 1,
     });
@@ -430,11 +433,11 @@ function ir(pg, btn) {
   if (pg === 'usuarios' && perfil !== 'Administrador') {
     toast('Acesso restrito a Administradores', 'err'); return;
   }
-  if (pg === 'entregas' && perfil !== 'entregador') {
-    toast('Área exclusiva para Garçom', 'err'); return;
+  if (pg === 'entregas' && perfil !== 'Entregador') {
+    toast('Área exclusiva para Entregador', 'err'); return;
   }
   if (perfil === 'entregador' && !['entregas','metais'].includes(pg)) {
-    toast('Acesso não permitido para Garçom', 'err'); return;
+    toast('Acesso não permitido para Entregador', 'err'); return;
   }
   document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('ativo'));
@@ -456,6 +459,7 @@ function ir(pg, btn) {
 
 // Essa função é responsável por utilizada para navegar entre seções com base no tipo de perfil 
 async function carregarDashboard() {
+  const delay = ms => new Promise(res => setTimeout(res, ms));
   const h = new Date().getHours();
   const s = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
   document.getElementById('dash-sub').textContent = `${s}! Aqui está o resumo.`;
@@ -530,12 +534,12 @@ async function carregarMetais() {
             
               <td><strong>${p.nome}</strong><br><small style="color:var(--muted)">${p.descricao || ''}</small></td>
               <td><span class="badge b-cat">${p.categoria || 'tradicional'}</span></td>
-              <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.composição}</td>
+              <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.composicao || ''}</td>
               <td>${R$(p.precos?.P)}</td>
               <td>${R$(p.precos?.M)}</td>
               <td><strong style="color:var(--gold)">${R$(p.precos?.G)}</strong></td>
               <td><span class="badge ${p.disponivel ? 'b-on' : 'b-off'}">${p.disponivel ? '✅ Disponível' : '❌ Off'}</span></td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarMetal('${p._id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarMetal('${p._id}','${p.nome}')">🗑️</button></div></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarMetal('${p.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarMetal('${p.id}','${p.nome}')">🗑️</button></div></td>
              </tr>`).join('')}
         </tbody>
       </table>`;
@@ -546,12 +550,31 @@ async function carregarMetais() {
 // Strong = é um elemento semântico usado para indicar que um texto tem forte importância
 //getElementById= vai atras de um elemento pelo id
 
+function editarMetal(id) {
+  console.log("Editando metal:", id);
+
+  // abre o modal
+  document.getElementById("m-Metal").style.display = "flex";
+
+  // muda título pra edição
+  document.getElementById("m-metal-t").innerText = "Editar Metal";
+
+  // salva o ID no hidden
+  document.getElementById("p-id").value = id;
+
+  // aqui você deveria buscar os dados no backend
+  // exemplo:
+  // fetch(`/metais/${id}`)
+}
+
+
+
 
 //_____________________________________________________________________________
 // essa fuction é responsavel por limpar os cadastros de pedidos de metais, quando já entregue a metal para liberar espaço
 function abrirMetal() {
-  document.getElementById('m-metal-t').textContent = 'Nova Metal';
-  ['p-id','p-nome','p-ing','p-desc','p-pp','p-pm','p-pg']
+  document.getElementById('m-metal-t').textContent = 'Novo Metal';
+  ['p-id','p-nome','p-com','p-desc','p-pp','p-pm','p-pg']
     .forEach(id => document.getElementById(id).value = '');
   document.getElementById('p-cat').value  = 'tradicional';
   document.getElementById('p-disp').value = 'true';
@@ -565,10 +588,10 @@ function abrirMetal() {
 function editarMetal(id) {
   const p = cMetais.find(x => x._id === id);
   if (!p) return;
-  document.getElementById('m-metal-t').textContent = 'Editar tal';
-  document.getElementById('p-id').value   = p._id;
+  document.getElementById('m-metal-t').textContent = 'Editar Metal';
+  document.getElementById('p-id').value   = p.id;
   document.getElementById('p-nome').value = p.nome;
-  document.getElementById('p-ing').value  = p.composiões;
+  document.getElementById('p-com').value  = p.composicao;
   document.getElementById('p-desc').value = p.descricao || '';
   document.getElementById('p-pp').value   = p.precos?.P || '';
   document.getElementById('p-pm').value   = p.precos?.M || '';
@@ -578,16 +601,16 @@ function editarMetal(id) {
   abrir('m-metal');
 }
 
-//adiciona uma nova metal para o menu essa função aqui
+//adiciona uma novo metal para o menu essa função aqui
 async function salvarMetal() {
   const id   = document.getElementById('p-id').value;
   const nome = document.getElementById('p-nome').value.trim();
-  const ing  = document.getElementById('p-ing').value.trim();
-  if (!nome || !ing) { toast('Nome e composições são obrigatórios', 'err'); return; }
+  const com  = document.getElementById('p-com').value.trim();
+  if (!nome || !com) { toast('Nome e composições são obrigatórios', 'err'); return; }
 
   const d = {
     nome,
-    composições: ing,
+    composicao: com,
     descricao:    document.getElementById('p-desc').value.trim(),
     precos: {
       P: parseFloat(document.getElementById('p-pp').value) || 0,
@@ -667,11 +690,11 @@ function abrirCliente() {
 
 //informações do cliente e editar ele
 function editarCliente(id) {
-  const c = cClientes.find(x => x._id === id);
+  const c = cClientes.find(x => x.id === id);
   if (!c) return;
   document.getElementById('m-cli-t').textContent    = 'Editar Cliente';
-  document.getElementById('c-id').value     = c._id;
-  document.getElementById('c-nome').value   = c.nome;
+  document.getElementById('c-id').value     = c.id;
+  document.getElementById('c-nome').value   = c.nome;''
   document.getElementById('c-tel').value    = c.telefone;
   document.getElementById('c-rua').value    = c.endereco?.rua || '';
   document.getElementById('c-num').value    = c.endereco?.numero || '';
@@ -751,7 +774,7 @@ async function carregarPedidos() {
               <td style="font-size:.76rem">${(p.formaPagamento || '—').replace('_', ' ')}</td>
               <td>${badge(p.status)}</td>
               <td style="font-size:.7rem;color:var(--muted)">${new Date(p.createdAt).toLocaleString('pt-BR')}</td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="abrirStatus('${p._id}','${p.status}')">📝</button><button class="btn btn-danger btn-sm" onclick="deletarPedido('${p._id}')">🗑️</button></div></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="abrirStatus('${p.id}','${p.status}')">📝</button><button class="btn btn-danger btn-sm" onclick="deletarPedido('${p.id}')">🗑️</button></div></td>
             </tr>`).join('')}
         </tbody>
       </table>`;
@@ -766,6 +789,7 @@ async function abrirPedido() {
     if (!cMetais.length)   cMetais   = await api('GET', '/metais');
     if (!cClientes.length) cClientes = await api('GET', '/clientes');
   } catch (e) { toast('Erro ao carregar dados', 'err'); return; }
+  
 
   document.getElementById('ped-cli').innerHTML =
     '<option value="">— Selecione o cliente —</option>' +
@@ -789,7 +813,7 @@ function addItem() {
   d.className = 'item-row';
   const opts = cMetais
     .filter(p => p.disponivel)
-    .map(p => `<option value="${p._id}" data-p="${p.precos?.P || 0}" data-m="${p.precos?.M || 0}" data-g="${p.precos?.G || 0}">${p.nome}</option>`).join('');
+    .map(p => `<option value="${p.id}" data-p="${p.precos?.P || 0}" data-m="${p.precos?.M || 0}" data-g="${p.precos?.G || 0}">${p.nome}</option>`).join('');
 
   d.innerHTML = `
     <select class="ip" onchange="recalc()"><option value="">Selecione...</option>${opts}</select>
