@@ -317,7 +317,7 @@ function addItemEntrega() {
   const d = document.createElement('div');
   d.className = 'item-row';
   const opts = cMetais.filter(p => p.disponivel)
-    .map(p => `<option value="${p.id}"
+    .map(p => `<option value="${p._id}"
       data-p="${p.precos?.P||0}" data-m="${p.precos?.M||0}" data-g="${p.precos?.G||0}">
       ${p.nome}</option>`).join('');
   d.innerHTML = `
@@ -576,7 +576,7 @@ function editarMetal(id) {
 function abrirMetal() {
   document.getElementById('m-metal-t').textContent = 'Novo Metal';
   ['p-id','p-nome','p-com','p-desc','p-pp','p-pm','p-pg']
-    .forEach(id => document.getElementById(id).value = '');
+    .forEach(id => document.id.value = '');
   document.getElementById('p-cat').value  = 'tradicional';
   document.getElementById('p-disp').value = 'true';
   abrir('m-metal');
@@ -587,10 +587,10 @@ function abrirMetal() {
 //edita valores e coisas da metal
 
 function editarMetal(id) {
-  const p = cMetais.find(x => x._id === id);
+  const p = cMetais.find(x => x._id === _id);
   if (!p) return;
   document.getElementById('m-metal-t').textContent = 'Editar Metal';
-  document.getElementById('p-id').value   = p.id;
+  document.getElementById('p-id').value = p._id;
   document.getElementById('p-nome').value = p.nome;
   document.getElementById('p-com').value  = p.composicao;
   document.getElementById('p-desc').value = p.descricao || '';
@@ -814,7 +814,7 @@ function addItem() {
   d.className = 'item-row';
   const opts = cMetais
     .filter(p => p.disponivel)
-    .map(p => `<option value="${p.id}" data-p="${p.precos?.P || 0}" data-m="${p.precos?.M || 0}" data-g="${p.precos?.G || 0}">${p.nome}</option>`).join('');
+    .map(p => `<option value="${p._id}" data-p="${p.precos?.P || 0}" data-m="${p.precos?.M || 0}" data-g="${p.precos?.G || 0}">${p.nome}</option>`).join('');
 
   d.innerHTML = `
     <select class="ip" onchange="recalc()"><option value="">Selecione...</option>${opts}</select>
@@ -851,6 +851,7 @@ function recalc() {
 //esse cdogo exibe ou oculta um campo de troco baseado na forma de pagamento selecionada pelo usuário. 
 function toggleTroco() {
   const pag = document.getElementById('ped-pag').value;
+
   document.getElementById('wrap-troco').style.display =
     pag === 'dinheiro' ? 'block' : 'none';
 }
