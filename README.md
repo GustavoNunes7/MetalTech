@@ -8,9 +8,9 @@ envolvendo o armazenamento de dados e trocado alguns nome que tinham a mesma fun
   <ul> Pizza -> Metal </ul>
   <ul> Pedido -> Peça </ul>
   
-<p># 🚀 Projeto MetalTech - Sprint 2
+<h2> Sprint 2 </h2>
 
-Este repositório contém a documentação, o progresso e a evolução da arquitetura do sistema funcional desenvolvido pela **COD** para a empresa fictícia **MetalTech**. O projeto foi projetado com foco em modernidade, escalabilidade, responsividade e alta experiência do usuário (UX), deixando a estrutura pronta para futuras expansões e integrações mobile.
+<p>Este repositório contém a documentação, o progresso e a evolução da arquitetura do sistema funcional desenvolvido pela **COD** para a empresa fictícia **MetalTech**. O projeto foi projetado com foco em modernidade, escalabilidade, responsividade e alta experiência do usuário (UX), deixando a estrutura pronta para futuras expansões e integrações mobile.
 
 ## 📋 Índice
 
