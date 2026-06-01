@@ -67,31 +67,31 @@ async function seed() {
     //aqui guarda todos os sabores, igredientes e tipos/tamanhos das metais
   const metais = [
       ['Aço Carbono', 'Metal versátil de alta resistência mecânica para estruturas.', 'Ferro e Carbono (até 2%)', {P:35, M:45, G:55}, 'aco'],
-      ['Cobre Comercial', 'Excelente condutor térmico e elétrico com alta maleabilidade.', 'Cobre Puro (mínimo 99,9%)', {P:34, M:44, G:54}, 'cobre'],
-      ['Alumínio Naval', 'Material leve e com alta resistência à corrosão marítima.', 'Alumínio, Magnésio e Cromo', {P:38, M:48, G:58}, 'aluminio'],
-      ['Latão Amarelo', 'Liga metálica brilhante com excelente usinabilidade e brilho.', 'Cobre (65%) e Zinco (35%)', {P:33, M:43, G:53}, 'cobre'],
-      ['Bronze Estrutural', 'Alta resistência ao desgaste, antifricção e ótima usinabilidade.', 'Cobre (88%) e Estanho (12%)', {P:40, M:50, G:60}, 'cobre'],
-      ['Zinco Galvanizado', 'Usado para revestir o ferro e evitar a oxidação precoce.', 'Ferro fundido revestido de Zinco', {P:38, M:48, G:58}, 'ferro'],
-      ['Aço Galvanizado', 'Chapa de aço revestida com camada protetora de zinco.', 'Aço Carbono com revestimento de Zinco', {P:37, M:47, G:57}, 'aco'],
-      ['Aço Inox 304', 'Alta resistência à oxidação e excelente para fins sanitários.', 'Ferro, Cromo (18%) e Níquel (8%)', {P:45, M:55, G:65}, 'aco'],
-      ['Aço Inox 316', 'Resistência superior a cloretos e ambientes químicos agressivos.', 'Ferro, Cromo, Níquel e Molibdênio (2%)', {P:52, M:62, G:72}, 'aco'],
-      ['Ferro Fundido Cinzento', 'Excelente amortecimento de vibrações e facilidade de usinagem.', 'Ferro, Carbono (3%) e Silício', {P:45, M:55, G:65}, 'ferro'],
-      ['Ferro Nodular', 'Alta tenacidade e ductilidade próxima às propriedades do aço.', 'Ferro, Carbono, Silício e Magnésio', {P:50, M:65, G:80}, 'ferro'],
-      ['Alumínio Anodizado', 'Alumínio com camada de óxido protetora e acabamento fosco.', 'Alumínio com tratamento de anodização', {P:48, M:58, G:68}, 'aluminio'],
-      ['Ferro Gusa', 'Produto imediato da redução do minério de ferro em alto-forno.', 'Ferro com alto teor de carbono (4%)', {P:28, M:38, G:48}, 'ferro'],
-      ['Cobre Berílio', 'Liga de cobre de altíssima dureza e resistência mecânica.', 'Cobre (98%) e Berílio (2%)', {P:85, M:110, G:135}, 'cobre'],
-      ['Alumínio Composto (ACM)', 'Painel formado por duas chapas de alumínio e núcleo de polietileno.', 'Alumínio e Polietileno', {P:55, M:70, G:85}, 'aluminio'],
-      ['Aço Ferramenta H13', 'Alta tenacidade e resistência à fadiga térmica em trabalho a quente.', 'Ferro, Cromo, Molibdênio e Vanádio', {P:68, M:85, G:102}, 'aco'],
-      ['Aço Mola', 'Alta capacidade de sofrer deformação elástica sem perder a forma.', 'Aço Carbono com Silício e Manganês', {P:42, M:52, G:62}, 'aco'],
-      ['Ferro Forjado', 'Ferro purificado maleável que pode ser trabalhado em bigornas.', 'Ferro puro com baixo teor de carbono', {P:36, M:46, G:56}, 'ferro'],
-      ['Alumínio Duradural', 'Liga de alta resistência mecânica utilizada na aviação.', 'Alumínio (95%) e Cobre (4%)', {P:60, M:75, G:90}, 'aluminio'],
-      ['Cobre Eletrolítico', 'Fios e cabos de cobre de pureza máxima para redes elétricas.', 'Cobre Puro (99,99%)', {P:52, M:62, G:72}, 'cobre']
+      ['Cobre Comercial', 'Excelente condutor térmico e elétrico com alta maleabilidade.', {P:34, M:44, G:54}, 'cobre'],
+      ['Alumínio Naval', 'Material leve e com alta resistência à corrosão marítima.', {P:38, M:48, G:58}, 'aluminio'],
+      ['Latão Amarelo', 'Liga metálica brilhante com excelente usinabilidade e brilho.', {P:33, M:43, G:53}, 'cobre'],
+      ['Bronze Estrutural', 'Alta resistência ao desgaste, antifricção e ótima usinabilidade.', {P:40, M:50, G:60}, 'cobre'],
+      ['Zinco Galvanizado', 'Usado para revestir o ferro e evitar a oxidação precoce.', {P:38, M:48, G:58}, 'ferro'],
+      ['Aço Galvanizado', 'Chapa de aço revestida com camada protetora de zinco.', {P:37, M:47, G:57}, 'aco'],
+      ['Aço Inox 304', 'Alta resistência à oxidação e excelente para fins sanitários.', {P:45, M:55, G:65}, 'aco'],
+      ['Aço Inox 316', 'Resistência superior a cloretos e ambientes químicos agressivos.', {P:52, M:62, G:72}, 'aco'],
+      ['Ferro Fundido Cinzento', 'Excelente amortecimento de vibrações e facilidade de usinagem.', {P:45, M:55, G:65}, 'ferro'],
+      ['Ferro Nodular', 'Alta tenacidade e ductilidade próxima às propriedades do aço.', {P:50, M:65, G:80}, 'ferro'],
+      ['Alumínio Anodizado', 'Alumínio com camada de óxido protetora e acabamento fosco.', {P:48, M:58, G:68}, 'aluminio'],
+      ['Ferro Gusa', 'Produto imediato da redução do minério de ferro em alto-forno.', {P:28, M:38, G:48}, 'ferro'],
+      ['Cobre Berílio', 'Liga de cobre de altíssima dureza e resistência mecânica.', {P:85, M:110, G:135}, 'cobre'],
+      ['Alumínio Composto (ACM)', 'Painel formado por duas chapas de alumínio e núcleo de polietileno.', {P:55, M:70, G:85}, 'aluminio'],
+      ['Aço Ferramenta H13', 'Alta tenacidade e resistência à fadiga térmica em trabalho a quente.', {P:68, M:85, G:102}, 'aco'],
+      ['Aço Mola', 'Alta capacidade de sofrer deformação elástica sem perder a forma.', {P:42, M:52, G:62}, 'aco'],
+      ['Ferro Forjado', 'Ferro purificado maleável que pode ser trabalhado em bigornas.', {P:36, M:46, G:56}, 'ferro'],
+      ['Alumínio Duradural', 'Liga de alta resistência mecânica utilizada na aviação.', {P:60, M:75, G:90}, 'aluminio'],
+      ['Cobre Eletrolítico', 'Fios e cabos de cobre de pureza máxima para redes elétricas.', {P:52, M:62, G:72}, 'cobre']
 ];
 
 
-    for (const [nome, desc, com, precos, cat] of metais) {
-      run('INSERT INTO metais (nome, descricao, composicao, precos, categoria) VALUES (?, ?, ?, ?, ?)',
-        [nome, desc, com, JSON.stringify(precos), cat]);
+    for (const [nome, desc, precos, cat] of metais) {
+      run('INSERT INTO metais (nome, descricao, precos, categoria) VALUES (?, ?, ?, ?, ?)',
+        [nome, desc, JSON.stringify(precos), cat]);
         //para criar novos metais
 
     }

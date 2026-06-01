@@ -65,7 +65,6 @@ const ready = (async () => {
       id           INTEGER PRIMARY KEY AUTOINCREMENT,
       nome         TEXT    NOT NULL,
       descricao    TEXT    NOT NULL DEFAULT '',
-      composicao TEXT      NOT NULL,
       precos       TEXT    NOT NULL DEFAULT '{"P":0,"M":0,"G":0}',
       disponivel   INTEGER NOT NULL DEFAULT 1,
       categoria    TEXT    NOT NULL DEFAULT 'tradicional',

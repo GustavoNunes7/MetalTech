@@ -60,8 +60,8 @@ router.get('/metais/:id', auth, async (req, res) => {
 // Requisição da Json no caminho das metais verificando se foi digitado o Nome e composição do metal
 router.post('/metais', auth, async (req, res) => {
   try {
-    if (!req.body.nome || !req.body.composicao)
-      return res.status(400).json({ erro: 'Nome e composição são obrigatórios' });
+    if (!req.body.nome == '')
+      return res.status(400).json({ erro: 'Nome é obrigatórios' });
     res.status(201).json(await Metal.create(req.body));
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
@@ -72,12 +72,12 @@ router.post('/metais', auth, async (req, res) => {
 // Requisição da Json no caminho das metais consultando pelo id da Metal caso dê erro, e tentando atualizar
 router.put('/metais/:id', auth, async (req, res) => {
   try {
-    const p = await Metais.update(req.params.id, req.body);
+    // CORREÇÃO: Mudado de 'Metais.update' para 'Metal.update' (no singular)
+    const p = await Metal.update(req.params.id, req.body);
     if (!p) return res.status(404).json({ erro: 'Metal não encontrada' });
     res.json(p);
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
-
 
 
 

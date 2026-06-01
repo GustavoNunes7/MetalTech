@@ -357,7 +357,7 @@ async function salvarPedidoEntrega() {
     const pid = row.querySelector('.ip').value;
     if (!pid) { valido = false; return; }
     itens.push({
-      metaL:      pid,
+      metal: pid,
       tamanho:    row.querySelector('.it').value,
       quantidade: parseInt(row.querySelector('.iq').value) || 1,
     });
@@ -540,7 +540,7 @@ async function carregarMetais() {
               <td>${R$(p.precos?.M)}</td>
               <td><strong style="color:var(--gold)">${R$(p.precos?.G)}</strong></td>
               <td><span class="badge ${p.disponivel ? 'b-on' : 'b-off'}">${p.disponivel ? '✅ Disponível' : '❌ Off'}</span></td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarMetal('${p.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarMetal('${p.id}','${p.nome}')">🗑️</button></div></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarMetal('${p._id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarMetal('${p._id}','${p.nome}')">🗑️</button></div></td>
              </tr>`).join('')}
         </tbody>
       </table>`;
@@ -550,23 +550,6 @@ async function carregarMetais() {
 }
 // Strong = é um elemento semântico usado para indicar que um texto tem forte importância
 //getElementById= vai atras de um elemento pelo id
-
-function editarMetal(id) {
-  console.log("Editando metal:", id);
-
-  // abre o modal
-  document.getElementById("m-Metal").style.display = "flex";
-
-  // muda título pra edição
-  document.getElementById("m-metal-t").innerText = "Editar Metal";
-
-  // salva o ID no hidden
-  document.getElementById("p-id").value = id;
-
-  // aqui você deveria buscar os dados no backend
-  // exemplo:
-  // fetch(`/metais/${id}`)
-}
 
 
 
@@ -586,59 +569,83 @@ function abrirMetal() {
 
 //edita valores e coisas da metal
 
+// ============================= LOGICA DE EDICAO DE METAIS =============================
+
+// ============================= SISTEMA DE EDIÇÃO CORRIGIDO =============================
+
 function editarMetal(id) {
-  const p = cMetais.find(x => x._id === _id);
-  if (!p) return;
-  document.getElementById('m-metal-t').textContent = 'Editar Metal';
-  document.getElementById('p-id').value = p._id;
-  document.getElementById('p-nome').value = p.nome;
-  document.getElementById('p-com').value  = p.composicao;
-  document.getElementById('p-desc').value = p.descricao || '';
-  document.getElementById('p-pp').value   = p.precos?.P || '';
-  document.getElementById('p-pm').value   = p.precos?.M || '';
-  document.getElementById('p-pg').value   = p.precos?.G || '';
-  document.getElementById('p-cat').value  = p.categoria || 'tradicional';
-  document.getElementById('p-disp').value = String(p.disponivel);
-  abrir('m-metal');
+  // Busca o ID garantindo que texto ou número (ex: 1) funcionem na comparação
+  const metal = cMetais.find(m => String(m.id) === String(id) || String(m._id) === String(id));
+  
+  if (!metal) {
+    toast('Metal não encontrado!', 'err');
+    return;
+  }
+
+  // Preenche o campo oculto com o ID e os outros inputs do formulário
+  document.getElementById('m-id').value = metal.id || metal._id;
+  document.getElementById('m-nome').value = metal.nome;
+  
+  if (metal.precos) {
+    document.getElementById('m-preco-p').value = metal.precos.P || 0;
+    document.getElementById('m-preco-m').value = metal.precos.M || 0;
+    document.getElementById('m-preco-g').value = metal.precos.G || 0;
+  } else if (metal.preco) {
+    document.getElementById('m-preco-g').value = metal.preco;
+  }
+
+  // Define o título e abre o modal correto
+  document.getElementById('modal-metais-titulo').textContent = 'Editar Metal';
+  abrir('m-modal-metais');
 }
 
-//adiciona uma novo metal para o menu essa função aqui
-async function salvarMetal() {
-  const id   = document.getElementById('p-id').value;
-  const nome = document.getElementById('p-nome').value.trim();
-  const com  = document.getElementById('p-com').value.trim();
-  if (!nome || !com) { toast('Nome e composições são obrigatórios', 'err'); return; }
+async function salvarMetal(event) {
+  // IMPEDIR O COMPORTAMENTO PADRÃO DE ATUALIZAR A PÁGINA (Isso evita voltar para o início)
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
-  const d = {
-    nome,
-    composicao: com,
-    descricao:    document.getElementById('p-desc').value.trim(),
+  const id   = document.getElementById('m-id').value;
+  const nome = document.getElementById('m-nome').value.trim();
+  
+  const dadosMetal = {
+    nome: nome,
     precos: {
-      P: parseFloat(document.getElementById('p-pp').value) || 0,
-      M: parseFloat(document.getElementById('p-pm').value) || 0,
-      G: parseFloat(document.getElementById('p-pg').value) || 0,
-    },
-    categoria:  document.getElementById('p-cat').value,
-    disponivel: document.getElementById('p-disp').value === 'true',
+      P: parseFloat(document.getElementById('m-preco-p').value) || 0,
+      M: parseFloat(document.getElementById('m-preco-m').value) || 0,
+      G: parseFloat(document.getElementById('m-preco-g').value) || 0
+    }
   };
 
   try {
-    id ? await api('PUT', '/metais/' + id, d) : await api('POST', '/metais', d);
-    toast(id ? 'metal atualizada!' : 'Metal criada!');
-    fechar('m-metal');
-    carregarMetais();
-  } catch (e) { toast('Erro: ' + e.message, 'err'); }
+    if (id) {
+      // Faz a requisição PUT usando o ID numérico (ex: /metais/1)
+      await api('PUT', `/metais/${id}`, dadosMetal);
+      toast('Metal atualizado com sucesso! ⚙️');
+    } else {
+      // Se não tiver ID, cria um novo
+      await api('POST', '/metais', dadosMetal);
+      toast('Metal cadastrado com sucesso! ⚙️');
+    }
+
+    fechar('m-modal-metais');
+    cMetais = []; // Força a limpeza para recarregar da API
+    
+    // CORREÇÃO: Força a página a recarregar de forma limpa sem perder a sessão
+    // para atualizar os dados na tela com segurança absoluta
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
+
+  } catch (e) {
+    // Evita o deslogar automático exibindo o erro real enviado pela sua API
+    toast('Erro no servidor: ' + e.message, 'err');
+    console.error("Falha na requisição da API:", e);
+  }
 }
 
-//deleta um metal essa função
-async function deletarMetal(id, nome) {
-  if (!confirm(`Deletar "${nome}"?`)) return;
-  try {
-    await api('DELETE', '/metais/' + id);
-    toast('Metal deletado!');
-    carregarMetais();
-  } catch (e) { toast('Erro: ' + e.message, 'err'); }
-}
+
 
 //essa função busca as informações sobre os clientes
 async function carregarClientes(busca = '') {

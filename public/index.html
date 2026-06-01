@@ -272,7 +272,7 @@
             <h2>Pedidos</h2>
             <p>Acompanhe e gerencie os pedidos</p>
           </div>
-          <button class="btn btn-red" onclick="abrirPedidoEntreg()"> + Novo Pedido </button>
+          <button class="btn btn-red" onclick="abrirPedido()"> + Novo Pedido </button>
         </div>
 
         <div class="pg-body">
@@ -474,60 +474,43 @@
 
 
   <!-- // ==================================  NOVO Metal ============================= // -->
+<!-- MODAL DE METAIS - COLEM NO FINAL DO SEU HTML -->
+<div id="m-modal-metais" class="modal-bg">
+  <div class="modal-content" style="background:#fff; padding:20px; border-radius:8px; max-width:400px; margin:auto; position:relative; top:10%;">
+    <h3 id="modal-metais-titulo" style="margin-top:0;">Novo Metal</h3>
+    
+    <form onsubmit="salvarMetal(event)">
+      <!-- O ID INVISÍVEL QUE ESTAVA FALTANDO FICA AQUI -->
+      <input type="hidden" id="m-id" value="">
 
-  <div id="m-Metal" class="modal-bg">
-
-    <div class="modal">
-
-      <h3 id="m-metal-t">Novo Metal</h3>
-      <input type="hidden" id="p-id">
-
-      <div class="fr2">
-        <div class="fg"><label>Nome *</label><input id="p-nome" placeholder="Ex: Chapa de Mteal"></div>
-        <!--Caixa de entrada para inserir no nome da meta-->
-
-        <div class="fg"><label>Categoria</label>
-
-          <select id="p-cat"> <!--Caixa de selecionar a categoria da metal-->
-            <option value="ferro">Ferro</option>
-            <option value="aco">Aço</option>
-            <option value="aluminio">Alumínio</option>
-            <option value="cobre">Cobre</option>
-          </select>
-
-        </div>
-
+      <div class="fg" style="margin-bottom:10px;">
+        <label style="display:block; margin-bottom:4px;">Nome do Metal</label>
+        <input type="text" id="m-nome" style="width:100%; padding:6px;" required>
+      </div>
+      
+      <div class="fg" style="margin-bottom:10px;">
+        <label style="display:block; margin-bottom:4px;">Preço P</label>
+        <input type="number" step="0.01" id="m-preco-p" style="width:100%; padding:6px;" required>
+      </div>
+      
+      <div class="fg" style="margin-bottom:10px;">
+        <label style="display:block; margin-bottom:4px;">Preço M</label>
+        <input type="number" step="0.01" id="m-preco-m" style="width:100%; padding:6px;" required>
+      </div>
+      
+      <div class="fg" style="margin-bottom:15px;">
+        <label style="display:block; margin-bottom:4px;">Preço G</label>
+        <input type="number" step="0.01" id="m-preco-g" style="width:100%; padding:6px;" required>
       </div>
 
-      <div class="fg"><label>Composição *</label><input id="p-ing" placeholder="Ferro, Carbono, Inox..."></div>
-      <!--Mostrar a composição presente na metal-->
-      <div class="fg"><label>Descrição</label><input id="p-desc" placeholder="Breve descrição..."></div>
-      <!--Mostrar uma breve descrição metal-->
-
-      <div class="fr3"><!--Mostrar os tipos de preço da metal-->
-        <div class="fg"><label>Preço P (R$)</label><input id="p-pp" type="number" step="0.01" min="0"
-            placeholder="35,00"></div>
-        <div class="fg"><label>Preço M (R$)</label><input id="p-pm" type="number" step="0.01" min="0"
-            placeholder="50,00"></div>
-        <div class="fg"><label>Preço G (R$)</label><input id="p-pg" type="number" step="0.01" min="0"
-            placeholder="85,00"></div>
+      <div class="modal-buttons" style="display:flex; gap:10px; justify-content:flex-end;">
+        <button type="submit" class="btn btn-blue" style="padding:6px 12px;">Salvar</button>
+        <button type="button" class="btn" style="padding:6px 12px;" onclick="fechar('m-modal-metais')">Cancelar</button>
       </div>
-
-      <div class="fg"><label>Disponível</label> <!--Verificar se a Metal está disponível-->
-        <select id="p-disp">
-          <option value="true">✅ Sim</option>
-          <option value="false">❌ Não</option>
-        </select>
-      </div>
-
-      <div class="modal-foot">
-        <button class="btn btn-ghost" onclick="fechar('m-metal')">Cancelar</button> <!--Botão para cancelar a metal-->
-        <button class="btn btn-red" onclick="salvarMetal()">Salvar</button> <!--Botão para salvar a metal-->
-      </div>
-
-    </div>
-
+    </form>
   </div>
+</div>
+
   <!-- // ==================================  FIM NOVO METAL ============================= // -->
 
   <!-- // ==================================  NOVO CLIENTE ============================= // -->

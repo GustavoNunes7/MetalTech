@@ -15,7 +15,6 @@ function formatarMetal(row) {
     id:          row.id,
     nome:        row.nome,
     descricao:   row.descricao,
-    composição:  row.composição,
     precos:      JSON.parse(row.precos || '{"P":0,"M":0,"G":0}'),
     disponivel:  row.disponivel === 1,
     categoria:   row.categoria,
@@ -44,18 +43,18 @@ const Metal = {
 
 
   //Adiciona no menu uma nova metal a partir das categorias
-  async create({ nome, descricao = '', composição, precos = {}, disponivel = true, categoria = 'tradicional' }) {
+  async create({ nome, descricao = '',precos = {}, disponivel = true, categoria = 'tradicional' }) {
     await ready;  //Executa quando o banco de dados estiver conectado, para evitar erros
     const info = run(
-      'INSERT INTO metais (nome, descricao, composição, precos, composição, categoria) VALUES (?, ?, ?, ?, ?, ?)',
-      [nome.trim(), descricao.trim(), composição.trim(),
+      'INSERT INTO metais (nome, descricao, precos,  categoria) VALUES (?, ?, ?, ?, ?, ?)',
+      [nome.trim(), descricao.trim(),
        JSON.stringify({ P: precos.P || 0, M: precos.M || 0, G: precos.G || 0 }),
        disponivel ? 1 : 0, categoria]
     );
     return this.findById(info.lastInsertRowid); //Retorna as informações para conferir os dados inseridos da nova metal
   },
  //Atualiza os dados de uma metal que ja existe no menu
-  async update(id, { nome, descricao, composição, precos, disponivel, categoria }) {
+  async update(id, { nome, descricao, precos, disponivel, categoria }) {
     await ready;  //Executa quando o banco de dados estiver conectado, para evitar erros
     const atual = get('SELECT * FROM metais WHERE id = ?', [id]);
     if (!atual) return null; //Caso não encontre o metal , ela não dará prosseguimento
@@ -72,7 +71,6 @@ const Metal = {
       UPDATE metais SET
         nome         = ?,
         descricao    = ?,
-        composições  = ?,
         precos       = ?,
         disponivel   = ?,
         categoria    = ?,
@@ -81,7 +79,6 @@ const Metal = {
     `, [
       nome         ?? atual.nome,
       descricao    ?? atual.descricao,
-      composições  ?? atual.composições,
       JSON.stringify(precosFinal),
       disponivel   !== undefined ? (disponivel ? 1 : 0) : atual.disponivel,
       categoria    ?? atual.categoria,
