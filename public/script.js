@@ -277,7 +277,7 @@ async function carregarEntregas(entregaFiltro = null) {
               📝 Status
             </button>
             <button class="btn btn-green btn-sm"
-              onclick="abrirFecharEntrega(${entrega}, ${totalEntrega}, '${peds.map(p=>p.id).join(',')}')">
+              onclick="abrirFecharEntrega(${entrega}, ${totalEntrega}, '${peds.map(p=>p._id).join(',')}')">
               ✅ Fechar
             </button>
           </div>
@@ -436,7 +436,7 @@ function ir(pg, btn) {
   if (pg === 'entregas' && perfil !== 'Entregador') {
     toast('Área exclusiva para Entregador', 'err'); return;
   }
-  if (perfil === 'entregador' && !['entregas','metais'].includes(pg)) {
+  if (perfil === 'Entregador' && !['entregas','metais'].includes(pg)) {
     toast('Acesso não permitido para Entregador', 'err'); return;
   }
   document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
@@ -459,10 +459,13 @@ function ir(pg, btn) {
 
 // Essa função é responsável por utilizada para navegar entre seções com base no tipo de perfil 
 async function carregarDashboard() {
-  const delay = ms => new Promise(res => setTimeout(res, ms));
   const h = new Date().getHours();
   const s = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
-  document.getElementById('dash-sub').textContent = `${s}! Aqui está o resumo.`;
+
+  const dashSub = document.getElementById('dash-sub');
+  if (dashSub) {
+    dashSub.textContent = `${s}! Aqui está o resumo.`;
+  }
 
   try {
     const [metais, clientes, pedidos] = await Promise.all([
@@ -471,44 +474,92 @@ async function carregarDashboard() {
       api('GET', '/pedidos'),
     ]);
 
-    cMetais   = metais;
+    cMetais = metais;
     cClientes = clientes;
 
-    document.getElementById('s-piz').textContent = metais.length;
-    document.getElementById('s-cli').textContent = clientes.length;
-    document.getElementById('s-ped').textContent = pedidos.length;
-    document.getElementById('s-ent').textContent =
-      pedidos.filter(p => p.status === 'saiu_entrega').length;
-    document.getElementById('s-fat').textContent =
-      R$(pedidos.reduce((acc, p) => acc + (p.total || 0), 0));
+    const setText = (id, valor) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = valor;
+    };
 
-    const pend = pedidos.filter(p => !['entregue','cancelado'].includes(p.status)).length;
-    document.getElementById('s-ped-sub').textContent = `${pend} pendente(s)`;
+    setText('s-piz', metais.length);
+    setText('s-cli', clientes.length);
+    setText('s-ped', pedidos.length);
+    setText(
+      's-ent',
+      pedidos.filter(p => p.status === 'saiu_entrega').length
+    );
+    setText(
+      's-fat',
+      R$(pedidos.reduce((acc, p) => acc + (p.total || 0), 0))
+    );
+
+    const pend = pedidos.filter(
+      p => !['entregue', 'cancelado'].includes(p.status)
+    ).length;
+
+    setText('s-ped-sub', `${pend} pendente(s)`);
 
     const elP = document.getElementById('dash-pedidos');
-    elP.innerHTML = pedidos.slice(0, 8).map(p => `
-      <div class="mini-row">
-        <div>
-          <div class="mn">#${String(p.numeroPedido || '?').padStart(3,'0')} · ${p.cliente?.nome || '—'}</div>
-          <div class="mc">${new Date(p.createdAt).toLocaleString('pt-BR')}</div>
-        </div>
-        <div style="text-align:right">
-          ${badge(p.status)}<br>
-          <small style="color:var(--muted)">${R$(p.total)}</small>
-        </div>
-      </div>`).join('') ||
-      '<div class="empty"><span class="ei">📋</span>Nenhum pedido ainda</div>';
 
-    const elC = document.getElementById('dash-catalago');
-    elC.innerHTML = metais.filter(p => p.disponivel).slice(0, 8).map(p => `
-      <div class="mini-row">
-        <span>⚙️ ${p.nome}</span>
-        <small style="color:var(--muted)">${R$(p.precos?.G)}</small>
-      </div>`).join('') ||
-      '<div class="empty"><span class="ei">⚙️</span>Nenhum metal</div>';
-      
+    if (elP) {
+      elP.innerHTML =
+        pedidos
+          .slice(0, 8)
+          .map(
+            p => `
+            <div class="mini-row">
+              <div>
+                <div class="mn">
+                  #${String(p.numeroPedido || '?').padStart(3, '0')}
+                  · ${p.cliente?.nome || '—'}
+                </div>
+                <div class="mc">
+                  ${new Date(p.createdAt).toLocaleString('pt-BR')}
+                </div>
+              </div>
+              <div style="text-align:right">
+                ${badge(p.status)}<br>
+                <small style="color:var(--muted)">
+                  ${R$(p.total)}
+                </small>
+              </div>
+            </div>
+          `
+          )
+          .join('') ||
+        '<div class="empty"><span class="ei">📋</span>Nenhum pedido ainda</div>';
+    }
 
-  } catch (e) { toast('Erro dashboard: ' + e.message, 'err'); }
+    // ATENÇÃO:
+    // confira no HTML se o id é dash-catalago ou dash-catalogo
+
+    const elC =
+      document.getElementById('dash-catalogo') ||
+      document.getElementById('dash-catalogo');
+
+    if (elC) {
+      elC.innerHTML =
+        metais
+          .filter(p => p.disponivel)
+          .slice(0, 8)
+          .map(
+            p => `
+            <div class="mini-row">
+              <span>⚙️ ${p.nome}</span>
+              <small style="color:var(--muted)">
+                ${R$(p.precos?.G)}
+              </small>
+            </div>
+          `
+          )
+          .join('') ||
+        '<div class="empty"><span class="ei">⚙️</span>Nenhum metal</div>';
+    }
+  } catch (e) {
+    console.error(e);
+    toast('Erro dashboard: ' + e.message, 'err');
+  }
 }
 
 
@@ -527,7 +578,7 @@ async function carregarMetais() {
     el.innerHTML = ` 
       <table>
         <thead>
-          <tr><th>Nome</th><th>Categoria</th><th>composição</th><th>P</th><th>M</th><th>G</th><th>Status</th><th>Ações</th>
+          <tr><th>Nome</th><th>Categoria</th><th>P</th><th>M</th><th>G</th><th>Status</th><th>Ações</th>
         </thead>
         <tbody>
           ${cMetais.map(p => `
@@ -535,7 +586,6 @@ async function carregarMetais() {
             
               <td><strong>${p.nome}</strong><br><small style="color:var(--muted)">${p.descricao || ''}</small></td>
               <td><span class="badge b-cat">${p.categoria || 'tradicional'}</span></td>
-              <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.composicao || ''}</td>
               <td>${R$(p.precos?.P)}</td>
               <td>${R$(p.precos?.M)}</td>
               <td><strong style="color:var(--gold)">${R$(p.precos?.G)}</strong></td>
@@ -558,8 +608,11 @@ async function carregarMetais() {
 // essa fuction é responsavel por limpar os cadastros de pedidos de metais, quando já entregue a metal para liberar espaço
 function abrirMetal() {
   document.getElementById('m-metal-t').textContent = 'Novo Metal';
-  ['p-id','p-nome','p-com','p-desc','p-pp','p-pm','p-pg']
-    .forEach(id => document.id.value = '');
+  ['p-id','p-nome','p-desc','p-pp','p-pm','p-pg']
+    .forEach(id => {
+      const el = document.getElementById(id);
+  if (el) el.value = '';
+});
   document.getElementById('p-cat').value  = 'tradicional';
   document.getElementById('p-disp').value = 'true';
   abrir('m-metal');
@@ -698,11 +751,14 @@ function abrirCliente() {
 
 //informações do cliente e editar ele
 function editarCliente(id) {
-  const c = cClientes.find(x => x.id === id);
+ const c = cClientes.find(x =>
+  String(x.id) === String(id) ||
+  String(x._id) === String(id)
+);
   if (!c) return;
   document.getElementById('m-cli-t').textContent    = 'Editar Cliente';
   document.getElementById('c-id').value     = c.id;
-  document.getElementById('c-nome').value   = c.nome;''
+  document.getElementById('c-nome').value   = c.nome;
   document.getElementById('c-tel').value    = c.telefone;
   document.getElementById('c-rua').value    = c.endereco?.rua || '';
   document.getElementById('c-num').value    = c.endereco?.numero || '';
@@ -782,7 +838,7 @@ async function carregarPedidos() {
               <td style="font-size:.76rem">${(p.formaPagamento || '—').replace('_', ' ')}</td>
               <td>${badge(p.status)}</td>
               <td style="font-size:.7rem;color:var(--muted)">${new Date(p.createdAt).toLocaleString('pt-BR')}</td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="abrirStatus('${p.id}','${p.status}')">📝</button><button class="btn btn-danger btn-sm" onclick="deletarPedido('${p.id}')">🗑️</button></div></td>
+              <td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="abrirStatus('${p._id}','${p.status}')">📝</button><button class="btn btn-danger btn-sm" onclick="deletarPedido('${p._id}')">🗑️</button></div></td>
             </tr>`).join('')}
         </tbody>
       </table>`;
@@ -866,38 +922,64 @@ function toggleTroco() {
 //esse codigo guarda os dados do pedido, como qual sabor, tamanho e quantidade
 async function salvarPedido() {
   const cliId = document.getElementById('ped-cli').value;
-  if (!cliId) { toast('Selecione um cliente', 'err'); return; }
+  if (!cliId) { 
+    toast('Selecione um cliente', 'err'); 
+    return; 
+  }
 
   const itens = [];
   let valido = true;
+  
+  // Captura os itens da lista
   document.querySelectorAll('#itens-lista .item-row').forEach(row => {
     const pid = row.querySelector('.ip').value;
-    if (!pid) { valido = false; return; }
+    if (!pid) { 
+      valido = false; 
+      return; 
+    }
     itens.push({
-      metal:      pid,
+      metal:      pid, // Certifique-se que o backend espera 'metal'
       tamanho:    row.querySelector('.it').value,
       quantidade: parseInt(row.querySelector('.iq').value) || 1,
     });
   });
 
   if (!valido || !itens.length) {
-    toast('Adicione ao menos um item válido', 'err'); return;
+    toast('Adicione ao menos um item válido', 'err'); 
+    return;
   }
 
   try {
+    // Captura os valores finais
+    const taxaEntrega = parseFloat(document.getElementById('ped-taxa').value) || 0;
+    const formaPagamento = document.getElementById('ped-pag').value;
+    const trocoInput = document.getElementById('ped-troco');
+    const troco = trocoInput ? (parseFloat(trocoInput.value) || 0) : 0;
+    const observacoes = document.getElementById('ped-obs').value;
+
+    // Chamada para a API
     await api('POST', '/pedidos', {
-      cliente:        cliId,
-      itens,
-      taxaEntrega:    parseFloat(document.getElementById('ped-taxa').value) || 0,
-      formaPagamento: document.getElementById('ped-pag').value,
-      troco:          parseFloat(document.getElementById('ped-troco')?.value) || 0,
-      observacoes:    document.getElementById('ped-obs').value,
+      cliente: cliId,
+      itens: itens,
+      taxaEntrega: taxaEntrega,
+      formaPagamento: formaPagamento,
+      troco: troco,
+      observacoes: observacoes,
     });
-    toast('Pedido criado! ⚙️');
+
+    toast('Pedido criado com sucesso! ⚙️');
     fechar('m-pedido');
-    carregarPedidos();
-  } catch (e) { toast('Erro: ' + e.message, 'err'); }
+    carregarPedidos(); // Atualiza a tabela de pedidos
+    
+    // Opcional: recarregar dashboard se estiver nela
+    if (typeof carregarDashboard === 'function') carregarDashboard();
+
+  } catch (e) { 
+    console.error("Erro ao salvar pedido:", e);
+    toast('Erro ao salvar: ' + e.message, 'err'); 
+  }
 }
+
 
 
 //exibe o status abrindo uma interface de visualização e tal
@@ -998,3 +1080,14 @@ async function deletarUsuario(id, nome) {
   } catch (e) { toast('Erro: ' + e.message, 'err'); }
 }
 
+async function deletarMetal(id, nome) {
+  if (!confirm(`Deletar "${nome}"?`)) return;
+
+  try {
+    await api('DELETE', '/metais/' + id);
+    toast('Metal deletado!');
+    carregarMetais();
+  } catch (e) {
+    toast('Erro: ' + e.message, 'err');
+  }
+}
