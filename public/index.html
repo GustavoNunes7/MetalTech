@@ -481,13 +481,15 @@
     
     <form onsubmit="salvarMetal(event)">
       <!-- O ID INVISÍVEL QUE ESTAVA FALTANDO FICA AQUI -->
-      <input type="hidden" id="m-id" value="">
+     <input type="hidden" id="m-id" value="">
 
       <div class="fg" style="margin-bottom:10px;">
         <label style="display:block; margin-bottom:4px;">Nome do Metal</label>
         <input type="text" id="m-nome" style="width:100%; padding:6px;" required>
       </div>
       
+      <div class="fg"><label>Descrição</label><input id="p-desc" placeholder="Breve descrição..."></div>
+
       <div class="fg" style="margin-bottom:10px;">
         <label style="display:block; margin-bottom:4px;">Preço P</label>
         <input type="number" step="0.01" id="m-preco-p" style="width:100%; padding:6px;" required>
@@ -502,6 +504,13 @@
         <label style="display:block; margin-bottom:4px;">Preço G</label>
         <input type="number" step="0.01" id="m-preco-g" style="width:100%; padding:6px;" required>
       </div>
+
+      <div class="fg"><label>Disponível</label> <!--Verificar se a Pizza está disponível-->
+      <select id="p-disp">
+        <option value="true">✅ Sim</option>
+        <option value="false">❌ Não</option>
+      </select>
+    </div>
 
       <div class="modal-buttons" style="display:flex; gap:10px; justify-content:flex-end;">
         <button type="submit" class="btn btn-blue" style="padding:6px 12px;">Salvar</button>
