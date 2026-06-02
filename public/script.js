@@ -605,18 +605,18 @@ async function carregarMetais() {
 
 
 //_____________________________________________________________________________
-// essa fuction é responsavel por limpar os cadastros de pedidos de metais, quando já entregue a metal para liberar espaço
+// essa fuction é responsável por limpar os cadastros de pedidos de metais, quando já entregue a metal para liberar espaço
 function abrirMetal() {
   document.getElementById('m-metal-t').textContent = 'Novo Metal';
   ['p-id','p-nome','p-desc','p-pp','p-pm','p-pg']
     .forEach(id => {
       const el = document.getElementById(id);
-  if (el) el.value = '';
-});
+  if (el) el.value = ''});
+};
   document.getElementById('p-cat').value  = 'tradicional';
   document.getElementById('p-disp').value = 'true';
   abrir('m-metal');
-}
+
 
 //_____________________________________________________________________________
 
@@ -653,17 +653,16 @@ function editarMetal(id) {
 }
 
 async function salvarMetal(event) {
-  // IMPEDIR O COMPORTAMENTO PADRÃO DE ATUALIZAR A PÁGINA (Isso evita voltar para o início)
   if (event) {
     event.preventDefault();
     event.stopPropagation();
   }
 
-  const id   = document.getElementById('m-id').value;
+  const id = document.getElementById('m-id').value;
   const nome = document.getElementById('m-nome').value.trim();
-  
+
   const dadosMetal = {
-    nome: nome,
+    nome,
     precos: {
       P: parseFloat(document.getElementById('m-preco-p').value) || 0,
       M: parseFloat(document.getElementById('m-preco-m').value) || 0,
@@ -673,28 +672,19 @@ async function salvarMetal(event) {
 
   try {
     if (id) {
-      // Faz a requisição PUT usando o ID numérico (ex: /metais/1)
       await api('PUT', `/metais/${id}`, dadosMetal);
       toast('Metal atualizado com sucesso! ⚙️');
     } else {
-      // Se não tiver ID, cria um novo
       await api('POST', '/metais', dadosMetal);
       toast('Metal cadastrado com sucesso! ⚙️');
     }
 
     fechar('m-modal-metais');
-    cMetais = []; // Força a limpeza para recarregar da API
-    
-    // CORREÇÃO: Força a página a recarregar de forma limpa sem perder a sessão
-    // para atualizar os dados na tela com segurança absoluta
-    setTimeout(() => {
-      window.location.reload();
-    }, 800);
+    await carregarMetais();
 
   } catch (e) {
-    // Evita o deslogar automático exibindo o erro real enviado pela sua API
     toast('Erro no servidor: ' + e.message, 'err');
-    console.error("Falha na requisição da API:", e);
+    console.error(e);
   }
 }
 
@@ -744,7 +734,7 @@ function buscarCli(v) {
 function abrirCliente() {
   document.getElementById('m-cli-t').textContent = 'Novo Cliente';
   ['c-id','c-nome','c-tel','c-rua','c-num','c-bairro','c-cidade','c-cep','c-comp','c-obs']
-    .forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   abrir('m-cliente');
 }
 
