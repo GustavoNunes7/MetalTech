@@ -61,10 +61,6 @@ h2{
 }
   
 
-canvas{
-  width: 15px;
-}
-
 .input-icon2{
   padding-left: 35px;
   background-repeat: no-repeat;
@@ -859,7 +855,6 @@ select option { background: var(--surf2); } /*Menus suspensos*/
   }
 }
 
-/* Estilo da área azul menor */
 
 
 

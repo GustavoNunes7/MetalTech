@@ -89,7 +89,7 @@ function fechar(id) {
 document.querySelectorAll(".modal-bg").forEach((bg) =>
   bg.addEventListener("click", (e) => {
     if (e.target === bg) bg.classList.remove("open");
-  })
+  }),
 );
 
 function R$(v) {
@@ -154,6 +154,7 @@ function aplicarPerfil(usuario) {
   const perfil = usuario.perfil;
   const isAdmin = perfil === "Administrador";
   const isGar = perfil === "Entregador";
+  const isCliente = perfil === "Cliente";
 
   function show(id, visible, type = "flex") {
     const el = document.getElementById(id);
@@ -165,6 +166,37 @@ function aplicarPerfil(usuario) {
   }
 
   show("menu-usuarios", isAdmin, "block");
+  if (isCliente) {
+
+  document
+    .querySelector('[onclick*="dashboard"]')
+    ?.remove();
+
+  document
+    .querySelector('[onclick*="pedidos"]')
+    ?.remove();
+
+  document
+    .querySelector('[onclick*="clientes"]')
+    ?.remove();
+
+  document
+    .querySelector('[onclick*="usuarios"]')
+    ?.remove();
+
+  document
+    .querySelector('[onclick*="entregas"]')
+    ?.remove();
+
+  const lbl = document.getElementById("nav-metais-label");
+
+  if (lbl) {
+    lbl.textContent = "Catálogo";
+  }
+
+  carregarCatalogoCliente();
+  carregarMeusPedidos();
+}
   show("btn-usuarios", isAdmin, "flex");
   show("sb-group-entregador", isGar, "block");
   show("btn-nav-entregas", isGar, "flex");
@@ -191,7 +223,9 @@ function aplicarPerfil(usuario) {
   show("stat-cli", !isGar, "block");
 
   // livres ou não entregas
-  if (isGar) {
+  if (isCliente) {
+    ir("metais");
+  } else if (isGar) {
     ir("entregas", document.getElementById("btn-nav-entregas"));
   } else {
     ir("dashboard", document.querySelector('[onclick*="dashboard"]'));
@@ -215,25 +249,24 @@ async function carregarEntregas(entregaFiltro = null) {
     const pedidos = await api("GET", url);
 
     const ativos = pedidos.filter(
-      (p) => !["entregue", "cancelado"].includes(p.status)
+      (p) => !["entregue", "cancelado"].includes(p.status),
     );
 
     const gPed = document.getElementById("g-ped");
     if (gPed) gPed.textContent = pedidos.length;
 
-    document.getElementById(
-      "g-ped-sub"
-    ).textContent = `${ativos.length} ativo(s)`;
+    document.getElementById("g-ped-sub").textContent =
+      `${ativos.length} ativo(s)`;
 
     const entregasAtivas = new Set(
-      ativos.map((p) => p.entrega).filter(Boolean)
+      ativos.map((p) => p.entrega).filter(Boolean),
     );
     document.getElementById("g-entregas").textContent = entregasAtivas.size;
     document.getElementById("g-preparo").textContent = ativos.filter(
-      (p) => p.status === "em_preparo"
+      (p) => p.status === "em_preparo",
     ).length;
     document.getElementById("g-prontos").textContent = ativos.filter(
-      (p) => p.status === "saiu_entrega"
+      (p) => p.status === "saiu_entrega",
     ).length;
 
     const botoes = document.getElementById("entrega-botoes");
@@ -294,8 +327,8 @@ async function carregarEntregas(entregaFiltro = null) {
               <div class="entrega-num">Entrega ${entrega}</div>
               <div style="font-size:.72rem;color:var(--muted);margin-top:2px">
                 ${peds.length} pedido(s) · ${
-          peds[0]?.cliente?.nome || "Sem cadastro"
-        }
+                  peds[0]?.cliente?.nome || "Sem cadastro"
+                }
               </div>
             </div>
             ${badge(statusAtual)}
@@ -306,7 +339,7 @@ async function carregarEntregas(entregaFiltro = null) {
                 ([nome, qtd]) => `
               <div class="entrega-item">
                 <strong>${qtd}x ${nome}</strong>
-              </div>`
+              </div>`,
               )
               .join("")}
             <div class="entrega-total">
@@ -325,8 +358,8 @@ async function carregarEntregas(entregaFiltro = null) {
             </button>
             <button class="btn btn-green btn-sm"
               onclick="abrirFecharEntrega(${entrega}, ${totalEntrega}, '${peds
-          .map((p) => p._id)
-          .join(",")}')">
+                .map((p) => p._id)
+                .join(",")}')">
               ✅ Fechar
             </button>
           </div>
@@ -375,7 +408,7 @@ function addItemEntrega() {
       data-p="${p.precos?.P || 0}" data-m="${p.precos?.M || 0}" data-g="${
         p.precos?.G || 0
       }">
-      ${p.nome}</option>`
+      ${p.nome}</option>`,
     )
     .join("");
   d.innerHTML = `
@@ -479,13 +512,11 @@ async function salvarPedidoEntrega() {
 
 function abrirFecharEntrega(entrega, total, ids) {
   entregaEmFechamento = { entrega, total, ids: ids.split(",") };
-  document.getElementById(
-    "fm-titulo"
-  ).textContent = `Fechar Entrega ${entrega}`;
+  document.getElementById("fm-titulo").textContent =
+    `Fechar Entrega ${entrega}`;
   document.getElementById("fm-total").textContent = R$(total);
-  document.getElementById(
-    "fm-resumo"
-  ).innerHTML = `<p style="font-size:.82rem;color:var(--muted)">
+  document.getElementById("fm-resumo").innerHTML =
+    `<p style="font-size:.82rem;color:var(--muted)">
       ${entregaEmFechamento.ids.length} pedido(s) serão marcados como <strong style="color:var(--green)">Entregue</strong>.
     </p>`;
   abrir("m-fechar-entrega");
@@ -498,8 +529,8 @@ async function confirmarFechamento() {
   try {
     await Promise.all(
       entregaEmFechamento.ids.map((id) =>
-        api("PATCH", `/pedidos/${id}/status`, { status: "entregue" })
-      )
+        api("PATCH", `/pedidos/${id}/status`, { status: "entregue" }),
+      ),
     );
     toast(`Entrega ${entregaEmFechamento.entrega} fechada! ✅`); //status da entrega
     fechar("m-fechar-entrega");
@@ -575,7 +606,7 @@ async function carregarDashboard() {
     setText("s-fat", R$(pedidos.reduce((acc, p) => acc + (p.total || 0), 0)));
 
     const pend = pedidos.filter(
-      (p) => !["entregue", "cancelado"].includes(p.status)
+      (p) => !["entregue", "cancelado"].includes(p.status),
     ).length;
 
     setText("s-ped-sub", `${pend} pendente(s)`);
@@ -605,7 +636,7 @@ async function carregarDashboard() {
                 </small>
               </div>
             </div>
-          `
+          `,
           )
           .join("") ||
         '<div class="empty"><span class="ei">📋</span>Nenhum pedido ainda</div>';
@@ -631,7 +662,7 @@ async function carregarDashboard() {
                 ${R$(p.precos?.G)}
               </small>
             </div>
-          `
+          `,
           )
           .join("") ||
         '<div class="empty"><span class="ei">⚙️</span>Nenhum metal</div>';
@@ -646,55 +677,120 @@ async function carregarDashboard() {
 //é responsável por buscar uma lista de metais de uma API e exibi-las dinamicamente em uma tabela HTML
 async function carregarMetais() {
   const el = document.getElementById("tbl-metais");
+
   el.innerHTML =
     '<div class="spin-wrap"><div class="spin"></div> Carregando...</div>';
+
   try {
     cMetais = await api("GET", "/metais");
+
     if (!cMetais.length) {
       el.innerHTML =
         '<div class="empty"><span class="ei">⚙️</span>Nenhum metal</div>';
+
       return;
     }
-    //innerHTML = essa propriedade permite ler ou alterar o conteudo de um elemento DOM
-    el.innerHTML = ` 
+
+    const cliente = USUARIO_LOGADO?.perfil === "Cliente";
+
+    el.innerHTML = `
       <table>
         <thead>
-          <tr><th>Nome</th><th>Categoria</th><th>P</th><th>M</th><th>G</th><th>Status</th><th>Ações</th>
+          <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>P</th>
+            <th>M</th>
+            <th>G</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
         </thead>
+
         <tbody>
+
           ${cMetais
             .map(
               (p) => `
+
             <tr>
-            
-              <td><strong>${
-                p.nome
-              }</strong><br><small style="color:var(--muted)">${
-                p.descricao || ""
-              }</small></td>
-              <td><span class="badge b-cat">${nomeCategoria(
-                p.categoria
-              )}</span></td>
+
+              <td>
+                <strong>${p.nome}</strong>
+                <br>
+                <small style="color:var(--muted)">
+                  ${p.descricao || ""}
+                </small>
+              </td>
+
+              <td>
+                <span class="badge b-cat">
+                  ${nomeCategoria(p.categoria)}
+                </span>
+              </td>
+
               <td>${R$(p.precos?.P)}</td>
+
               <td>${R$(p.precos?.M)}</td>
-              <td><strong style="color:var(--gold)">${R$(
-                p.precos?.G
-              )}</strong></td>
-              <td><span class="badge ${p.disponivel ? "b-on" : "b-off"}">${
-                p.disponivel ? "✅ Disponível" : "❌ Off"
-              }</span></td>
-              <td><div style="display:flex;gap:5px"><button class="btn btn-ghost btn-sm" onclick="editarMetal('${
-                p._id
-              }')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarMetal('${
-                p._id
-              }','${p.nome}')">🗑️</button></div></td>
-             </tr>`
+
+              <td>
+                <strong style="color:var(--gold)">
+                  ${R$(p.precos?.G)}
+                </strong>
+              </td>
+
+              <td>
+                <span class="badge ${p.disponivel ? "b-on" : "b-off"}">
+                  ${p.disponivel ? "✅ Disponível" : "❌ Off"}
+                </span>
+              </td>
+
+              <td>
+
+                ${
+                  cliente
+                    ? `
+                  <button
+                    class="btn btn-red btn-sm"
+                    onclick="comprarMetal('${p._id}')">
+                    Pedir
+                  </button>
+                  `
+                    : `
+                  <div style="display:flex;gap:5px">
+
+                    <button
+                      class="btn btn-ghost btn-sm"
+                      onclick="editarMetal('${p._id}')">
+                      ✏️
+                    </button>
+
+                    <button
+                      class="btn btn-danger btn-sm"
+                      onclick="deletarMetal('${p._id}','${p.nome}')">
+                      🗑️
+                    </button>
+
+                  </div>
+                  `
+                }
+
+              </td>
+
+            </tr>
+
+          `,
             )
             .join("")}
+
         </tbody>
-      </table>`;
+
+      </table>
+    `;
   } catch (e) {
-    el.innerHTML = `<div class="empty" style="color:var(--red)">${e.message}</div>`;
+    el.innerHTML = `<div class="empty" style="color:var(--red)">
+        ${e.message}
+      </div>`;
   }
 }
 // Strong = é um elemento semântico usado para indicar que um texto tem forte importância
@@ -741,17 +837,14 @@ function abrirMetal() {
 // ============================= SISTEMA DE EDIÇÃO CORRIGIDO =============================
 
 function editarMetal(id) {
-  // Busca o ID garantindo que texto ou número (ex: 1) funcionem na comparação
   const metal = cMetais.find(
-    (m) => String(m.id) === String(id) || String(m._id) === String(id)
+    (m) => String(m.id) === String(id) || String(m._id) === String(id),
   );
-
   if (!metal) {
     toast("Metal não encontrado!", "err");
     return;
   }
 
-  // Preenche o campo oculto com o ID e os outros inputs do formulário
   document.getElementById("m-id").value = metal.id || metal._id;
   document.getElementById("m-nome").value = metal.nome;
 
@@ -764,7 +857,6 @@ function editarMetal(id) {
   }
   document.getElementById("m-categoria").value = metal.categoria || "aco";
 
-  // Define o título e abre o modal correto
   document.getElementById("modal-metais-titulo").textContent = "Editar Metal";
   abrir("m-modal-metais");
 }
@@ -850,7 +942,7 @@ async function carregarClientes(busca = "") {
               }')">✏️</button><button class="btn btn-danger btn-sm" onclick="deletarCliente('${
                 c._id
               }','${c.nome}')">🗑️</button></div></td>
-            </tr>`
+            </tr>`,
             )
             .join("")}
         </tbody>
@@ -892,7 +984,7 @@ function abrirCliente() {
 //informações do cliente e editar ele
 function editarCliente(id) {
   const c = cClientes.find(
-    (x) => String(x.id) === String(id) || String(x._id) === String(id)
+    (x) => String(x.id) === String(id) || String(x._id) === String(id),
   );
   if (!c) return;
   document.getElementById("m-cli-t").textContent = "Editar Cliente";
@@ -982,7 +1074,7 @@ async function carregarPedidos() {
               (p) => `
             <tr>
               <td><strong style="color:var(--red)">#${String(
-                p.numeroPedido || "?"
+                p.numeroPedido || "?",
               ).padStart(3, "0")}</strong></td>
               <td><strong>${
                 p.cliente?.nome || "—"
@@ -992,18 +1084,18 @@ async function carregarPedidos() {
               <td style="font-size:.76rem">${p.itens
                 .map(
                   (it) =>
-                    `${it.quantidade}x ${it.nomeMetal || "?"} (${it.tamanho})`
+                    `${it.quantidade}x ${it.nomeMetal || "?"} (${it.tamanho})`,
                 )
                 .join("<br>")}</td>
               <td>${R$(p.subtotal)}</td><td>${R$(p.taxaEntrega)}</td>
               <td><strong style="color:var(--gold)">${R$(p.total)}</strong></td>
               <td style="font-size:.76rem">${(p.formaPagamento || "—").replace(
                 "_",
-                " "
+                " ",
               )}</td>
               <td>${badge(p.status)}</td>
               <td style="font-size:.7rem;color:var(--muted)">${new Date(
-                p.createdAt
+                p.createdAt,
               ).toLocaleString("pt-BR")}</td>
               <td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="abrirStatus('${
                 p._id
@@ -1012,7 +1104,7 @@ async function carregarPedidos() {
               }')">📝</button><button class="btn btn-danger btn-sm" onclick="deletarPedido('${
                 p._id
               }')">🗑️</button></div></td>
-            </tr>`
+            </tr>`,
             )
             .join("")}
         </tbody>
@@ -1060,7 +1152,7 @@ function addItem() {
       (p) =>
         `<option value="${p._id}" data-p="${p.precos?.P || 0}" data-m="${
           p.precos?.M || 0
-        }" data-g="${p.precos?.G || 0}">${p.nome}</option>`
+        }" data-g="${p.precos?.G || 0}">${p.nome}</option>`,
     )
     .join("");
 
@@ -1232,12 +1324,12 @@ async function carregarUsuarios() {
                 u.ativo ? "Ativo" : "Inativo"
               }</span></td>
               <td style="font-size:.73rem;color:var(--muted)">${new Date(
-                u.createdAt
+                u.createdAt,
               ).toLocaleDateString("pt-BR")}</td>
               <td><button class="btn btn-danger btn-sm" onclick="deletarUsuario('${
                 u._id
               }','${u.nome}')">🗑️</button></td>
-            </tr>`
+            </tr>`,
             )
             .join("")}
         </tbody>
@@ -1249,7 +1341,7 @@ async function carregarUsuarios() {
 //ativa o perfil ao ele entrar no site / ser conectado
 function abrirUsuario() {
   ["u-nome", "u-email", "u-senha"].forEach(
-    (id) => (document.getElementById(id).value = "")
+    (id) => (document.getElementById(id).value = ""),
   );
   document.getElementById("u-perfil").value = "Atendente";
   abrir("m-usuario");
@@ -1306,58 +1398,36 @@ async function deletarMetal(id, nome) {
 }
 
 async function alterarStatusEntrega(idPedido) {
-
   const status = prompt(
-    'Digite o novo status:\n\n' +
-    'recebido\n' +
-    'em_preparo\n' +
-    'saiu_entrega\n' +
-    'entregue\n' +
-    'cancelado'
+    "Digite o novo status:\n\n" +
+      "recebido\n" +
+      "em_preparo\n" +
+      "saiu_entrega\n" +
+      "entregue\n" +
+      "cancelado",
   );
 
   if (!status) return;
 
   try {
-
-    await api(
-      'PATCH',
-      `/pedidos/${idPedido}/status`,
-      { status }
-    );
+    await api("PATCH", `/pedidos/${idPedido}/status`, { status });
 
     carregarEntregas();
-
   } catch (e) {
-
     alert(e.message);
-
   }
-
 }
 
-if (usuario.perfil === "Cliente") {
 
-  document.getElementById("btn-cliente").style.display = "flex";
-
-  document.querySelector('[onclick*="dashboard"]').style.display = "none";
-  document.querySelector('[onclick*="pedidos"]').style.display = "none";
-  document.querySelector('[onclick*="clientes"]').style.display = "none";
-  document.querySelector('[onclick*="metais"]').style.display = "none";
-
-  ir('cliente');
-}
 
 async function carregarCatalogoCliente() {
-
-  const res = await fetch('/api/metais');
+  const res = await fetch("/api/metais");
 
   const metais = await res.json();
 
-  let html = '';
+  let html = "";
 
-  metais.forEach(metal => {
-
+  metais.forEach((metal) => {
     const precos = JSON.parse(metal.precos);
 
     html += `
@@ -1386,80 +1456,68 @@ async function carregarCatalogoCliente() {
     `;
   });
 
-  document.getElementById('catalogo-cliente').innerHTML = html;
+  document.getElementById("catalogo-cliente").innerHTML = html;
 }
 
-function adicionarAoCarrinho(idMetal){
-
+function adicionarAoCarrinho(idMetal) {
   carrinhoCliente.push({
     metal_id: idMetal,
     quantidade: 1,
-    tamanho: 'M'
+    tamanho: "M",
   });
 
-  toast('Metal adicionado!');
+  toast("Metal adicionado!");
 }
-
 async function enviarPedidoCliente() {
 
-  const cliente = JSON.parse(
-    localStorage.getItem('usuario')
-  );
+  try {
 
-  const resposta = await fetch('/api/pedidos', {
+    await api("POST", "/pedidos", {
 
-    method:'POST',
-
-    headers:{
-      'Content-Type':'application/json',
-      Authorization:'Bearer ' + localStorage.token
-    },
-
-    body: JSON.stringify({
-
-      cliente_id: cliente.id,
+      cliente: USUARIO_LOGADO.id,
 
       itens: carrinhoCliente,
 
-      forma_pagamento:'pix',
+      taxaEntrega: 5,
 
-      observacoes:''
+      formaPagamento: "pix",
 
-    })
+      observacoes: "",
 
-  });
+      origem: "cliente"
 
-  if(resposta.ok){
+    });
 
-    toast('Pedido realizado!');
+    toast("Pedido realizado!");
 
     carrinhoCliente = [];
 
     carregarMeusPedidos();
+
   }
+  catch(e){
+
+    toast(e.message,"err");
+
+  }
+
 }
 
 
 async function carregarMeusPedidos() {
+  const token = localStorage.getItem("token");
 
-  const token =
-    localStorage.getItem('token');
-
-  const res = await fetch(
-    '/api/meus-pedidos',
-    {
-      headers: {
-        Authorization:
-          `Bearer ${token}`
-      }
-    }
-  );
+  const res = await fetch("/api/meus-pedidos", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const pedidos = await res.json();
 
-  document.getElementById(
-    'tbl-meus-pedidos'
-  ).innerHTML = pedidos.map(p => `
+  document.getElementById("tbl-meus-pedidos").innerHTML = pedidos
+    .map(
+      (p) => `
 
     <div class="card">
 
@@ -1479,24 +1537,51 @@ async function carregarMeusPedidos() {
 
     <br>
 
-  `).join('');
-
-
-
+  `,
+    )
+    .join("");
 
   function abrirPedidoCliente() {
+    abrirPedido();
+  }
 
-  abrirPedido();
+  if (usuario.perfil === "Cliente") {
+    ir("cliente");
 
+    carregarMeusPedidos();
+  }
+}
+
+function configurarTelaCliente() {
+  // esconder menus do gestor
+  document.querySelector('[onclick*="dashboard"]').style.display = "none";
+
+  document.querySelector('[onclick*="clientes"]').style.display = "none";
+
+  document.querySelector('[onclick*="usuarios"]').style.display = "none";
+
+  document.querySelector('[onclick*="entregas"]').style.display = "none";
+
+  // renomear
+  document.getElementById("nav-metais-label").innerText = "Catálogo";
 }
 
 
-if(usuario.perfil === 'Cliente'){
+function comprarMetal(idMetal){
 
-  ir('cliente');
+  carrinhoCliente = [];
 
-  carregarMeusPedidos();
+  carrinhoCliente.push({
+
+    metal: idMetal,
+
+    tamanho: "M",
+
+    quantidade: 1
+
+  });
+
+  enviarPedidoCliente();
 
 }
 
-}

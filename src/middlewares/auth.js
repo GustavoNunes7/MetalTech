@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 //cria a constante que chama o 'jsonwebtoken'
 
 //essa função autentifica o json

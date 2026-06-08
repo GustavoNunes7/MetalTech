@@ -427,59 +427,6 @@ router.post('/clientes/login', async (req, res) => {
 });
 
 
-router.post('/clientes/login', async (req, res) => {
-
-  try {
-
-    const { email, senha } = req.body;
-
-    const cliente =
-      await Cliente.findByEmail(email);
-
-    if (!cliente) {
-      return res.status(401).json({
-        erro: 'Cliente não encontrado'
-      });
-    }
-
-    const senhaOk =
-      await Cliente.verificarSenha(
-        senha,
-        cliente.senha
-      );
-
-    if (!senhaOk) {
-      return res.status(401).json({
-        erro: 'Senha inválida'
-      });
-    }
-
-    const token = jwt.sign(
-      {
-        id: cliente.id,
-        tipo: 'cliente'
-      },
-      process.env.JWT_SECRET
-    );
-
-    res.json({
-      token,
-      cliente
-    });
-
-  } catch (erro) {
-
-    console.error(erro);
-
-    res.status(500).json({
-      erro: 'Erro no login'
-    });
-
-  }
-
-});
-
-
 router.get('/cliente/:id', async (req,res)=>{
 
   const pedidos = await Pedido.findByCliente(
@@ -515,6 +462,25 @@ router.get('/meus-pedidos', auth, async (req, res) => {
   }
 
 });
+router.get('/meus-pedidos', auth, async (req,res)=>{
 
+  try{
+
+    const pedidos =
+      await Pedido.findByCliente(
+        req.usuario.id
+      );
+
+    res.json(pedidos);
+
+  }catch(err){
+
+    res.status(500).json({
+      erro: err.message
+    });
+
+  }
+
+});
 // Exportar um objeto de rotas
 module.exports = router;

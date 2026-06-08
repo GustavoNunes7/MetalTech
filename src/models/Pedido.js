@@ -135,7 +135,6 @@ const Pedido = {
     const total = subtotal + (taxaEntrega || 0);
     const contagem = get("SELECT COUNT(*) as total FROM pedidos");
     const numeroPedido = (contagem?.total || 0) + 1;
-
     const infoPedido = run(
       `
       INSERT INTO pedidos
@@ -149,9 +148,10 @@ const Pedido = {
  troco,
  observacoes,
  origem,
+ entrega,
  entregador_id
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `,
      [
  numeroPedido,
@@ -163,6 +163,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
  troco || 0,
  observacoes,
  origem,
+ entrega || null,
  entregadorId
 ]
     );
