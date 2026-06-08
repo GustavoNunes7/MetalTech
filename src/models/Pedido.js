@@ -72,6 +72,21 @@ const Pedido = {
     });
   },
 
+  async findByCliente(clienteId) {
+
+  await ready;
+
+  const rows = query(`
+    SELECT *
+    FROM pedidos
+    WHERE cliente_id = ?
+    ORDER BY created_at DESC
+  `, [clienteId]);
+
+  return rows;
+
+},
+
   async findById(id) {
     //procura os pedidos pelo id
     await ready;
@@ -123,22 +138,33 @@ const Pedido = {
 
     const infoPedido = run(
       `
-  INSERT INTO pedidos
-    (numero_pedido, cliente_id, subtotal, taxa_entrega, total,
-     forma_pagamento, troco, observacoes, origem)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO pedidos
+(
+ numero_pedido,
+ cliente_id,
+ subtotal,
+ taxa_entrega,
+ total,
+ forma_pagamento,
+ troco,
+ observacoes,
+ origem,
+ entregador_id
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `,
-      [
-        numeroPedido,
-        clienteId,
-        subtotal,
-        taxaEntrega || 0,
-        total,
-        formaPagamento,
-        troco || 0,
-        observacoes,
-        origem,
-      ]
+     [
+ numeroPedido,
+ clienteId,
+ subtotal,
+ taxaEntrega || 0,
+ total,
+ formaPagamento,
+ troco || 0,
+ observacoes,
+ origem,
+ entregadorId
+]
     );
 
     const pedidoId = infoPedido.lastInsertRowid;
@@ -182,6 +208,13 @@ const Pedido = {
     const info = run("DELETE FROM pedidos WHERE id = ?", [id]);
     return info.changes > 0;
   },
+
+
+
+
 }; //deleta o pedido
+
+
+
 
 module.exports = Pedido;

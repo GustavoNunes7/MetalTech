@@ -4,12 +4,12 @@
 // não precisa de Visual Studio nem de compilação nativa.
 // ============================================================
 
-const initSqlJs = require('sql.js');
-const fs        = require('fs');
-const path      = require('path');
+const initSqlJs = require("sql.js");
+const fs = require("fs");
+const path = require("path");
 
-const DB_PATH = process.env.DB_PATH
-  || path.join(__dirname, '..', '..', 'metalDados.db');
+const DB_PATH =
+  process.env.DB_PATH || path.join(__dirname, "..", "..", "metalDados.db");
 
 // Módulo singleton — exporta { db, ready }
 // "ready" é uma Promise que resolve quando o banco estiver pronto.
@@ -31,7 +31,7 @@ const ready = (async () => {
   const db = state.db;
 
   // Ativa chaves estrangeiras
-  db.run('PRAGMA foreign_keys = ON');
+  db.run("PRAGMA foreign_keys = ON");
 
   // ── Criação das tabelas ────────────────────────────────
   db.run(`
@@ -47,18 +47,20 @@ const ready = (async () => {
     )
   `);
 
-  db.run(`
-    CREATE TABLE IF NOT EXISTS clientes (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      nome        TEXT    NOT NULL,
-      telefone    TEXT    NOT NULL,
-      endereco    TEXT    NOT NULL DEFAULT '{}',
-      observacoes TEXT    NOT NULL DEFAULT '',
-      ativo       INTEGER NOT NULL DEFAULT 1,
-      created_at  TEXT    NOT NULL DEFAULT (datetime('now')),
-      updated_at  TEXT    NOT NULL DEFAULT (datetime('now'))
-    )
-  `);
+ db.run(`
+  CREATE TABLE IF NOT EXISTS clientes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    telefone TEXT NOT NULL,
+    email TEXT UNIQUE,
+    senha TEXT,
+    endereco TEXT NOT NULL DEFAULT '{}',
+    observacoes TEXT NOT NULL DEFAULT '',
+    ativo INTEGER NOT NULL DEFAULT 1,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`);
 
   db.run(`
     CREATE TABLE IF NOT EXISTS metais (
@@ -109,7 +111,7 @@ const ready = (async () => {
   // Salva no disco após criar as tabelas
   salvar();
 
-  console.log('SQLite (sql.js) conectado:', DB_PATH);
+  console.log("SQLite (sql.js) conectado:", DB_PATH);
   return db;
 })();
 
@@ -124,7 +126,7 @@ function salvar() {
 
 // Executa um SELECT e retorna array de objetos
 function query(sql, params = []) {
-  const stmt    = state.db.prepare(sql);
+  const stmt = state.db.prepare(sql);
   const results = [];
   stmt.bind(params);
   while (stmt.step()) {
@@ -137,11 +139,11 @@ function query(sql, params = []) {
 // Executa INSERT/UPDATE/DELETE e retorna { lastInsertRowid, changes }
 function run(sql, params = []) {
   state.db.run(sql, params);
-  const meta = query('SELECT last_insert_rowid() as id, changes() as changes');
+  const meta = query("SELECT last_insert_rowid() as id, changes() as changes");
   salvar();
   return {
     lastInsertRowid: meta[0]?.id,
-    changes:         meta[0]?.changes,
+    changes: meta[0]?.changes,
   };
 }
 
@@ -152,5 +154,3 @@ function get(sql, params = []) {
 }
 
 module.exports = { ready, query, run, get, salvar };
-
-
