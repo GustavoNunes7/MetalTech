@@ -2,7 +2,7 @@
 // Pedido.js — Model de Pedido (sql.js)
 // ============================================================
 
-const { ready, query, run, get } = require('../database/sqlite');
+const { ready, query, run, get } = require("../database/sqlite");
 
 const SELECT_PEDIDO = `
   SELECT
@@ -17,36 +17,36 @@ const SELECT_PEDIDO = `
 function formatarPedido(row, itens = []) {
   if (!row) return null;
   return {
-    _id:           row.id,
-    id:            row.id,
-    numeroPedido:  row.numero_pedido,
+    _id: row.id,
+    id: row.id,
+    numeroPedido: row.numero_pedido,
     cliente: {
-      _id:      row.cliente_id,
-      id:       row.cliente_id,
-      nome:     row.cliente_nome,
+      _id: row.cliente_id,
+      id: row.cliente_id,
+      nome: row.cliente_nome,
       telefone: row.cliente_telefone,
     },
-    itens: itens.map(it => ({
-      _id:           it.id,
-      metal:         it.metal_id,
-      nomeMetal:     it.nome_metal,
-      tamanho:       it.tamanho,
-      quantidade:    it.quantidade,
+    itens: itens.map((it) => ({
+      _id: it.id,
+      metal: it.metal_id,
+      nomeMetal: it.nome_metal,
+      tamanho: it.tamanho,
+      quantidade: it.quantidade,
       precoUnitario: it.preco_unitario,
-      subtotal:      it.subtotal,
+      subtotal: it.subtotal,
     })),
-    subtotal:       row.subtotal,
-    taxaEntrega:    row.taxa_entrega,
-    total:          row.total,
+    subtotal: row.subtotal,
+    taxaEntrega: row.taxa_entrega,
+    total: row.total,
     formaPagamento: row.forma_pagamento,
-    troco:          row.troco,
-    status:         row.status,
-    observacoes:    row.observacoes,
-    entrega:        row.entrega,
-    origem:         row.origem,
-    entregador:     row.entregador_id,
-    createdAt:      row.created_at,
-    updatedAt:      row.updated_at,
+    troco: row.troco,
+    status: row.status,
+    observacoes: row.observacoes,
+    entrega: row.entrega,
+    origem: row.origem,
+    entregador: row.entregador_id,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
   };
 }
 
@@ -57,12 +57,17 @@ const Pedido = {
     await ready;
     let rows;
     if (entregadorId) {
-      rows = query(`${SELECT_PEDIDO} WHERE p.entregador_id = ? ORDER BY p.created_at DESC`, [entregadorId]);
+      rows = query(
+        `${SELECT_PEDIDO} WHERE p.entregador_id = ? ORDER BY p.created_at DESC`,
+        [entregadorId]
+      );
     } else {
       rows = query(`${SELECT_PEDIDO} ORDER BY p.created_at DESC`);
     }
-    return rows.map(row => {
-      const itens = query('SELECT * FROM itens_pedido WHERE pedido_id = ?', [row.id]);
+    return rows.map((row) => {
+      const itens = query("SELECT * FROM itens_pedido WHERE pedido_id = ?", [
+        row.id,
+      ]);
       return formatarPedido(row, itens);
     });
   },
@@ -72,15 +77,25 @@ const Pedido = {
     await ready;
     const row = get(`${SELECT_PEDIDO} WHERE p.id = ?`, [id]);
     if (!row) return null;
-    const itens = query('SELECT * FROM itens_pedido WHERE pedido_id = ?', [id]);
+    const itens = query("SELECT * FROM itens_pedido WHERE pedido_id = ?", [id]);
     return formatarPedido(row, itens);
   },
 
-  async create({ clienteId, itens, taxaEntrega = 0, formaPagamento, troco = 0, observacoes = '', entrega = null, origem = 'balcao', entregadorId = null }) {
+  async create({
+    clienteId,
+    itens,
+    taxaEntrega = 0,
+    formaPagamento,
+    troco = 0,
+    observacoes = "",
+    entrega = null,
+    origem = "balcao",
+    entregadorId = null,
+  }) {
     await ready;
     //cria pedidos de metais
 
-    const Metal = require('./Metal');
+    const Metal = require("./Metal");
     let subtotal = 0;
     const itensProcessados = [];
 
@@ -88,40 +103,63 @@ const Pedido = {
       const metal = await Metal.findById(item.metal);
       if (!metal) throw new Error(`Metal ID ${item.metal} não encontrada`);
 
-      const preco   = metal.precos[item.tamanho] || 0;
+      const preco = metal.precos[item.tamanho] || 0;
       const subItem = preco * item.quantidade;
-      subtotal     += subItem;
+      subtotal += subItem;
 
       itensProcessados.push({
-        metalId:       metal.id,
-        nomeMetal:     metal.nome,
-        tamanho:       item.tamanho,
-        quantidade:    item.quantidade,
+        metalId: metal.id,
+        nomeMetal: metal.nome,
+        tamanho: item.tamanho,
+        quantidade: item.quantidade,
         precoUnitario: preco,
-        subtotal:      subItem,
+        subtotal: subItem,
       });
     }
 
-    const total        = subtotal + (taxaEntrega || 0);
-    const contagem     = get('SELECT COUNT(*) as total FROM pedidos');
+    const total = subtotal + (taxaEntrega || 0);
+    const contagem = get("SELECT COUNT(*) as total FROM pedidos");
     const numeroPedido = (contagem?.total || 0) + 1;
 
-    const infoPedido = run(`
-      INSERT INTO pedidos
-        (numero_pedido, cliente_id, subtotal, taxa_entrega, total,
-         forma_pagamento, troco, observacoes, entrega, origem, entregador_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [numeroPedido, clienteId, subtotal, taxaEntrega || 0, total,
-        formaPagamento, troco || 0, observacoes, entrega, origem, entregadorId]);
+    const infoPedido = run(
+      `
+  INSERT INTO pedidos
+    (numero_pedido, cliente_id, subtotal, taxa_entrega, total,
+     forma_pagamento, troco, observacoes, origem)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+`,
+      [
+        numeroPedido,
+        clienteId,
+        subtotal,
+        taxaEntrega || 0,
+        total,
+        formaPagamento,
+        troco || 0,
+        observacoes,
+        origem,
+      ]
+    );
 
     const pedidoId = infoPedido.lastInsertRowid;
 
     for (const it of itensProcessados) {
-      run(`
+      run(
+        `
         INSERT INTO itens_pedido
           (pedido_id, metal_id, nome_metal, tamanho, quantidade, preco_unitario, subtotal)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-      `, [pedidoId, it.metalId, it.nomeMetal, it.tamanho, it.quantidade, it.precoUnitario, it.subtotal]);
+      `,
+        [
+          pedidoId,
+          it.metalId,
+          it.nomeMetal,
+          it.tamanho,
+          it.quantidade,
+          it.precoUnitario,
+          it.subtotal,
+        ]
+      );
     }
 
     return this.findById(pedidoId);
@@ -140,8 +178,8 @@ const Pedido = {
   async delete(id) {
     await ready;
     // Deleta itens primeiro (sem CASCADE no sql.js)
-    run('DELETE FROM itens_pedido WHERE pedido_id = ?', [id]);
-    const info = run('DELETE FROM pedidos WHERE id = ?', [id]);
+    run("DELETE FROM itens_pedido WHERE pedido_id = ?", [id]);
+    const info = run("DELETE FROM pedidos WHERE id = ?", [id]);
     return info.changes > 0;
   },
 }; //deleta o pedido
