@@ -857,4 +857,24 @@ select option { background: var(--surf2); } /*Menus suspensos*/
 }
 
 
+.container-graficos {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 
+.grafico1,
+.grafico2 {
+    width: 48%;
+    height: 300px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.grafico1 canvas,
+.grafico2 canvas {
+    width: 100% !important;
+    height: 100% !important;
+}

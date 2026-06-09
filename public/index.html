@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./style.css" />
   <!--Caminho para o CSS-->
-  <link rel="stylesheet "href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link rel="stylesheet " href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
 </head>
 
 <body>
@@ -113,6 +113,7 @@
           <span class="ic">📋</span><span>Pedidos</span>
         </button>
 
+
         <!-- Visualizar Cadastros -->
         <div class="sb-group">Cadastros</div>
         <button class="nav-btn" onclick="ir('metais',this)">
@@ -141,7 +142,7 @@
         <div class="COD">
           <p>Conheça nossa empresa!</p>
           <a href="https://gustavonunes7.github.io/COD/"><img src="./images/logoCod.png" alt="" width="120px"></a>
-</div>
+        </div>
       </nav>
 
       <!-- Versão e Botão para Sair  -->
@@ -166,7 +167,7 @@
             <h2>Dashboard</h2>
             <p id="dash-sub">Resumo do sistema</p>
           </div>
-        <button class="btn btn-ghost btn-sm" onclick="window.location.reload()">↻ Atualizar</button>
+          <button class="btn btn-ghost btn-sm" onclick="window.location.reload()">↻ Atualizar</button>
         </div>
 
         <div class="pg-body">
@@ -254,67 +255,71 @@
 
           </div>
 
-            
-  
+
+
 
         </div>
 
-     
-          <h2>Gráficos</h2>
-            <div class="container-graficos">
-              <div class="grafico1">
-                <canvas id="graficoPedidos" width="10" height="100"></canvas>
-              </div>
 
-              <div class="grafico2">
-                  <canvas id="graficoFaturamento" width="100" height="100"></canvas>
-              </div>
-                
+        <h2>Gráficos</h2>
+
+        <div class="container-graficos">
+
+          <div class="grafico1">
+            <canvas id="graficoPedidos"></canvas>
+          </div>
+
+          <div class="grafico2">
+            <canvas id="graficoFaturamento"></canvas>
+          </div>
+
+        </div>
+
 
       </section>
       <!-- // ==================================  FIM DASHBOARD ============================= // -->
-             <!-- // ==================================  FIM DASHBOARD ============================= // -->
-       <!-- ================================== ÁREA DO CLIENTE ================================== -->
+      <!-- // ==================================  FIM DASHBOARD ============================= // -->
+      <!-- ================================== ÁREA DO CLIENTE ================================== -->
 
-<section id="pg-cliente" class="secao">
-  <div class="pg-header">
-    <div>
-      <h2>Meus Pedidos</h2>
-      <p>Faça seus pedidos online</p>
-    </div>
-    <button class="btn btn-red" onclick="abrirPedidoCliente()">
-      + Fazer Pedido
-    </button>
-  </div>
+      <section id="pg-cliente" class="secao">
+        <div class="pg-header">
+          <div>
+            <h2>Meus Pedidos</h2>
+            <p>Faça seus pedidos online</p>
+          </div>
+          <button class="btn btn-red" onclick="abrirPedidoCliente()">
+            + Fazer Pedido
+          </button>
+        </div>
 
-  <div class="pg-body">
+        <div class="pg-body">
 
-    <div class="card">
-      <div class="card-head">
-        <h3>Catálogo de Metais</h3>
-      </div>
+          <div class="card">
+            <div class="card-head">
+              <h3>Catálogo de Metais</h3>
+            </div>
 
-      <div class="card-body" id="catalogo-cliente">
-        Carregando catálogo...
-      </div>
-    </div>
+            <div class="card-body" id="catalogo-cliente">
+              Carregando catálogo...
+            </div>
+          </div>
 
-    <br>
+          <br>
 
-    <div class="card">
-      <div class="card-head">
-        <h3>Meus Pedidos</h3>
-      </div>
+          <div class="card">
+            <div class="card-head">
+              <h3>Meus Pedidos</h3>
+            </div>
 
-      <div class="card-body" id="lista-pedidos-cliente">
-        Nenhum pedido encontrado.
-      </div>
-    </div>
+            <div class="card-body" id="lista-pedidos-cliente">
+              Nenhum pedido encontrado.
+            </div>
+          </div>
 
-  </div>
-</section>
+        </div>
+      </section>
 
-<!-- ================================== FIM ÁREA DO CLIENTE ================================== -->
+      <!-- ================================== FIM ÁREA DO CLIENTE ================================== -->
 
       <!-- // ==================================  PEDIDOS ============================= // -->
 
@@ -452,72 +457,67 @@
 
 
 
-        <section id="pg-entregas" class="secao">
-          <div class="pg-header">
-            <div>
-              <h2>Entregas</h2>
-              <p id="entregas-sub">Seus pedidos ativos</p>
+      <section id="pg-entregas" class="secao">
+        <div class="pg-header">
+          <div>
+            <h2>Entregas</h2>
+            <p id="entregas-sub">Seus pedidos ativos</p>
+          </div>
+        </div>
+
+        <div class="pg-body">
+          <div class="stats-grid" style="margin-bottom: 18px">
+            <!-- Área de visualizar os meus pedidos-->
+            <div class="stat cr">
+              <span class="ico">📋</span>
+              <div class="lbl">Meus Pedidos</div>
+              <div class="val" id="g-ped">—</div>
+              <div class="sub" id="g-ped-sub">hoje</div>
+            </div>
+
+            <!-- Área de visualizar as entregas ativas-->
+            <div class="stat cg">
+              <span class="ico">📦</span>
+              <div class="lbl">Entregas Ativas</div>
+              <div class="val" id="g-entregas">—</div>
+              <div class="sub">com pedido aberto</div>
+            </div>
+
+            <!-- Área de visualizar a metal sendo preparada-->
+            <div class="stat cb">
+              <span class="ico">👨⛓️</span>
+              <div class="lbl">Em Preparo</div>
+              <div class="val" id="g-preparo">—</div>
+              <div class="sub">sendo preparados</div>
+            </div>
+
+            <!-- Área de visualizar o pedido pronto-->
+            <div class="stat cp">
+              <span class="ico">🛵</span>
+              <div class="lbl">Prontos</div>
+              <div class="val" id="g-prontos">—</div>
+              <div class="sub">aguardando retirada</div>
             </div>
           </div>
 
-          <div class="pg-body">
-            <div class="stats-grid" style="margin-bottom: 18px">
-              <!-- Área de visualizar os meus pedidos-->
-              <div class="stat cr">
-                <span class="ico">📋</span>
-                <div class="lbl">Meus Pedidos</div>
-                <div class="val" id="g-ped">—</div>
-                <div class="sub" id="g-ped-sub">hoje</div>
-              </div>
-
-              <!-- Área de visualizar as entregas ativas-->
-              <div class="stat cg">
-                <span class="ico">📦</span>
-                <div class="lbl">Entregas Ativas</div>
-                <div class="val" id="g-entregas">—</div>
-                <div class="sub">com pedido aberto</div>
-              </div>
-
-              <!-- Área de visualizar a metal sendo preparada-->
-              <div class="stat cb">
-                <span class="ico">👨⛓️</span>
-                <div class="lbl">Em Preparo</div>
-                <div class="val" id="g-preparo">—</div>
-                <div class="sub">sendo preparados</div>
-              </div>
-
-              <!-- Área de visualizar o pedido pronto-->
-              <div class="stat cp">
-                <span class="ico">🛵</span>
-                <div class="lbl">Prontos</div>
-                <div class="val" id="g-prontos">—</div>
-                <div class="sub">aguardando retirada</div>
-              </div>
-            </div>
-
-            <div class="entrega-card-foot">
-              <button
-                class="btn btn-blue btn-sm"
-                style="width:100%"
-                onclick="abrirStatus()">
-                📝 Atualizar Status
-              </button>
-            </div>
-        </section>
-      </div>
+          <div class="entrega-card-foot">
+            <button class="btn btn-blue btn-sm" style="width:100%" onclick="abrirStatus()">
+              📝 Atualizar Status
+            </button>
+          </div>
+      </section>
     </div>
-    </div>
+  </div>
+  </div>
 
   </div>
   <!-- // ================================== FIM Entregas ============================= // -->
 
 
   <!-- // ==================================  NOVO Metal ============================= // -->
-<!-- MODAL DE METAIS - COLEM NO FINAL DO SEU HTML -->
-<div id="m-modal-metais" class="modal-bg">
-      <div
-        class="modal-content"
-        style="
+  <!-- MODAL DE METAIS - COLEM NO FINAL DO SEU HTML -->
+  <div id="m-modal-metais" class="modal-bg">
+    <div class="modal-content" style="
           background: #fff;
           padding: 20px;
           border-radius: 8px;
@@ -525,106 +525,67 @@
           margin: auto;
           position: relative;
           top: 10%;
-        "
-      >
-        <h3 id="modal-metais-titulo" style="margin-top: 0">Novo Metal</h3>
+        ">
+      <h3 id="modal-metais-titulo" style="margin-top: 0">Novo Metal</h3>
 
-        <form onsubmit="salvarMetal(event)">
-          <!-- O ID INVISÍVEL QUE ESTAVA FALTANDO FICA AQUI -->
-          <input type="hidden" id="m-id" value="" />
+      <form onsubmit="salvarMetal(event)">
+        <!-- O ID INVISÍVEL QUE ESTAVA FALTANDO FICA AQUI -->
+        <input type="hidden" id="m-id" value="" />
 
-          <div class="fg" style="margin-bottom: 10px">
-            <label style="display: block; margin-bottom: 4px"
-              >Nome do Metal</label
-            >
-            <input
-              type="text"
-              id="m-nome"
-              style="width: 100%; padding: 6px"
-              required
-            />
-          </div>
+        <div class="fg" style="margin-bottom: 10px">
+          <label style="display: block; margin-bottom: 4px">Nome do Metal</label>
+          <input type="text" id="m-nome" style="width: 100%; padding: 6px" required />
+        </div>
 
-          <div class="fg">
-            <label>Descrição</label
-            ><input id="m-desc" placeholder="Breve descrição..." />
-          </div>
+        <div class="fg">
+          <label>Descrição</label><input id="m-desc" placeholder="Breve descrição..." />
+        </div>
 
-          <div class="fg" style="margin-bottom: 10px">
-            <label style="display: block; margin-bottom: 4px">Preço P</label>
-            <input
-              type="number"
-              step="0.01"
-              id="m-preco-p"
-              style="width: 100%; padding: 6px"
-              required
-            />
-          </div>
+        <div class="fg" style="margin-bottom: 10px">
+          <label style="display: block; margin-bottom: 4px">Preço P</label>
+          <input type="number" step="0.01" id="m-preco-p" style="width: 100%; padding: 6px" required />
+        </div>
 
-          <div class="fg" style="margin-bottom: 10px">
-            <label style="display: block; margin-bottom: 4px">Preço M</label>
-            <input
-              type="number"
-              step="0.01"
-              id="m-preco-m"
-              style="width: 100%; padding: 6px"
-              required
-            />
-          </div>
+        <div class="fg" style="margin-bottom: 10px">
+          <label style="display: block; margin-bottom: 4px">Preço M</label>
+          <input type="number" step="0.01" id="m-preco-m" style="width: 100%; padding: 6px" required />
+        </div>
 
-          <div class="fg" style="margin-bottom: 15px">
-            <label style="display: block; margin-bottom: 4px">Preço G</label>
-            <input
-              type="number"
-              step="0.01"
-              id="m-preco-g"
-              style="width: 100%; padding: 6px"
-              required
-            />
-          </div>
+        <div class="fg" style="margin-bottom: 15px">
+          <label style="display: block; margin-bottom: 4px">Preço G</label>
+          <input type="number" step="0.01" id="m-preco-g" style="width: 100%; padding: 6px" required />
+        </div>
 
-          <div class="fg">
-            <label>Categoria</label>
-            <select id="m-categoria">
-              <option value="aco">Aço</option>
-              <option value="ferro">Ferro</option>
-              <option value="aluminio">Alumínio</option>
-              <option value="cobre">Cobre</option>
-            </select>
-          </div>
+        <div class="fg">
+          <label>Categoria</label>
+          <select id="m-categoria">
+            <option value="aco">Aço</option>
+            <option value="ferro">Ferro</option>
+            <option value="aluminio">Alumínio</option>
+            <option value="cobre">Cobre</option>
+          </select>
+        </div>
 
-          <div class="fg">
-            <label>Disponível</label>
-            
-            <select id="m-disp">
-              <option value="true">✅ Sim</option>
-              <option value="false">❌ Não</option>
-            </select>
-          </div>
+        <div class="fg">
+          <label>Disponível</label>
 
-          <div
-            class="modal-buttons"
-            style="display: flex; gap: 10px; justify-content: flex-end"
-          >
-            <button
-              type="submit"
-              class="btn btn-blue"
-              style="padding: 6px 12px"
-            >
-              Salvar
-            </button>
-            <button
-              type="button"
-              class="btn"
-              style="padding: 6px 12px"
-              onclick="fechar('m-modal-metais')"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
-</div>
+          <select id="m-disp">
+            <option value="true">✅ Sim</option>
+            <option value="false">❌ Não</option>
+          </select>
+        </div>
+
+        <div class="modal-buttons" style="display: flex; gap: 10px; justify-content: flex-end">
+          <button type="submit" class="btn btn-blue" style="padding: 6px 12px">
+            Salvar
+          </button>
+          <button type="button" class="btn" style="padding: 6px 12px" onclick="fechar('m-modal-metais')">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- // ==================================  NOVO CLIENTE ============================= // -->
 
@@ -729,193 +690,194 @@
       <div class="modal-foot">
         <button class="btn btn-ghost" onclick="fechar('m-pedido')">Cancelar</button>
         <!-- Botão para cancelar o pedido-->
-        <button class="btn btn-red" onclick="salvarPedido()">Confirmar Pedido</button> <!-- Botão para Confirmar o pedido-->
+        <button class="btn btn-red" onclick="salvarPedido()">Confirmar Pedido</button>
+        <!-- Botão para Confirmar o pedido-->
+      </div>
+
     </div>
 
   </div>
 
-</div>
+  <!-- // ==================================  FIM NOVO PEDIDO ============================= // -->
 
-    <!-- // ==================================  FIM NOVO PEDIDO ============================= // -->
+  <!-- // ==================================  ATUALIZAR STATUS ============================= // -->
 
-        <!-- // ==================================  ATUALIZAR STATUS ============================= // -->
+  <div id="m-status" class="modal-bg">
 
-        <div id="m-status" class="modal-bg">
+    <div class="modal" style="max-width:330px">
 
-          <div class="modal" style="max-width:330px">
+      <h3>Atualizar Status</h3>
+      <input type="hidden" id="st-id"> <!--Caixa de entrada para atualizar status-->
 
-            <h3>Atualizar Status</h3>
-            <input type="hidden" id="st-id"> <!--Caixa de entrada para atualizar status-->
+      <div class="fg"><label>Novo Status</label>
 
-            <div class="fg"><label>Novo Status</label>
+        <select id="st-val"> <!--Caixa selecionavél para adicionar a situação sobre o pedido -->
 
-              <select id="st-val"> <!--Caixa selecionavél para adicionar a situação sobre o pedido -->
+          <option value="recebido">📥 Recebido</option>
+          <option value="em_preparo">⛓️ Em Preparo</option>
+          <option value="saiu_entrega">🛵 Saiu para Entrega</option>
+          <option value="entregue">✅ Entregue</option>
+          <option value="cancelado">❌ Cancelado</option>
 
-                <option value="recebido">📥 Recebido</option>
-                <option value="em_preparo">⛓️ Em Preparo</option>
-                <option value="saiu_entrega">🛵 Saiu para Entrega</option>
-                <option value="entregue">✅ Entregue</option>
-                <option value="cancelado">❌ Cancelado</option>
+        </select>
+      </div>
 
-              </select>
-            </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="fechar('m-status')">Cancelar</button>
+        <!--Botão para cancelar os status-->
+        <button class="btn btn-blue" onclick="salvarStatus()">Atualizar</button>
+        <!--Botão para atualizar os status-->
+      </div>
 
-            <div class="modal-foot">
-              <button class="btn btn-ghost" onclick="fechar('m-status')">Cancelar</button>
-              <!--Botão para cancelar os status-->
-              <button class="btn btn-blue" onclick="salvarStatus()">Atualizar</button>
-              <!--Botão para atualizar os status-->
-            </div>
+    </div>
+  </div>
+  <!-- // ================================== FIM ATUALIZAR STATUS ============================= // -->
 
-          </div>
-        </div>
-        <!-- // ================================== FIM ATUALIZAR STATUS ============================= // -->
+  <!-- // ==================================  NOVO USUÁRIO ============================= // -->
+  <div id="m-usuario" class="modal-bg">
 
-        <!-- // ==================================  NOVO USUÁRIO ============================= // -->
-        <div id="m-usuario" class="modal-bg">
+    <div class="modal">
+      <h3>Novo Usuário</h3>
 
-          <div class="modal">
-            <h3>Novo Usuário</h3>
+      <div class="fr2"> <!-- Adicionar um novo usuário -->
+        <div class="fg"><label>Nome *</label><input id="u-nome" placeholder="Nome completo"></div>
+        <!--Caixa de entrada para inserir o nome completo -->
 
-            <div class="fr2"> <!-- Adicionar um novo usuário -->
-              <div class="fg"><label>Nome *</label><input id="u-nome" placeholder="Nome completo"></div>
-              <!--Caixa de entrada para inserir o nome completo -->
+        <!--Caixa de entrada para inserir o perfil do novo usuário -->
+        <div class="fg"><label>Perfil</label><select id="u-perfil">
+            <option value="Atendente">Atendente</option>
+            <option value="Entregador">Entregador</option>
+            <option value="Administrador">Administrador</option>
+          </select></div>
+      </div>
 
-              <!--Caixa de entrada para inserir o perfil do novo usuário -->
-              <div class="fg"><label>Perfil</label><select id="u-perfil">
-                  <option value="Atendente">Atendente</option>
-                  <option value="Entregador">Entregador</option>
-                  <option value="Administrador">Administrador</option>
-                </select></div>
-            </div>
+      <div class="fg"><label>E-mail *</label><input id="u-email" type="email" placeholder="usuario@metaltech.com">
+      </div> <!--Caixa de entrada para inserir o email -->
+      <div class="fg"><label>Senha *</label><input id="u-senha" type="password" placeholder="Mínimo 6 caracteres">
+      </div> <!--Caixa de entrada para inserir a senha -->
 
-            <div class="fg"><label>E-mail *</label><input id="u-email" type="email" placeholder="usuario@metaltech.com">
-            </div> <!--Caixa de entrada para inserir o email -->
-            <div class="fg"><label>Senha *</label><input id="u-senha" type="password" placeholder="Mínimo 6 caracteres">
-            </div> <!--Caixa de entrada para inserir a senha -->
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="fechar('m-usuario')">Cancelar</button>
+        <!--Botão para cancelar o cadastro-->
+        <button class="btn btn-red" onclick="salvarUsuario()">Criar</button>
+      </div>
 
-            <div class="modal-foot">
-              <button class="btn btn-ghost" onclick="fechar('m-usuario')">Cancelar</button>
-              <!--Botão para cancelar o cadastro-->
-              <button class="btn btn-red" onclick="salvarUsuario()">Criar</button>
-            </div>
+    </div>
 
-          </div>
+  </div>
+  <!-- // ==================================  FIM NOVO USUÁRIO ============================= // -->
 
-        </div>
-        <!-- // ==================================  FIM NOVO USUÁRIO ============================= // -->
+  <!-- // ==================================  PEDIDO DE ENTEGA ============================= // -->
+  <div id="m-pedido-entrega" class="modal-bg">
 
-        <!-- // ==================================  PEDIDO DE ENTEGA ============================= // -->
-        <div id="m-pedido-entrega" class="modal-bg">
+    <div class="modal lg">
 
-          <div class="modal lg">
+      <h3>Pedido de Entrega</h3>
 
-            <h3>Pedido de Entrega</h3>
+      <div class="fr2"><!--Selecionar a entrega-->
 
-            <div class="fr2"><!--Selecionar a entrega-->
+        <!--Caixa de entrada para inserir qual entrega deseja -->
+        <div class="fg"><label>Entrega *</label><select id="pm-entrega">
+            <option value="">— Selecione a entrega —</option>
+            <option value="1">Entrega 1</option>
+            <option value="2">Entrega 2</option>
+            <option value="3">Entrega 3</option>
+            <option value="4">Entrega 4</option>
+            <option value="4">Entrega 5</option>
+            <option value="4">Entrega 6</option>
+            <option value="4">Entrega 7</option>
+            <option value="4">Entrega 8</option>
+            <option value="4">Entrega 9</option>
+            <option value="4">Entrega 10</option>
 
-              <!--Caixa de entrada para inserir qual entrega deseja -->
-              <div class="fg"><label>Entrega *</label><select id="pm-entrega">
-                  <option value="">— Selecione a entrega —</option>
-                  <option value="1">Entrega 1</option>
-                  <option value="2">Entrega 2</option>
-                  <option value="3">Entrega 3</option>
-                  <option value="4">Entrega 4</option>
-                  <option value="4">Entrega 5</option>
-                  <option value="4">Entrega 6</option>
-                  <option value="4">Entrega 7</option>
-                  <option value="4">Entrega 8</option>
-                  <option value="4">Entrega 9</option>
-                  <option value="4">Entrega 10</option>
-                
-                </select></div>
-              <div class="fg"><label>Cliente (opcional)</label><select id="pm-cli">
-                  <option value="">— Sem cadastro —</option>
-                </select></div> <!--Caixa de entrada para inserir o cliente que vai ocupar a entrega -->
-            </div>
+          </select></div>
+        <div class="fg"><label>Cliente (opcional)</label><select id="pm-cli">
+            <option value="">— Sem cadastro —</option>
+          </select></div> <!--Caixa de entrada para inserir o cliente que vai ocupar a entrega -->
+      </div>
 
-            <div class="div"></div>
+      <div class="div"></div>
 
 
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-              <label
-                style="margin-bottom:0;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">Itens
-                do Pedido</label>
-              <button class="btn btn-ghost btn-sm" onclick="addItemEntrega()">+ Metal</button>
-              <!--Botão para adiconar os itens selecionados-->
-            </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+        <label
+          style="margin-bottom:0;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">Itens
+          do Pedido</label>
+        <button class="btn btn-ghost btn-sm" onclick="addItemEntrega()">+ Metal</button>
+        <!--Botão para adiconar os itens selecionados-->
+      </div>
 
 
-            <div
-              style="display:grid;grid-template-columns:1fr 68px 58px 68px 30px;gap:6px;font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;padding:0 1px">
-              <span>Metal</span><span>Tam.</span><span>Qtd</span><span>Subtotal</span><span></span>
-            </div>
+      <div
+        style="display:grid;grid-template-columns:1fr 68px 58px 68px 30px;gap:6px;font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;padding:0 1px">
+        <span>Metal</span><span>Tam.</span><span>Qtd</span><span>Subtotal</span><span></span>
+      </div>
 
-            <div id="itens-entrega-lista"></div>
+      <div id="itens-entrega-lista"></div>
 
-            <div class="total-box"> <!-- Valores do pedido -->
-              <div class="row"><span>Subtotal</span><span id="pm-sub">R$ 0,00</span></div>
-              <div class="row tot"><span>TOTAL DA ENTREGA</span><span id="pm-tot">R$ 0,00</span></div>
-            </div>
+      <div class="total-box"> <!-- Valores do pedido -->
+        <div class="row"><span>Subtotal</span><span id="pm-sub">R$ 0,00</span></div>
+        <div class="row tot"><span>TOTAL DA ENTREGA</span><span id="pm-tot">R$ 0,00</span></div>
+      </div>
 
-            <div class="fg"><label>Observações</label><textarea id="pm-obs" rows="2"
-                placeholder="Sem cebola, bem passado..."></textarea></div>
-            <!-- Caixa de texto para inserir as observações do pedido -->
+      <div class="fg"><label>Observações</label><textarea id="pm-obs" rows="2"
+          placeholder="Sem cebola, bem passado..."></textarea></div>
+      <!-- Caixa de texto para inserir as observações do pedido -->
 
-            <div class="modal-foot">
-              <button class="btn btn-ghost" onclick="fechar('m-pedido-entrega')">Cancelar</button>
-              <!--Botão para cancelar o pedido-->
-              <button class="btn btn-red" onclick="salvarPedidoEntrega()">Confirmar Pedido</button>
-              <!--Botão para confirmar o pedido-->
-            </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="fechar('m-pedido-entrega')">Cancelar</button>
+        <!--Botão para cancelar o pedido-->
+        <button class="btn btn-red" onclick="salvarPedidoEntrega()">Confirmar Pedido</button>
+        <!--Botão para confirmar o pedido-->
+      </div>
 
-          </div>
-        </div>
+    </div>
+  </div>
 
-        <!-- // ================================== FIM PEDIDO DE ENTREGA ============================= // -->
+  <!-- // ================================== FIM PEDIDO DE ENTREGA ============================= // -->
 
-        <!-- // ==================================  FECHAR ENTREGA ============================= // -->
-
-
-        <div id="m-fechar-entrega" class="modal-bg">
-
-          <div class="modal" style="max-width:440px">
-
-            <h3 id="fm-titulo">Fechar Entrega</h3>
-            <div id="fm-resumo" style="margin-bottom:12px"></div>
-
-            <div class="total-box">
-              <div class="row"><span>Total consumido</span><span id="fm-total">R$ 0,00</span></div>
-            </div> <!--Mostrar o total -->
-
-            <!--Mostrar as formas de pagamento -->
-            <div class="fg"><label>Forma de Pagamento</label><select id="fm-pag">
-                <option value="pix">PIX</option>
-                <option value="cartao_credito">Cartão de Crédito</option>
-                <option value="cartao_debito">Cartão de Débito</option>
-                <option value="dinheiro">Dinheiro</option>
-              </select></div>
-
-            <div class="modal-foot">
-              <button class="btn btn-ghost" onclick="fechar('m-fechar-entrega')">Cancelar</button>
-              <!-- Botão para cancelar a entrega-->
-              <button class="btn btn-green" onclick="confirmarFechamento()">✅ Fechar Entrega</button>
-              <!-- Botão para confirmar a entrega-->
-            </div>
-
-          </div>
-
-        </div>
-
-        <div id="toast"></div>
-     
+  <!-- // ==================================  FECHAR ENTREGA ============================= // -->
 
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div id="m-fechar-entrega" class="modal-bg">
 
-<script src="script.js"></script>
-<script src="grafico1.js"></script>
-<script src="grafico2.js"></script>
+    <div class="modal" style="max-width:440px">
+
+      <h3 id="fm-titulo">Fechar Entrega</h3>
+      <div id="fm-resumo" style="margin-bottom:12px"></div>
+
+      <div class="total-box">
+        <div class="row"><span>Total consumido</span><span id="fm-total">R$ 0,00</span></div>
+      </div> <!--Mostrar o total -->
+
+      <!--Mostrar as formas de pagamento -->
+      <div class="fg"><label>Forma de Pagamento</label><select id="fm-pag">
+          <option value="pix">PIX</option>
+          <option value="cartao_credito">Cartão de Crédito</option>
+          <option value="cartao_debito">Cartão de Débito</option>
+          <option value="dinheiro">Dinheiro</option>
+        </select></div>
+
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="fechar('m-fechar-entrega')">Cancelar</button>
+        <!-- Botão para cancelar a entrega-->
+        <button class="btn btn-green" onclick="confirmarFechamento()">✅ Fechar Entrega</button>
+        <!-- Botão para confirmar a entrega-->
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="toast"></div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="script.js"></script>
+  <script src="grafico1.js"></script>
+  <script src="grafico2.js"></script>
 </body>
 
 </html>
