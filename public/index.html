@@ -124,15 +124,6 @@
           <span class="ic">👥</span><span>Clientes</span>
         </button>
 
-
-
-          <button class="nav-btn" id="btn-cliente" onclick="ir('cliente',this)" style="display:none">
-            <span class="ic">🛒</span>
-            <span>Meus Pedidos</span>
-          </button>
-
-
-
         <!-- Visualizar Sistema-->
         <div class="sb-group" id="menu-usuarios" style="display:none">Sistema</div>
         <button class="nav-btn" id="btn-usuarios" onclick="ir('usuarios',this)" style="display:none">
@@ -148,15 +139,6 @@
         </button>
 
       </nav>
-
-          <p>Conheça nossa empresa</p>
-        <a href="https://gustavonunes7.github.io/COD/">
-          <img
-            src="./images/logoCod.png"
-            alt="MetalTech Logo"
-            class="logo-dashboard"
-            width="120px"
-        /></a>
 
       <!-- Versão e Botão para Sair  -->
       <div class="sb-footer">
@@ -269,25 +251,25 @@
           </div>
 
 
+  
+
+        </div>
+
+     
           <h2>Gráficos</h2>
             <div class="container-graficos">
               <div class="grafico1">
-                <canvas id="graficoPedidos" width="300" height="300"></canvas>
+                <canvas id="graficoPedidos" width="10" height="100"></canvas>
               </div>
 
               <div class="grafico2">
-                  <canvas id="graficoFaturamento"></canvas>
+                  <canvas id="graficoFaturamento" width="100" height="100"></canvas>
               </div>
                 
-              </div>
-            </div>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script src="grafico1.js"></script>
-            <script src="grafico2.js"></script>
-        </div>
 
       </section>
       <!-- // ==================================  FIM DASHBOARD ============================= // -->
+             <!-- // ==================================  FIM DASHBOARD ============================= // -->
        <!-- ================================== ÁREA DO CLIENTE ================================== -->
 
 <section id="pg-cliente" class="secao">
@@ -465,6 +447,7 @@
       <!-- // ==================================  ENTREGAS ============================= // -->
 
 
+
         <section id="pg-entregas" class="secao">
           <div class="pg-header">
             <div>
@@ -608,7 +591,7 @@
 
           <div class="fg">
             <label>Disponível</label>
-            <!--Verificar se a Pizza está disponível-->
+            
             <select id="m-disp">
               <option value="true">✅ Sim</option>
               <option value="false">❌ Não</option>
@@ -639,246 +622,149 @@
       </div>
 </div>
 
-  <!-- // ==================================  FIM NOVO METAL ============================= // -->
-
   <!-- // ==================================  NOVO CLIENTE ============================= // -->
 
-   <div id="m-cliente" class="modal-bg">
-      <div class="modal">
-        <!--Adicionar novos clientes-->
+  <div id="m-cliente" class="modal-bg">
 
-        <h3 id="m-cli-t">Novo Cliente</h3>
-        <input type="hidden" id="c-id" />
+    <div class="modal"> <!--Adicionar novos clientes-->
 
-        <div class="fr2">
-          <div class="fg">
-            <label for="c-nome">Nome *</label
-            ><input id="c-nome" placeholder="João da Silva" />
-          </div>
-          <!--Caixa de entrada para inserir no nome do cliente-->
-          <div class="fg">
-            <label for="c-tel">Telefone *</label
-            ><input id="c-tel" placeholder="(11) 99999-9999" />
-          </div>
-          <!--Caixa de entrada para inserir o telefone do cliente-->
-        </div>
+      <h3 id="m-cli-t">Novo Cliente</h3>
+      <input type="hidden" id="c-id">
 
-        <div class="fr2">
-          <div class="fg">
-            <label>Rua</label><input id="c-rua" placeholder="Rua das Flores" />
-          </div>
-          <!--Caixa de entrada para inserir o endereço do cliente-->
-          <div class="fg">
-            <label>Número</label><input id="c-num" placeholder="123" />
-          </div>
-          <!--Caixa de entrada para inserir o número do endereço do cliente-->
-        </div>
-
-        <div class="fr3">
-          <div class="fg">
-            <label>Bairro</label><input id="c-bairro" placeholder="Centro" />
-          </div>
-          <!--Caixa de entrada para inserir o bairro do cliente-->
-          <div class="fg">
-            <label>Cidade</label><input id="c-cidade" placeholder="São Paulo" />
-          </div>
-          <!--Caixa de entrada para inserir a cidade do cliente-->
-          <div class="fg">
-            <label>CEP</label><input id="c-cep" placeholder="00000-000" />
-          </div>
-          <!--Caixa de entrada para inserir o CEP do cliente-->
-        </div>
-
-        <div class="fg">
-          <label>Complemento</label
-          ><input id="c-comp" placeholder="Apto 12, Bloco B" />
-        </div>
-        <!--Caixa de entrada para inserir o Complemento do cliente-->
-        <div class="fg">
-          <label>Observações</label
-          ><input id="c-obs" placeholder="Alergia, preferências..." />
-        </div>
-        <!--Caixa de entrada para inserir a observação do cliente-->
-
-        <div class="modal-foot">
-          <button class="btn btn-ghost" onclick="fechar('m-cliente')">
-            Cancelar
-          </button>
-          <!-- Botão para cancelar o cadastro do novo cliente -->
-          <button class="btn btn-red" onclick="salvarCliente()">Salvar</button>
-          <!-- Botão para salvar o cadastro do novo cliente -->
-        </div>
+      <div class="fr2">
+        <div class="fg"><label>Nome *</label><input id="c-nome" placeholder="João da Silva"></div>
+        <!--Caixa de entrada para inserir no nome do cliente-->
+        <div class="fg"><label>Telefone *</label><input id="c-tel" placeholder="(11) 99999-9999"></div>
+        <!--Caixa de entrada para inserir o telefone do cliente-->
       </div>
+
+      <div class="fr2">
+        <div class="fg"><label>Rua</label><input id="c-rua" placeholder="Rua das Flores"></div>
+        <!--Caixa de entrada para inserir o endereço do cliente-->
+        <div class="fg"><label>Número</label><input id="c-num" placeholder="123"></div>
+        <!--Caixa de entrada para inserir o número do endereço do cliente-->
+      </div>
+
+      <div class="fr3">
+        <div class="fg"><label>Bairro</label><input id="c-bairro" placeholder="Centro"></div>
+        <!--Caixa de entrada para inserir o bairro do cliente-->
+        <div class="fg"><label>Cidade</label><input id="c-cidade" placeholder="São Paulo"></div>
+        <!--Caixa de entrada para inserir a cidade do cliente-->
+        <div class="fg"><label>CEP</label><input id="c-cep" placeholder="00000-000"></div>
+        <!--Caixa de entrada para inserir o CEP do cliente-->
+      </div>
+
+      <div class="fg"><label>Complemento</label><input id="c-comp" placeholder="Apto 12, Bloco B"></div>
+      <!--Caixa de entrada para inserir o Complemento do cliente-->
+      <div class="fg"><label>Observações</label><input id="c-obs" placeholder="Alergia, preferências..."></div>
+      <!--Caixa de entrada para inserir a observação do cliente-->
+
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="fechar('m-cliente')">Cancelar</button>
+        <!-- Botão para cancelar o cadastro do novo cliente -->
+        <button class="btn btn-red" onclick="salvarCliente()">Salvar</button>
+        <!-- Botão para salvar o cadastro do novo cliente -->
+      </div>
+
     </div>
+
+  </div>
 
   <!-- // ==================================  FIM NOVO CLIENTE ============================= // -->
 
 
   <!-- // ==================================  NOVO PEDIDO ============================= // -->
   <div id="m-pedido" class="modal-bg">
-      <div class="modal lg">
-        <h3>Novo Pedido</h3>
 
-        <div class="fg">
-          <label>Cliente *</label
-          ><select id="ped-cli"></select>
-        </div>
-        <!--Caixa de entrada para inserir o pedido desejado -->
-        <div class="div"></div>
+    <div class="modal lg">
 
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 7px;
-          "
-        >
-          <label
-            style="
-              margin-bottom: 0;
-              font-size: 0.68rem;
-              color: var(--muted);
-              text-transform: uppercase;
-              letter-spacing: 0.3px;
-            "
-            >Itens do Pedido</label
-          >
-          <!--Caixa de entrada para inserir os itens do pedido desejado -->
-          <button class="btn btn-ghost btn-sm" onclick="addItem()">
-            + Metal
-          </button>
-          <!-- Botão para adicionar metal -->
-        </div>
+      <h3>Novo Pedido</h3>
 
-        <div
-          style="
-            display: grid;
-            grid-template-columns: 1fr 68px 58px 68px 30px;
-            gap: 6px;
-            font-size: 0.65rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            margin-bottom: 4px;
-            padding: 0 1px;
-          "
-        >
-          <span>Metal</span><span>Tam.</span><span>Qtd</span
-          ><span>Subtotal</span><span></span>
-          <!--Caixa de entrada para inserir os itens do pedido desejado -->
-          <button class="btn btn-ghost btn-sm" onclick="addItem()">
-            + Metal
-          </button>
-          <!-- Botão para adicionar metal -->
-        </div>
+      <div class="fg"><label>Cliente *</label><select id="ped-cli"></select></div>
+      <!--Caixa de entrada para inserir o pedido desejado -->
+      <div class="div"></div>
 
-        <div id="itens-lista"></div>
-
-        <div class="total-box">
-          <!--Mostrar os valores do pedido -->
-          <div class="row">
-            <span>Subtotal</span><span id="ped-sub">R$ 0,00</span>
-          </div>
-          <div class="row">
-            <span>Taxa de Entrega (R$)</span
-            ><input
-              id="ped-taxa"
-              type="number"
-              min="0"
-              step="0.5"
-              value="0"
-              style="width: 72px; text-align: right; padding: 3px 6px"
-              oninput="recalc()"
-            />
-          </div>
-          <div class="row tot">
-            <span>TOTAL</span><span id="ped-tot">R$ 0,00</span>
-          </div>
-        </div>
-
-        <div class="fr2">
-          <!--Selecionar a forma de pagamento -->
-          <div class="fg">
-            <label>Forma de Pagamento *</label
-            ><select id="ped-pag" onchange="toggleTroco()">
-              <option value="pix">PIX</option>
-              <option value="cartao_credito">Cartão de Crédito</option>
-              <option value="cartao_debito">Cartão de Débito</option>
-              <option value="dinheiro">Dinheiro</option>
-            </select>
-          </div>
-          <div class="fg" id="wrap-troco" style="display: none">
-            <label>Troco para (R$)</label
-            ><input
-              id="ped-troco"
-              type="number"
-              min="0"
-              step="1"
-              placeholder="Ex: 100"
-            />
-          </div>
-          <!--Caixa de entrada para selecionar o troco-->
-        </div>
-
-        <div class="fg">
-          <label>Observações</label
-          ><textarea
-            id="ped-obs"
-            rows="2"
-            placeholder="Tocar a campanhia"
-          ></textarea>
-        </div>
-        <!--Caixa de entrada para adicionar as obeservações do pedidos -->
-
-        <div class="modal-foot">
-          <button class="btn btn-ghost" onclick="fechar('m-pedido')">
-            Cancelar
-          </button>
-          <!-- Botão para cancelar o pedido-->
-          <button class="btn btn-red" onclick="salvarPedido()">
-            Confirmar Pedido
-          </button>
-          <!-- Botão para Confirmar o pedido-->
-        </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+        <label
+          style="margin-bottom:0;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px">Itens
+          do Pedido</label> <!--Caixa de entrada para inserir os itens do pedido desejado -->
+        <button class="btn btn-ghost btn-sm" onclick="addItem()">+ Metal</button> <!-- Botão para adicionar metal -->
       </div>
+
+      <div
+        style="display:grid;grid-template-columns:1fr 68px 58px 68px 30px;gap:6px;font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;padding:0 1px">
+        <span>Metal</span><span>Tam.</span><span>Qtd</span><span>Subtotal</span><span></span>
+        <!--Caixa de entrada para inserir os itens do pedido desejado -->
+        <button class="btn btn-ghost btn-sm" onclick="addItem()">+ Metal</button> <!-- Botão para adicionar metal -->
+      </div>
+
+      <div id="itens-lista"></div>
+
+      <div class="total-box"> <!--Mostrar os valores do pedido -->
+        <div class="row"><span>Subtotal</span><span id="ped-sub">R$ 0,00</span></div>
+        <div class="row"><span>Taxa de Entrega (R$)</span><input id="ped-taxa" type="number" min="0" step="0.5"
+            value="0" style="width:72px;text-align:right;padding:3px 6px" oninput="recalc()"></div>
+        <div class="row tot"><span>TOTAL</span><span id="ped-tot">R$ 0,00</span></div>
+      </div>
+
+      <div class="fr2"> <!--Selecionar a forma de pagamento -->
+        <div class="fg"><label>Forma de Pagamento *</label><select id="ped-pag" onchange="toggleTroco()">
+            <option value="pix">PIX</option>
+            <option value="cartao_credito">Cartão de Crédito</option>
+            <option value="cartao_debito">Cartão de Débito</option>
+            <option value="dinheiro">Dinheiro</option>
+          </select></div>
+        <div class="fg" id="wrap-troco" style="display:none"><label>Troco para (R$)</label><input id="ped-troco"
+            type="number" min="0" step="1" placeholder="Ex: 100"></div> <!--Caixa de entrada para selecionar o troco-->
+      </div>
+
+      <div class="fg"><label>Observações</label><textarea id="ped-obs" rows="2"
+          placeholder="Tocar a campanhia"></textarea></div>
+      <!--Caixa de entrada para adicionar as obeservações do pedidos -->
+
+      <div class="modal-foot">
+        <button class="btn btn-ghost" onclick="fechar('m-pedido')">Cancelar</button>
+        <!-- Botão para cancelar o pedido-->
+        <button class="btn btn-red" onclick="salvarPedido()">Confirmar Pedido</button> <!-- Botão para Confirmar o pedido-->
     </div>
+
+  </div>
+
+</div>
+
     <!-- // ==================================  FIM NOVO PEDIDO ============================= // -->
 
         <!-- // ==================================  ATUALIZAR STATUS ============================= // -->
 
-       <div id="m-status" class="modal-bg">
-      <div class="modal" style="max-width: 330px">
-        <h3>Atualizar Status</h3>
-        <input type="hidden" id="st-id" />
-        <!--Caixa de entrada para atualizar status-->
+        <div id="m-status" class="modal-bg">
 
-        <div class="fg">
-          <label>Novo Status</label>
+          <div class="modal" style="max-width:330px">
 
-          <select id="st-val">
-            <!--Caixa selecionavél para adicionar a situação sobre o pedido -->
+            <h3>Atualizar Status</h3>
+            <input type="hidden" id="st-id"> <!--Caixa de entrada para atualizar status-->
 
-            <option value="recebido">📥 Recebido</option>
-            <option value="em_preparo">👨‍🍳 Em Preparo</option>
-            <option value="saiu_entrega">🛵 Saiu para Entrega</option>
-            <option value="entregue">✅ Entregue</option>
-            <option value="cancelado">❌ Cancelado</option>
-          </select>
+            <div class="fg"><label>Novo Status</label>
+
+              <select id="st-val"> <!--Caixa selecionavél para adicionar a situação sobre o pedido -->
+
+                <option value="recebido">📥 Recebido</option>
+                <option value="em_preparo">👨‍🍳 Em Preparo</option>
+                <option value="saiu_entrega">🛵 Saiu para Entrega</option>
+                <option value="entregue">✅ Entregue</option>
+                <option value="cancelado">❌ Cancelado</option>
+
+              </select>
+            </div>
+
+            <div class="modal-foot">
+              <button class="btn btn-ghost" onclick="fechar('m-status')">Cancelar</button>
+              <!--Botão para cancelar os status-->
+              <button class="btn btn-blue" onclick="salvarStatus()">Atualizar</button>
+              <!--Botão para atualizar os status-->
+            </div>
+
+          </div>
         </div>
-
-        <div class="modal-foot">
-          <button class="btn btn-ghost" onclick="fechar('m-status')">
-            Cancelar
-          </button>
-          <!--Botão para cancelar os status-->
-          <button class="btn btn-blue" onclick="salvarStatus()">
-            Atualizar
-          </button>
-          <!--Botão para atualizar os status-->
-        </div>
-      </div>
-    </div>
         <!-- // ================================== FIM ATUALIZAR STATUS ============================= // -->
 
         <!-- // ==================================  NOVO USUÁRIO ============================= // -->
@@ -1017,9 +903,14 @@
         </div>
 
         <div id="toast"></div>
-        <script src="script.js"></script> <!--Caminho para o JS-->
-         
-       
+     
+
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="script.js"></script>
+<script src="grafico1.js"></script>
+<script src="grafico2.js"></script>
 </body>
 
 </html>

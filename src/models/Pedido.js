@@ -72,21 +72,6 @@ const Pedido = {
     });
   },
 
-  async findByCliente(clienteId) {
-
-  await ready;
-
-  const rows = query(`
-    SELECT *
-    FROM pedidos
-    WHERE cliente_id = ?
-    ORDER BY created_at DESC
-  `, [clienteId]);
-
-  return rows;
-
-},
-
   async findById(id) {
     //procura os pedidos pelo id
     await ready;
@@ -135,37 +120,25 @@ const Pedido = {
     const total = subtotal + (taxaEntrega || 0);
     const contagem = get("SELECT COUNT(*) as total FROM pedidos");
     const numeroPedido = (contagem?.total || 0) + 1;
+
     const infoPedido = run(
       `
-      INSERT INTO pedidos
-(
- numero_pedido,
- cliente_id,
- subtotal,
- taxa_entrega,
- total,
- forma_pagamento,
- troco,
- observacoes,
- origem,
- entrega,
- entregador_id
-)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO pedidos
+    (numero_pedido, cliente_id, subtotal, taxa_entrega, total,
+     forma_pagamento, troco, observacoes, origem)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `,
-     [
- numeroPedido,
- clienteId,
- subtotal,
- taxaEntrega || 0,
- total,
- formaPagamento,
- troco || 0,
- observacoes,
- origem,
- entrega || null,
- entregadorId
-]
+      [
+        numeroPedido,
+        clienteId,
+        subtotal,
+        taxaEntrega || 0,
+        total,
+        formaPagamento,
+        troco || 0,
+        observacoes,
+        origem,
+      ]
     );
 
     const pedidoId = infoPedido.lastInsertRowid;
@@ -209,13 +182,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     const info = run("DELETE FROM pedidos WHERE id = ?", [id]);
     return info.changes > 0;
   },
-
-
-
-
 }; //deleta o pedido
-
-
-
 
 module.exports = Pedido;

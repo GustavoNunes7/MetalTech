@@ -1,20 +1,26 @@
 // ============================================================
 // sqlite.js — Conexão com SQLite usando sql.js
+// sql.js é SQLite compilado para WebAssembly (puro JS),
+// não precisa de Visual Studio nem de compilação nativa.
 // ============================================================
 
-const initSqlJs = require("sql.js");
-const fs = require("fs");
-const path = require("path");
+const initSqlJs = require('sql.js');
+const fs        = require('fs');
+const path      = require('path');
 
-const DB_PATH =
-  process.env.DB_PATH || path.join(__dirname, "..", "..", "metalDados.db");
+const DB_PATH = process.env.DB_PATH
+  || path.join(__dirname, '..', '..', 'metalDados.db');
+
+// Módulo singleton — exporta { db, ready }
+// "ready" é uma Promise que resolve quando o banco estiver pronto.
+// Todos os models devem aguardar essa Promise antes de usar o db.
 
 const state = { db: null };
 
-// ready é uma Promise que resolve com o DB quando estiver pronto
 const ready = (async () => {
   const SQL = await initSqlJs();
 
+  // Se o arquivo já existe, carrega do disco
   if (fs.existsSync(DB_PATH)) {
     const fileBuffer = fs.readFileSync(DB_PATH);
     state.db = new SQL.Database(fileBuffer);
@@ -24,47 +30,46 @@ const ready = (async () => {
 
   const db = state.db;
 
-  db.run("PRAGMA foreign_keys = ON");
+  // Ativa chaves estrangeiras
+  db.run('PRAGMA foreign_keys = ON');
 
-  // ── Tabelas ────────────────────────────────
+  // ── Criação das tabelas ────────────────────────────────
   db.run(`
     CREATE TABLE IF NOT EXISTS usuarios (
       id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      nome        TEXT NOT NULL,
-      email       TEXT NOT NULL UNIQUE,
-      senha       TEXT NOT NULL,
-      perfil      TEXT NOT NULL DEFAULT 'Atendente',
+      nome        TEXT    NOT NULL,
+      email       TEXT    NOT NULL UNIQUE,
+      senha       TEXT    NOT NULL,
+      perfil      TEXT    NOT NULL DEFAULT 'Atendente',
       ativo       INTEGER NOT NULL DEFAULT 1,
-      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
-      updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+      created_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+      updated_at  TEXT    NOT NULL DEFAULT (datetime('now'))
     )
   `);
 
   db.run(`
-   CREATE TABLE IF NOT EXISTS clientes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  nome TEXT NOT NULL,
-  telefone TEXT NOT NULL,
-  email TEXT UNIQUE,
-  senha TEXT,
-  endereco TEXT NOT NULL DEFAULT '{}',
-  observacoes TEXT NOT NULL DEFAULT '',
-  ativo INTEGER NOT NULL DEFAULT 1,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-)
+    CREATE TABLE IF NOT EXISTS clientes (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome        TEXT    NOT NULL,
+      telefone    TEXT    NOT NULL,
+      endereco    TEXT    NOT NULL DEFAULT '{}',
+      observacoes TEXT    NOT NULL DEFAULT '',
+      ativo       INTEGER NOT NULL DEFAULT 1,
+      created_at  TEXT    NOT NULL DEFAULT (datetime('now')),
+      updated_at  TEXT    NOT NULL DEFAULT (datetime('now'))
+    )
   `);
 
   db.run(`
     CREATE TABLE IF NOT EXISTS metais (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      nome        TEXT NOT NULL,
-      descricao   TEXT NOT NULL DEFAULT '',
-      precos      TEXT NOT NULL DEFAULT '{"P":0,"M":0,"G":0}',
-      disponivel  INTEGER NOT NULL DEFAULT 1,
-      categoria   TEXT NOT NULL DEFAULT 'tradicional',
-      created_at  TEXT NOT NULL DEFAULT (datetime('now')),
-      updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome         TEXT    NOT NULL,
+      descricao    TEXT    NOT NULL DEFAULT '',
+      precos       TEXT    NOT NULL DEFAULT '{"P":0,"M":0,"G":0}',
+      disponivel   INTEGER NOT NULL DEFAULT 1,
+      categoria    TEXT    NOT NULL DEFAULT 'tradicional',
+      created_at   TEXT    NOT NULL DEFAULT (datetime('now')),
+      updated_at   TEXT    NOT NULL DEFAULT (datetime('now'))
     )
   `);
 
@@ -73,20 +78,18 @@ const ready = (async () => {
       id              INTEGER PRIMARY KEY AUTOINCREMENT,
       numero_pedido   INTEGER,
       cliente_id      INTEGER NOT NULL REFERENCES clientes(id),
-      subtotal        REAL NOT NULL DEFAULT 0,
-      taxa_entrega    REAL NOT NULL DEFAULT 0,
-      total           REAL NOT NULL DEFAULT 0,
-      forma_pagamento TEXT NOT NULL,
-      troco           REAL NOT NULL DEFAULT 0,
-      status          TEXT NOT NULL DEFAULT 'recebido',
-      observacoes     TEXT NOT NULL DEFAULT '',
+      subtotal        REAL    NOT NULL DEFAULT 0,
+      taxa_entrega    REAL    NOT NULL DEFAULT 0,
+      total           REAL    NOT NULL DEFAULT 0,
+      forma_pagamento TEXT    NOT NULL,
+      troco           REAL    NOT NULL DEFAULT 0,
+      status          TEXT    NOT NULL DEFAULT 'recebido',
+      observacoes     TEXT    NOT NULL DEFAULT '',
       mesa            INTEGER,
-      origem          TEXT NOT NULL DEFAULT 'balcao',
+      origem          TEXT    NOT NULL DEFAULT 'balcao',
       garcom_id       INTEGER REFERENCES usuarios(id),
-      created_at      TEXT NOT NULL DEFAULT (datetime('now')),
-      updated_at      TEXT NOT NULL DEFAULT (datetime('now')),
-      entrega         TEXT,
-      entregador_id   INTEGER
+      created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
+      updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
     )
   `);
 
@@ -95,33 +98,33 @@ const ready = (async () => {
       id             INTEGER PRIMARY KEY AUTOINCREMENT,
       pedido_id      INTEGER NOT NULL REFERENCES pedidos(id),
       metal_id       INTEGER NOT NULL REFERENCES metais(id),
-      nome_metal     TEXT NOT NULL,
-      tamanho        TEXT NOT NULL,
+      nome_metal     TEXT    NOT NULL,
+      tamanho        TEXT    NOT NULL,
       quantidade     INTEGER NOT NULL DEFAULT 1,
-      preco_unitario REAL NOT NULL DEFAULT 0,
-      subtotal       REAL NOT NULL DEFAULT 0
+      preco_unitario REAL    NOT NULL DEFAULT 0,
+      subtotal       REAL    NOT NULL DEFAULT 0
     )
   `);
 
-  // Salva a DB no disco
+  // Salva no disco após criar as tabelas
   salvar();
 
-  console.log("SQLite (sql.js) conectado:", DB_PATH);
+  console.log('SQLite (sql.js) conectado:', DB_PATH);
   return db;
 })();
 
-// ── Funções Helpers ────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────
 
-// Salva o banco em disco (sql.js é em memória)
+// Salva o banco em disco (sql.js é em memória, precisa salvar manualmente)
 function salvar() {
   if (!state.db) return;
   const data = state.db.export();
   fs.writeFileSync(DB_PATH, Buffer.from(data));
 }
 
-// Executa SELECT e retorna array de objetos
+// Executa um SELECT e retorna array de objetos
 function query(sql, params = []) {
-  const stmt = state.db.prepare(sql);
+  const stmt    = state.db.prepare(sql);
   const results = [];
   stmt.bind(params);
   while (stmt.step()) {
@@ -134,11 +137,11 @@ function query(sql, params = []) {
 // Executa INSERT/UPDATE/DELETE e retorna { lastInsertRowid, changes }
 function run(sql, params = []) {
   state.db.run(sql, params);
-  const meta = query("SELECT last_insert_rowid() as id, changes() as changes");
+  const meta = query('SELECT last_insert_rowid() as id, changes() as changes');
   salvar();
   return {
     lastInsertRowid: meta[0]?.id,
-    changes: meta[0]?.changes,
+    changes:         meta[0]?.changes,
   };
 }
 
@@ -149,3 +152,5 @@ function get(sql, params = []) {
 }
 
 module.exports = { ready, query, run, get, salvar };
+
+

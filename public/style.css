@@ -114,7 +114,7 @@ h2{
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 42px 38px;
-  min-height: 600px;
+  min-height: 60px;
   width: 100%;
   align-items: center;
   
@@ -354,6 +354,7 @@ body.logado #app        { display: flex; }
   position: relative;
   overflow: hidden; 
 }
+
 
 
 
@@ -854,8 +855,6 @@ select option { background: var(--surf2); } /*Menus suspensos*/
     align-items: flex-start;
   }
 }
-
-
 
 
 
