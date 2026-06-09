@@ -878,3 +878,86 @@ select option { background: var(--surf2); } /*Menus suspensos*/
     width: 100% !important;
     height: 100% !important;
 }
+
+/* ========= MELHORIAS DE RESPONSIVIDADE ============ */
+
+@media (max-width: 768px) {
+  /* Ajuste do layout principal */
+  #sidebar {
+    width: 60px;
+  }
+  
+  #conteudo {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+
+  /* Stats Grid: 1 coluna em celulares muito pequenos, 2 em tablets */
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  /* Dash Grid: Empilha Pedidos e Catálogo */
+  .dash-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Imagens de Gráficos: Empilhar */
+  .imgDados {
+    flex-direction: column !important;
+    gap: 20px;
+  }
+
+  /* TABELAS RESPONSIVAS: Adiciona scroll horizontal */
+  .tbl-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px; /* Garante que a tabela não esmague o texto */
+  }
+
+  /* Modais: Ocupar mais espaço na tela */
+  .modal {
+    padding: 15px;
+    width: 95%;
+  }
+
+  .item-row {
+    grid-template-columns: 1fr 60px 50px; /* Simplifica a linha de itens */
+    row-gap: 10px;
+  }
+  
+  .item-row .is, .item-row .btn-rm {
+    grid-column: span 1;
+  }
+
+  /* Cabeçalhos de Página */
+  .pg-header {
+    padding: 15px;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* Ajuste extra para telas muito pequenas (iPhone SE, etc) */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .entrega-card-foot {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+
+
