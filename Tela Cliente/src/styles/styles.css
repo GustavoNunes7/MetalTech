@@ -1,0 +1,403 @@
+@import url(./global.css); /*Importando o CSS global para o styles*/
+
+/*HEADER*/
+header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 30px 0px;
+    background-color: var(--color-neutral-silver);
+}
+
+.logo-header img {
+    width: 154px;
+    height: 24px;
+}
+
+.nav-header ul {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+}
+
+.nav-header ul li a{
+    color: var(--color-neutral-black);
+    font-weight: var(--font-headline-2-size);
+    transition: 0.3s;
+}
+
+.nav-header ul li a:hover{
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.container-btn-header button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* FIM HEADER*/
+
+/*MAIN*/
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 104px;
+    padding: 96px 0px;
+    background-color: var(--color-neutral-silver);
+
+}
+
+.content-hero{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 657px;
+}
+
+.content-hero h1 {
+    font-size: var(--font-headline-1-size);
+}
+
+.content-hero span {
+    color: var(--color-info);
+}
+
+/* FIM MAIN*/
+
+/* SEÇÃO DE PRODUTOS (NOVA) */
+/* SEÇÃO DE PRODUTOS (NOVA) */
+.products-section {
+    background-color: #89939E; /* Cor de fundo cinza azulado */
+    padding: 100px 20px;       /* Aumentei o padding para dar espaço ao item que cresce */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.products-container {
+    display: flex;
+    gap: 60px;                 /* Aumentei o espaço para os itens não baterem ao crescer */
+    max-width: 1400px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;       /* Alinha os menores pelo centro do maior */
+    flex-wrap: wrap;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+    min-width: 320px;          /* Define um tamanho base "grande" */
+    max-width: 400px;          /* Limite máximo para não esticar demais */
+    transition: all 0.4s ease; /* Suaviza o aumento de tamanho */
+}
+
+/* Tamanho das Imagens */
+.product-image-wrapper {
+    width: 100%;
+    height: 280px;             /* Define uma altura grande para todos */
+    background-color: #ffffff;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #325D94;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- DESTAQUE: O SEGUNDO ITEM (DO MEIO) FICA MAIOR --- */
+.product-card:nth-child(2) {
+    transform: scale(1.25);    /* Aumenta o item do meio em 25% */
+    z-index: 5;                /* Garante que ele fique visualmente na frente */
+}
+
+.product-card:nth-child(2) .product-title {
+    font-size: 24px;           /* Título do meio um pouco maior */
+    font-weight: 900;
+}
+/* ---------------------------------------------------- */
+
+.product-title {
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+}
+
+/* Ajuste Responsivo */
+@media (max-width: 768px) {
+    .products-container {
+        gap: 30px;
+    }
+    .product-card {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
+
+/* MANAGE SYSTEM*/
+.manage-system{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+}
+
+.content-manage-system{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+}
+.content-manage-system h2{
+    width: 542px;
+
+}
+
+article p{
+    color: var(--color-neutral-d_grey);
+}
+
+.cards-container{
+    display: flex;
+    justify-content: center;
+    gap: 127px;
+}
+
+.cards-container article{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 299px;
+    padding: 24px 16px;
+    box-shadow: 0 2px 4px rgba(174, 172, 172, 0.53);
+}
+.cards-container article h3{
+   font-size: var(--font-headline-3-size);
+   color: var(--color-neutral-d_grey);
+
+}
+.cards-container article:hover{
+    box-shadow: 0 2px 4px rgba(83, 83, 83, 0.53);
+    transform: translateY(-8px);
+}
+
+
+/* FIM MANAGE SYSTEM*/
+
+/* PELLENTESQUE */
+.pellentesque{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-neutral-silver);
+    gap: 150px;
+    padding: 32px 0px;
+   
+}
+
+.pellentesque h2{
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: var(--font-headline-1-size);
+    width: 722px;
+}
+.pellentesque a{
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 200px;
+    text-decoration: none;
+    color: var(--color-neutral-white);
+}
+
+
+
+/* FIM PELLENTESQUE */
+
+/* RODAPÉ */
+
+footer{
+    text-decoration: none;  
+    background-color: var(--color-neutral-black);
+    display: flex;    
+    justify-content: center;
+    gap: 284px;
+    padding: 64px 0;
+}
+footer  a,p {
+     color: var(--color-neutral-silver);
+     gap: 11px;
+}
+.copyright-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 70px;
+}
+.footer-navigation{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 120px;
+}
+.footer-links{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+footer li {
+    list-style-type: none;
+    color: var(--color-neutral-silver);
+    gap:8px;
+}
+footer h2 {
+    display: flex;
+    color: var(--color-neutral-white);
+    gap: 6px;
+  }
+.foot-email{
+    display: flex;
+    justify-content: flex-end;
+    align-self: center;
+    height: 100px;
+}
+
+
+.social-icon{
+    display: flex;
+    gap: 12px;
+    background-color: transparent;
+
+}
+/* Reseta margens padrões que podem atrapalhar a barra de ocupar 100% */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* O Header principal vira a barra escura que vai de ponta a ponta */
+.main-header {
+    display: flex;
+    justify-content: space-between; /* Empurra a busca para a esquerda e o menu para a direita */
+    align-items: center;
+    background-color: #232243; /* Cor escura idêntica ao fundo do seu menu */
+    padding: 12px 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Container da esquerda (Logo + Busca) */
+.logo-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Estrutura da caixinha branca de busca */
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 4px 15px;
+    width: 360px;
+    height:40px;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    color: #333333;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    color: #666666;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Menu de Navegação da Direita */
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* Espaço entre cada conjunto de ícone/texto */
+    height: 80px
+   
+}
+
+/* Alinhamento perfeito do Ícone com o Texto ao lado */
+.menu-item {
+    display: flex;
+    align-items: center; /* Alinha o meio do ícone com o meio do texto */
+    gap: 8px; /* Espaço sutil entre o ícone e a palavra */
+    text-decoration: none;
+    color: #f8f7f7;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Controle do tamanho das imagens dos seus ícones */
+.menu-icon {
+   width:40px
+  
+}
+
+/* O ícone do usuário é ligeiramente maior na proporção */
+.user-icon {
+    width: 76px;
+    
+}
+
+/* FIM RODAPÉ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

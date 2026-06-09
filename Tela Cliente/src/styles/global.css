@@ -1,0 +1,90 @@
+* {
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;  /*Zerar as configurações de largura de altura*/
+    font-family: var(--font-family);
+
+}
+
+/* Define variáveis CSS globais (custom properties) */
+:root{
+
+    /*Neutral*/
+    --color-neutral-black: #263238;
+    --color-neutral-d_grey: #4D4D4D;
+    --color-neutral-grey: #717171;
+    --color-neutral-l_grey: #89939E;
+    --color-neutral-grey-blue: #ABBED1;
+    --color-neutral-silver: #325D94;
+    --color-neutral-white: #FFFFFF;
+
+    /*Primary*/
+    --color-primary:#4CAF4F;
+
+    /*Secondary*/
+    --color-secondary:#263238;
+
+    /*Info*/
+    --color-info: #6093bd;
+
+    /*Color Shade*/
+    --color-color-shade1: #43A046;
+    --color-color-shade2: #388E3B;
+    --color-color-shade3: #237D31;
+    --color-color-shade4: #1B5E1F;
+    --color-color-shade5: #103E13;
+
+    /*Color Tint*/
+    --color-color-tint1:#66BB69;
+    --color-color-tint2:#81C784;
+    --color-color-tint3:#A5D6A7;
+    --color-color-tint4:#C8E6C9;
+    --color-color-tint5:#E8F5E9;
+
+    /*Action*/
+    --color-actionz-warning:#FBC02D;
+    --color-action-error:#E53835;
+    --color-action-success:#2E7D31;
+
+
+    /* Configurações de Fontes */
+    --font-family: "inter";
+    --font-headline-1-size: 64px;
+    --font-headline-2-size: 36px;
+    --font-headline-2-weight: 600;
+    --font-headline-3-size: 28px;
+    --font-headline-4-size: 20px;
+    --font-body2-weight-regular: 400;
+    --font-body3-size: 14px;
+}
+
+
+a{
+    text-decoration: none;
+}
+
+p{
+    color: var(--color-neutral-grey);
+}
+
+.btn-primary{
+    
+    padding: 14px 32px;
+    border-radius: 4px;
+    align-self: flex-start;
+    margin-top: 16px;
+    background-color:#16263f
+}
+
+.btn-primary a{
+    color: var(--color-neutral-white);
+   
+}
+
+h2{
+    color: var(--color-neutral-d_grey);
+    font-size: var(--font-headline-2-size);
+    font-weight: var(--font-headline-2-weight);
+}
