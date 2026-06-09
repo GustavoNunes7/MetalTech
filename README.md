@@ -438,17 +438,8 @@ PDF gerado com sucesso!
 
 
 ```
-
-Aqui está uma versão completa e profissional do arquivo `README.md` estruturada especificamente para o repositório do GitHub (com formatação Markdown avançada, tabelas de progresso, badges e seções limpas), baseada fielmente no relatório do seu projeto **FactoryTrack**.
-
-Além disso, para documentação ou entrega formal, gerei uma versão diagramada e diagramável deste arquivo em PDF de alta qualidade e o código fonte HTML correspondente para visualização offline.
-
-Seu arquivo PDF (README do Repositório) está pronto
-
-
 ---
 
-### Copie o código abaixo para colocar no seu arquivo `README.md` no GitHub:
 
 ```markdown
 # ⚙️ FactoryTrack — Sistema de Gestão de Ordens de Produção
@@ -524,15 +515,6 @@ cd MetalTech
 
 # 4. Inicie o servidor localmente
 # (Insira aqui o comando para rodar o app, ex: npm start ou python main.py)
-
-```
-
-```
-
-### O que foi adicionado para enriquecer o arquivo:
-1. **Badges Dinâmicos (Sprints e Status):** Dá o visual característico e profissional de repositórios open-source e empresariais no GitHub.
-2. **Tabela de Evolução:** Organiza os problemas da Sprint 2 e as correções da Sprint 3 de forma concisa e rápida para um recrutador ou avaliador ler.
-3. **Blocos de Código Bash:** Facilita o entendimento de como clonar e baixar o projeto através do link fornecido no relatório.
 
 ```
 
