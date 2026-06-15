@@ -607,15 +607,18 @@ async function carregarMetais() {
 //_____________________________________________________________________________
 // essa fuction é responsável por limpar os cadastros de pedidos de metais, quando já entregue a metal para liberar espaço
 function abrirMetal() {
-  document.getElementById('m-metal-t').textContent = 'Novo Metal';
-  ['p-id','p-nome','p-desc','p-pp','p-pm','p-pg']
-    .forEach(id => {
-      const el = document.getElementById(id);
-  if (el) el.value = ''});
-};
-  document.getElementById('p-cat').value  = 'tradicional';
-  document.getElementById('p-disp').value = 'true';
-  abrir('m-metal');
+  document.getElementById('modal-metais-titulo').textContent = 'Novo Metal';
+
+  document.getElementById('m-id').value = '';
+  document.getElementById('m-nome').value = '';
+  document.getElementById('m-desc').value = '';
+
+  document.getElementById('m-preco-p').value = '';
+  document.getElementById('m-preco-m').value = '';
+  document.getElementById('m-preco-g').value = '';
+
+  abrir('m-modal-metais');
+}
 
 
 //_____________________________________________________________________________
@@ -638,6 +641,8 @@ function editarMetal(id) {
   // Preenche o campo oculto com o ID e os outros inputs do formulário
   document.getElementById('m-id').value = metal.id || metal._id;
   document.getElementById('m-nome').value = metal.nome;
+  document.getElementById('m-desc').value =
+    metal.descricao || '';
   
   if (metal.precos) {
     document.getElementById('m-preco-p').value = metal.precos.P || 0;
@@ -661,14 +666,16 @@ async function salvarMetal(event) {
   const id = document.getElementById('m-id').value;
   const nome = document.getElementById('m-nome').value.trim();
 
-  const dadosMetal = {
-    nome,
-    precos: {
-      P: parseFloat(document.getElementById('m-preco-p').value) || 0,
-      M: parseFloat(document.getElementById('m-preco-m').value) || 0,
-      G: parseFloat(document.getElementById('m-preco-g').value) || 0
-    }
-  };
+ const dadosMetal = {
+  nome,
+  descricao: document.getElementById('m-desc').value,
+
+  precos: {
+    P: parseFloat(document.getElementById('m-preco-p').value) || 0,
+    M: parseFloat(document.getElementById('m-preco-m').value) || 0,
+    G: parseFloat(document.getElementById('m-preco-g').value) || 0
+  }
+};
 
   try {
     if (id) {
